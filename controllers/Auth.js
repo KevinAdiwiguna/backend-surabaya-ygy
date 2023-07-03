@@ -19,7 +19,7 @@ export const Login = async (req, res) => {
 
 export const Me = async (req, res) => {
     if (!req.session.userId) {
-        return res.status(401).json({ msg: "Mohon login ke akun Anda!", statusCode: 401, authenticated: false });
+        return res.status(401).json({ msg: "Mohon login ke akun Anda!"});
     }
     const user = await User.findOne({
         attributes: ['uuid', 'username', 'role'],
@@ -28,7 +28,7 @@ export const Me = async (req, res) => {
         }
     });
     if (!user) return res.json({ msg: "User tidak ditemukan", statusCode: 404 });
-    res.status(200).json({user, authenticated: false});
+    res.status(200).json({ user });
 }
 
 export const logOut = (req, res) => {
