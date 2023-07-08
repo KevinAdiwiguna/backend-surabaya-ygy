@@ -3,10 +3,12 @@ import { createCountry, deleteCountry, getCountry, getCountryByCode } from '../.
 
 const router = express.Router();
 
-router.get('/country', getCountry);
-router.post('/country', createCountry);
-router.delete('/country/:id', deleteCountry);
-router.get('/country/:id', getCountryByCode);
+import { verifyUser, adminOnly } from "../../../middleware/AuthUser.js"
+
+router.get('/country',verifyUser, getCountry);
+router.post('/country',verifyUser, createCountry);
+router.delete('/country/:id',verifyUser, deleteCountry);
+router.get('/country/:id',verifyUser, getCountryByCode);
 
 export default router;
 

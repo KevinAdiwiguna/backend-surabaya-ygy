@@ -3,10 +3,12 @@ import { createSalesArea3, deleteSalesArea3, getAreaById, getSalesArea3 } from '
 
 const router = express.Router();
 
-router.get('/salesarea3', getSalesArea3);
-router.post('/salesarea3', createSalesArea3);
-router.delete('/salesarea3/:id', deleteSalesArea3);
-router.get('/salesarea3/:id', getAreaById);
+import { verifyUser, adminOnly } from "../../../../middleware/AuthUser.js";
+
+router.get('/salesarea3',verifyUser, getSalesArea3);
+router.post('/salesarea3',verifyUser, createSalesArea3);
+router.delete('/salesarea3/:id',verifyUser, deleteSalesArea3);
+router.get('/salesarea3/:id',verifyUser, getAreaById);
 
 
 export default router

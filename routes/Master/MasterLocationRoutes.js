@@ -3,9 +3,11 @@ import { createLocation, deleteLocation, getAllLocation, getLocationByCode } fro
 
 const router = express.Router();
 
-router.get('/location', getAllLocation);
-router.post('/location', createLocation);
-router.delete('/location/:id', deleteLocation);
-router.get('/location/:id', getLocationByCode);
+import { verifyUser, adminOnly } from "../../middleware/AuthUser.js";
+
+router.get('/location',verifyUser, getAllLocation);
+router.post('/location',verifyUser, createLocation);
+router.delete('/location/:id',verifyUser, deleteLocation);
+router.get('/location/:id',verifyUser, getLocationByCode);
 
 export default router;

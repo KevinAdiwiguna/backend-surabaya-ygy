@@ -3,9 +3,11 @@ import { createSalesman, deleteSalesman, getAllSalesman, getSalesmanByCode } fro
 
 const router = express.Router();
 
-router.get('/salesman', getAllSalesman);
-router.post('/salesman', createSalesman);
-router.delete('/salesman/:id', deleteSalesman);
-router.get('/salesman/:id', getSalesmanByCode);
+import { verifyUser, adminOnly } from "../../middleware/AuthUser.js";
+
+router.get('/salesman',verifyUser ,getAllSalesman);
+router.post('/salesman',verifyUser, createSalesman);
+router.delete('/salesman/:id',verifyUser, deleteSalesman);
+router.get('/salesman/:id',verifyUser, getSalesmanByCode);
 
 export default router;

@@ -3,9 +3,11 @@ import { createCurrency, deleteCurrency, getCurrency, getCurrencyById } from '..
 
 const router = express.Router();
 
-router.get('/currency', getCurrency);
-router.post('/currency', createCurrency);
-router.delete('/currency/:id', deleteCurrency);
-router.get('/currency/:id', getCurrencyById);
+import { verifyUser, adminOnly } from "../../../middleware/AuthUser.js"
+
+router.get('/currency',verifyUser, getCurrency);
+router.post('/currency',verifyUser, createCurrency);
+router.delete('/currency/:id',verifyUser, deleteCurrency);
+router.get('/currency/:id',verifyUser, getCurrencyById);
 
 export default router;

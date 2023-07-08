@@ -3,9 +3,11 @@ import { createCustomerGroup, deleteCustomerGroup, getCustomerGroup, getCustomer
 
 const router = express.Router();
 
-router.get('/customer', getCustomerGroup);
-router.post('/customer', createCustomerGroup);
-router.delete('/customer/:id', deleteCustomerGroup);
-router.get('/customer/:id', getCustomerGroupByCode);
+import { verifyUser, adminOnly } from "../../../middleware/AuthUser.js"
+
+router.get('/customer',verifyUser, getCustomerGroup);
+router.post('/customer',verifyUser, createCustomerGroup);
+router.delete('/customer/:id',verifyUser, deleteCustomerGroup);
+router.get('/customer/:id',verifyUser, getCustomerGroupByCode);
 
 export default router;

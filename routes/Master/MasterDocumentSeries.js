@@ -3,9 +3,11 @@ import { createDocumentSeries, deleteSeriesModel, getAllSeries, getDocumentSerie
 
 const router = express.Router();
 
-router.get('/series', getAllSeries);
-router.post('/series', createDocumentSeries);
-router.delete('/series/:id', deleteSeriesModel);
-router.get('/series/:id', getDocumentSeriesById);
+import { verifyUser, adminOnly } from "../../middleware/AuthUser.js";
+
+router.get('/series',verifyUser, getAllSeries);
+router.post('/series',verifyUser, createDocumentSeries);
+router.delete('/series/:id', verifyUser,deleteSeriesModel);
+router.get('/series/:id',verifyUser, getDocumentSeriesById);
 
 export default router;

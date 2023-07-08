@@ -3,10 +3,11 @@ import { createPriceModel, deletePriceModel, getAllPriceModel, getPriceById } fr
 
 const router = express.Router();
 
-router.get('/pricelist', getAllPriceModel);
+import { verifyUser, adminOnly } from "../../../middleware/AuthUser.js"
 
-router.post('/pricelist', createPriceModel);
-router.get('/pricelist/:id', getPriceById);
-router.delete('/pricelist/:id', deletePriceModel);
+router.get('/pricelist',verifyUser, getAllPriceModel);
+router.post('/pricelist',verifyUser, createPriceModel);
+router.get('/pricelist/:id',verifyUser, getPriceById);
+router.delete('/pricelist/:id',verifyUser, deletePriceModel);
 
 export default router;
