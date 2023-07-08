@@ -3,8 +3,8 @@ import db from "../../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const mastercountry = db.define('salesarea3', {
-    area1: {
+const mastercountry = db.define('mastersalesarea3', {
+    Area1: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -12,7 +12,7 @@ const mastercountry = db.define('salesarea3', {
         },
         primaryKey: true
     },
-    area2: {
+    Area2: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -20,7 +20,7 @@ const mastercountry = db.define('salesarea3', {
         },
         primaryKey: true
     },
-    code: {
+    Code: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -28,21 +28,21 @@ const mastercountry = db.define('salesarea3', {
         },
         primaryKey: true
     },
-    name: {
+    Name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    createdBy: {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    changedBy: {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

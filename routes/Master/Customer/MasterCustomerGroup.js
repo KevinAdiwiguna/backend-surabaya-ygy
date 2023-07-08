@@ -3,9 +3,9 @@ import { createCustomerGroup, deleteCustomerGroup, getCustomerGroup, getCustomer
 
 const router = express.Router();
 
-router.get('/cutomergroup', getCustomerGroup);
-router.post('/cutomergroup', createCustomerGroup);
-router.delete('/cutomergroup/:id', deleteCustomerGroup);
-router.get('/cutomergroup/:id', getCustomerGroupByCode);
+router.get('/customergroup', getCustomerGroup);
+router.post('/customergroup', createCustomerGroup);
+router.delete('/customergroup/:id', deleteCustomerGroup);
+router.get('/customergroup/:id', getCustomerGroupByCode);
 
 export default router;

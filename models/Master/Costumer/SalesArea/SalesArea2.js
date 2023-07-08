@@ -5,8 +5,8 @@ const { DataTypes } = Sequelize;
 
 
 
-const mastercountry = db.define('salesarea2', {
-    area1: {
+const mastercountry = db.define('mastersalesarea2', {
+    Area1: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -14,7 +14,7 @@ const mastercountry = db.define('salesarea2', {
         },
         primaryKey: true
     },
-    code: {
+    Code: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -22,21 +22,21 @@ const mastercountry = db.define('salesarea2', {
         },
         primaryKey: true
     },
-    name: {
+    Name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    createdBy: {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    changedBy: {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

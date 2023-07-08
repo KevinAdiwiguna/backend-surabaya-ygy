@@ -7,7 +7,7 @@ const { DataTypes } = Sequelize;
 
 
 const materialType = db.define('mastermaterialtype', {
-    code: {
+    Code: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -15,28 +15,28 @@ const materialType = db.define('mastermaterialtype', {
         },
         primaryKey: true
     },
-    name: {
+    Name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    isWaste: {
+    IsWaste: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    createdBy: {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    changedBy: {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

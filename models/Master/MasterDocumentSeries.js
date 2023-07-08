@@ -5,7 +5,7 @@ const { DataTypes } = Sequelize;
 
 
 const masterdocumentseries = db.define('masterdocumentseries', {
-    document: {
+    Document: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -14,7 +14,7 @@ const masterdocumentseries = db.define('masterdocumentseries', {
         primaryKey: true
     },
 
-    series: {
+    Series: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -23,15 +23,7 @@ const masterdocumentseries = db.define('masterdocumentseries', {
         primaryKey: true
     },
 
-    users: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    needQC: {
+    NeedQC: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         validate: {
@@ -39,7 +31,7 @@ const masterdocumentseries = db.define('masterdocumentseries', {
         },
     },
 
-    autoTaxNo: {
+    AutoTaxNo: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         validate: {
@@ -47,7 +39,7 @@ const masterdocumentseries = db.define('masterdocumentseries', {
         },
     },
 
-    iso: {
+    Iso: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
@@ -55,14 +47,14 @@ const masterdocumentseries = db.define('masterdocumentseries', {
         }
     },
 
-    createdBy: {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    changedBy: {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

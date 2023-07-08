@@ -7,7 +7,7 @@ const { DataTypes } = Sequelize;
 
 
 const masterGroup3 = db.define('mastermaterialgroup3', {
-    group1: {
+    Group1: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -15,7 +15,7 @@ const masterGroup3 = db.define('mastermaterialgroup3', {
         },
         primaryKey: true
     },
-    group2: {
+    Group2: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -23,7 +23,7 @@ const masterGroup3 = db.define('mastermaterialgroup3', {
         },
         primaryKey: true
     },
-    code: {
+    Code: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -31,21 +31,21 @@ const masterGroup3 = db.define('mastermaterialgroup3', {
         },
         primaryKey: true
     },
-    name: {
+    Name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    createdBy: {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    changedBy: {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

@@ -4,6 +4,7 @@ import { createPriceModel, deletePriceModel, getAllPriceModel, getPriceById } fr
 const router = express.Router();
 
 router.get('/pricelist', getAllPriceModel);
+
 router.post('/pricelist', createPriceModel);
 router.get('/pricelist/:id', getPriceById);
 router.delete('/pricelist/:id', deletePriceModel);

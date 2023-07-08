@@ -7,7 +7,7 @@ const { DataTypes } = Sequelize;
 
 
 const masterpricelisttype = db.define('masterpricelisttype', {
-    code: {
+    Code: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -15,21 +15,21 @@ const masterpricelisttype = db.define('masterpricelisttype', {
         },
         primaryKey: true
     },
-    name: {
+    Name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    createdBy: {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    changedBy: {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
-import db from "../../../config/Database.js";
+import db from "../../config/Database.js";
 
-const { DataTypes } = Sequelize;
+const {DataTypes} = Sequelize;
 
-const masterMaterial = db.define('mastermaterial', {
-    Code: {
+const salesOrderHeader = db.define('salesorderh',{
+    DocNo:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -12,198 +12,190 @@ const masterMaterial = db.define('mastermaterial', {
         },
         primaryKey: true
     },
-    Name: {
+
+    Series:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    NameInPO: {
+    DocDate:{
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+    CustomerCode:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    SmallestUnit: {
+    ShipToCode:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    SoldUnit: {
+    TaxToCode:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    SKUUnit: {
+
+    SalesCode:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    Group1: {
+
+    DeliveryDate:{
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    PONo:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    Group2: {
+
+    TOP:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    DiscPercent:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    TaxStatus:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    Group3: {
+
+    TaxPercent:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    Currency:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    Type: {
+
+    ExchangeRate:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    TotalGross:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    TotalDisc:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    TaxValue:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    TotalNetto:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    Information:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    IsBatch: {
+
+    Status:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    IsPurchaseReturn:{
         type: DataTypes.BOOLEAN,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    IsService: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    IsAsset: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    Mass: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    Volume: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    HS: {
+
+    CreatedBy:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    Barcode: {
+
+    ChangedBy:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    MinStock: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    MaxStock: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    Currency: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    DefaultPrice: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    TransactionType1: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    TransactionType2: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    TransactionType3: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    TransactionType4: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    Info: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    CreatedBy: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    ChangedBy: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-}, {
+
+
+},{
     freezeTableName: true
 });
 
-export default masterMaterial;
-
+export default mastersales;

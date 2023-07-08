@@ -5,46 +5,57 @@ export const getAllMaterialGroup = async (req, res) => {
         const response = await MaterialGroup.findAll();
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }
 
 export const createMaterialGroup = async (req, res) => {
     const { code, name, group1, group2, createdBy, changedBy } = req.body;
-
-    const codeCheck = MaterialGroup.findOne({
+    const codeCheck = await MaterialGroup.findOne({
         where: {
-            code: code
+            Code: code
         }
-    })
-    if (!codeCheck) return res.status(400).json({ message: "code udah ada" })
+    });
+    if (codeCheck) return res.json({ msg: "Code sudah ada" });
+    const group1Check = await MaterialGroup.findOne({
+        where: {
+            Group1: group1
+        }
+    });
+    if (group1Check) return res.json({ msg: "Group1 sudah ada" });
+    const group2Check = await MaterialGroup.findOne({
+        where: {
+            Group2: group2
+        }
+    });
+    if (group2Check) return res.json({ msg: "Group2 sudah ada" });
 
     try {
         await MaterialGroup.create({
-            code: code,
-            group1: group1,
-            group2: group2,
-            name: name,
-            createdBy: createdBy,
-            changedBy: changedBy
+            Code: code,
+            Group1: group1,
+            Group2: group2,
+            Name: name,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 400 });
+        res.status(400).json({ msg: error.message });
     }
 }
 
 export const deleteMaterialGroup = async (req, res) => {
     const codeCheck = await MaterialGroup.findOne({
         where: {
-            code: req.params.id
+            Code: req.params.id
         }
     });
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
     try {
         await MaterialGroup.destroy({
             where: {
-                code: codeCheck.code
+                Code: codeCheck.Code
             }
         });
         res.status(200).json({ msg: "data Deleted" });
@@ -58,11 +69,11 @@ export const getMaterialGroupByCode = async (req, res) => {
     try {
         const response = await MaterialGroup.findOne({
             where: {
-                code: req.params.id
+                Code: req.params.id
             }
         });
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }

@@ -5,45 +5,43 @@ export const getAllMaterialType = async (req, res) => {
         const response = await materialType.findAll();
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message});
     }
 }
 
 export const createMaterialType = async (req, res) => {
     const { code, name, isWaste, createdBy, changedBy } = req.body;
-
-    const codeCheck = materialType.findOne({
+    const codeCheck = await materialType.findOne({
         where: {
-            code: code
+            Code: code
         }
-    })
-    if (!codeCheck) return res.status(400).json({ message: "code udah ada" })
-
+    });
+    if (codeCheck) return res.json({ msg: "data sudah ada" });
     try {
         await materialType.create({
-            name: name,
-            code: code,
-            isWaste: isWaste,
-            createdBy: createdBy,
-            changedBy: changedBy
+            Name: name,
+            Code: code,
+            IsWaste: isWaste,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 400 });
+        res.status(400).json({ msg: error.message})
     }
 }
 
 export const deleteMaterialType = async (req, res) => {
     const codeCheck = await materialType.findOne({
         where: {
-            code: req.params.id
+            Code: req.params.id
         }
     });
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
     try {
         await materialType.destroy({
             where: {
-                code: codeCheck.code
+                Code: codeCheck.Code
             }
         });
         res.status(200).json({ msg: "data Deleted" });
@@ -57,11 +55,11 @@ export const getMaterialTypeByCode = async (req, res) => {
     try {
         const response = await materialType.findOne({
             where: {
-                code: req.params.id
+                Code: req.params.id
             }
         });
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message});
     }
 }

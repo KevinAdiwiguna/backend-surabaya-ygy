@@ -4,85 +4,113 @@ import argon2 from "argon2";
 export const getUsers = async (req, res) => {
     try {
         const response = await User.findAll({
-            attributes: ['uuid', 'username']
+            attributes: ['User', 'Name', 'Role']
         });
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }
 
 export const getUserById = async (req, res) => {
+
     try {
         const response = await User.findOne({
-            attributes: ['uuid', 'username'],
+            attributes: ['User', 'Name', 'Role'],
             where: {
-                uuid: req.params.id
+                User: req.params.id
             }
         });
-        res.status(200).json(response);
+        if(response === null) return res.status(404).json({ msg: "User tidak ditemukan" })
+        res.status(200).json(response)
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message});
     }
 }
 
 export const createUser = async (req, res) => {
-    const { username, password, confPassword, role } = req.body;
+    const hashOptions = {
+        hashLength: 40 
+      };
+    const { user, name, password, confPassword, role } = req.body;
     if (password !== confPassword) return res.status(400).json({ msg: "Password dan Confirm Password tidak cocok" });
-    const hashPassword = await argon2.hash(password);
+    const userCheck = await User.findOne({
+        where: {
+            User: user
+        }
+    })
+    if(userCheck) return res.status(400).json({ msg: "User sudah ada" })
+    const hashPassword = await argon2.hash(password,hashOptions);
     try {
         await User.create({
-            username: username,
-            password: hashPassword,
-            role: role
+            User: user,
+            Name: name,
+            Password: hashPassword,
+            Role: role
         });
         res.status(201).json({ msg: "Register Berhasil" });
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 400 });
+        res.status(400).json({ msg: error.message });
     }
 }
 
 export const createAdmin = async (req, res) => {
-    const { username, password, confPassword, role } = req.body;
-    if (password !== confPassword) return res.json({ msg: "Password dan Confirm Password tidak cocok", statusCode: 400 });
-    const hashPassword = await argon2.hash(password);
+    const hashOptions = {
+        hashLength: 40 
+      };
+    const { user, name, password, confPassword, role, code } = req.body;
+    if (password !== confPassword) return res.status(400).json({ msg: "Password dan Confirm Password tidak cocok" });
+    if(code !== "DRJUIRGVTRRNVGTNGRHIJU") return res.status(400).json({ msg: "Code tidak cocok" });
+    const userCheck = await User.findOne({
+        where: {
+            User: user
+        }
+    })
+    if(userCheck) return res.status(400).json({ msg: "User sudah ada" })
+    const hashPassword = await argon2.hash(password,hashOptions);
     try {
         await User.create({
-            username: username,
-            password: hashPassword,
-            role: role
+            User: user,
+            Name: name,
+            Password: hashPassword,
+            Role: role
         });
         res.status(201).json({ msg: "Register Berhasil" });
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 400 });
+        res.status(400).json({ msg: error.message });
     }
 }
 
-export const updateUser = async (req, res) => {
-    const user = await User.findOne({
-        where: {
-            uuid: req.params.id
-        }
-    });
-    if (!user) return res.json({ msg: "User tidak ditemukan", statusCode: 400 });
-    const { username, password, confPassword, role } = req.body;
-    let hashPassword;
-    if (!password) {
-        hashPassword = user.password
-    } else {
-        hashPassword = await argon2.hash(password);
+export const updatePassword = async (req, res) => {
+    const { id } = req.params;
+    const { password, confPassword } = req.body;
+  
+    if (password !== confPassword) {
+        return res.status(400).json({ msg: "Password dan Confirm Password tidak cocok" });
     }
-    if (password !== confPassword) return res.status(400).json({ msg: "Password dan Confirm Password tidak cocok" });
+  
     try {
-        await User.update({
-            username: username,
-            password: hashPassword
-        }, {
+        const user = await User.findOne({
             where: {
-                id: user.id
+                User: id
             }
         });
-        res.status(200).json({ msg: "User Updated" });
+
+        if (!user) {
+            return res.status(400).json({ msg: "User tidak ditemukan" });
+        }
+
+        const hashPassword = await argon2.hash(password);
+
+        await User.update({
+            Password: hashPassword
+        }, {
+            where: {
+                User: id
+            }
+        });
+
+        res.status(200).json({ msg: "Password Updated" });
     } catch (error) {
         res.status(400).json({ msg: error.message });
     }
@@ -91,14 +119,14 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
     const user = await User.findOne({
         where: {
-            uuid: req.params.id
+            User: req.params.id
         }
     });
     if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
     try {
         await User.destroy({
             where: {
-                uuid: user.uuid 
+                User: user.User
             }
         });
         res.status(200).json({ msg: "User Deleted" });

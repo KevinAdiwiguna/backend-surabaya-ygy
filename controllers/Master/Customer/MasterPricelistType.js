@@ -5,44 +5,43 @@ export const getAllPriceModel = async (req, res) => {
         const response = await pricelistModel.findAll();
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }
 
 export const createPriceModel = async (req, res) => {
     const { code, name, createdBy, changedBy } = req.body;
-
-    const codeCheck = pricelistModel.findOne({
+    const user = await pricelistModel.findOne({
         where: {
-            code: code
+            Code: code
         }
-    })
-    if (!codeCheck) return res.status(400).json({ message: "code udah ada" })
+    });
+    if (user) return res.status(400).json({ msg: "data sudah ada" });
 
     try {
         await pricelistModel.create({
-            name: name,
-            code: code,
-            createdBy: createdBy,
-            changedBy: changedBy
+            Name: name,
+            Code: code,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 400 });
+        res.status(400).json({ msg: error.message });
     }
 }
 
 export const deletePriceModel = async (req, res) => {
     const codeCheck = await pricelistModel.findOne({
         where: {
-            code: req.params.id
+            Code: req.params.id
         }
     });
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
     try {
         await pricelistModel.destroy({
             where: {
-                code: codeCheck.code    
+                Code: codeCheck.Code
             }
         });
         res.status(200).json({ msg: "data Deleted" });
@@ -56,11 +55,11 @@ export const getPriceById = async (req, res) => {
     try {
         const response = await pricelistModel.findOne({
             where: {
-                code: req.params.id
+                Code: req.params.id
             }
         });
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }

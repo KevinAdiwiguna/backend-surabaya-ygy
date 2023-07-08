@@ -5,52 +5,52 @@ export const getAllSeries = async (req, res) => {
         const response = await documentSeriesModel.findAll();
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }
 
 export const createDocumentSeries = async (req, res) => {
     const { document, series, users, needQC, autoTaxNo, iso, createdBy, changedBy } = req.body;
-    const documentCheck = documentSeriesModel.findOne({
+    const documentCheck = await documentSeriesModel.findOne({
         where: {
-            document: document
+            Document: document
         }
     })
-    const seriesCheck = documentSeriesModel.findOne({
+    const seriesCheck = await documentSeriesModel.findOne({
         where: {
-            series: series
+            Series: series
         }
     })
-    if (!documentCheck) return res.status(400).json({ message: "document udah ada" })
-    if (!seriesCheck) return res.status(400).json({ message: "series udah ada" })
+    if (documentCheck) return res.status(400).json({ message: "document udah ada" })
+    if (seriesCheck) return res.status(400).json({ message: "series udah ada" })
     try {
         await documentSeriesModel.create({
-            document: document,
-            series: series,
-            users: users,
-            needQC: needQC,
-            autoTaxNo: autoTaxNo,
-            iso: iso,
-            createdBy: createdBy,
-            changedBy: changedBy
+            Document: document,
+            Series: series,
+            Users: users,
+            NeedQC: needQC,
+            AutoTaxNo: autoTaxNo,
+            ISO: iso,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 400 });
+        res.status(400).json({ msg: error.message });
     }
 }
 
 export const deleteSeriesModel = async (req, res) => {
     const document = await documentSeriesModel.findOne({
         where: {
-            series: req.params.id
+            Series: req.params.id
         }
     });
     if (!document) return res.json({ msg: "data tidak ditemukan" });
     try {
         await documentSeriesModel.destroy({
             where: {
-                series: document.series
+                Series: document.Series
             }
         });
         res.status(200).json({ msg: "data Deleted" });
@@ -64,7 +64,7 @@ export const getDocumentSeriesById = async (req, res) => {
     try {
         const response = await documentSeriesModel.findOne({
             where: {
-                series: req.params.id
+                Series: req.params.id
             }
         });
         res.status(200).json(response);

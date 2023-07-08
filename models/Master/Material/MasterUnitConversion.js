@@ -1,13 +1,12 @@
 import { Sequelize } from "sequelize";
 import db from "../../../config/Database.js";
+import masterUnit from './MasterUnit.js'
+import masterMaterial from "./MasterMaterial.js";
 
 const { DataTypes } = Sequelize;
 
-
-
-const mastercountry = db.define('mastercountry', {
-    
-    Code: {
+const unitConversion = db.define('masterunitconversion', {
+    MaterialCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -15,8 +14,16 @@ const mastercountry = db.define('mastercountry', {
         },
         primaryKey: true
     },
-    Name: {
+    Unit: {
         type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+        primaryKey: true
+    },
+    Content: {
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
             notEmpty: true
@@ -40,7 +47,18 @@ const mastercountry = db.define('mastercountry', {
     freezeTableName: true
 });
 
+// masterMaterial.hasOne(unitConversion, { foreignKey: 'Code' })    
+// masterUnit.hasOne(unitConversion, { foreignKey: 'Code' })    
 
+unitConversion.belongsTo(masterUnit, {
+    foreignKey: 'Unit',
+    targetKey: 'Code'
+});
 
-export default mastercountry;
+unitConversion.belongsTo(masterMaterial, {
+    foreignKey: 'MaterialCode',
+    targetKey: 'Code'
+});
+
+export default unitConversion;
 

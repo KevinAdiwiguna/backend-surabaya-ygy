@@ -5,24 +5,28 @@ export const getCurrency = async (req, res) => {
         const response = await currencyModel.findAll();
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message});
     }
 }
 
 export const createCurrency = async (req, res) => {
     const { code, name, createdBy, changedBy } = req.body;
-    if (!code) return res.json({ message: "input code" })
-    if (!name) return res.json({ message: "input name" })
+    const user = await currencyModel.findOne({
+        where: {
+            Code: code
+        }
+    });
+    if (user) return res.status(400).json({ msg: "data sudah ada" });
     try {
         await currencyModel.create({
-            code: code,
-            name: name,
-            createdBy: createdBy,
-            changedBy: changedBy
+            Code: code,
+            Name: name,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 400 });
+        res.status(400).json({ msg: error.message});
     }
 }
 
@@ -30,14 +34,14 @@ export const createCurrency = async (req, res) => {
 export const deleteCurrency = async (req, res) => {
     const user = await currencyModel.findOne({
         where: {
-            code: req.params.id
+            Code: req.params.id
         }
     });
-    if (!user) return res.json({ msg: "data tidak ditemukan" });
+    if (!user) return res.status(400).json({ msg: "data tidak ditemukan" });
     try {
         await currencyModel.destroy({
             where: {
-                code: user.code
+                Code: user.Code
             }
         });
         res.status(200).json({ msg: "data Deleted" });
@@ -50,12 +54,12 @@ export const deleteCurrency = async (req, res) => {
 export const getCurrencyById = async (req, res) => {
     try {
         const response = await currencyModel.findOne({
-            where: {
-                code: req.params.id
+            Where: {
+                Code: req.params.id
             }
         });
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }

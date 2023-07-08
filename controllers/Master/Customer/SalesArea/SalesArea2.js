@@ -1,46 +1,48 @@
-import MaterialGroup from "../../../../models/Master/Material/MaterialGroup/MaterialGroup1.js";
+import salesArea2 from "../../../../models/Master/Costumer/SalesArea/SalesArea2.js";
 
-export const getAllMaterialGroup = async (req, res) => {
+
+export const getSalesArea2 = async (req, res) => {
     try {
-        const response = await MaterialGroup.findAll();
+        const response = await salesArea2.findAll();
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
 }
 
-export const createMaterialGroup = async (req, res) => {
-    const { code, name, createdBy, changedBy } = req.body;
-    const codeCheck = await MaterialGroup.findOne({
+export const createSalesArea2 = async (req, res) => {
+    const { code, area1, name, createdBy, changedBy } = req.body;
+
+    const check = await salesArea2.findOne({
         where: {
             Code: code
         }
-    });
-    if (codeCheck) return res.json({ msg: "data sudah ada" });
+    })
+    if (check) return res.status(400).json({ msg: "data sudah ada" });
 
     try {
-        await MaterialGroup.create({
-            Code: code,
+        await salesArea2.create({
             Name: name,
+            Area1: area1,
+            Code: code,
             CreatedBy: createdBy,
             ChangedBy: changedBy
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
-        res.status(400).json({ msg: error.message });
-
+        res.status(400).json({ msg: "data sudah ada" });
     }
 }
 
-export const deleteMaterialGroup = async (req, res) => {
-    const codeCheck = await MaterialGroup.findOne({
+export const deleteSalesArea2 = async (req, res) => {
+    const codeCheck = await salesArea2.findOne({
         where: {
             Code: req.params.id
         }
     });
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
     try {
-        await MaterialGroup.destroy({
+        await salesArea2.destroy({
             where: {
                 Code: codeCheck.Code
             }
@@ -52,9 +54,9 @@ export const deleteMaterialGroup = async (req, res) => {
 }
 
 
-export const getMaterialGroupByCode = async (req, res) => {
+export const getAreaById = async (req, res) => {
     try {
-        const response = await MaterialGroup.findOne({
+        const response = await salesArea2.findOne({
             where: {
                 Code: req.params.id
             }

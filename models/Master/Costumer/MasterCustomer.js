@@ -9,7 +9,7 @@ import mastercurrency from "../MasterCurrencyModel.js";
 const { DataTypes } = Sequelize;
 
 const mastercustomer = db.define('mastercustomer', {
-    code: {
+    Code: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -17,189 +17,189 @@ const mastercustomer = db.define('mastercustomer', {
         },
         primaryKey: true
     },
-    name: {
+    Name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    address: {
+    Address: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    address2: {
+    Address2: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    city: {
+    City: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    country: {
+    Country: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    phone: {
+    Phone: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    fax: {
+    Fax: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    email: {
+    Email: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    contact: {
+    Contact: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    mobile: {
+    Mobile: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    taxNumber: {
+    TaxNumber: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    customerGroup: {
+    CustomerGroup: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    priceListType: {
+    PriceListType: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    salesArea1: {
+    SalesArea1: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    salesArea2: {
+    SalesArea2: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    salesArea3: {
+    SalesArea3: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    top: {
+    TOP: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+    Currency: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    currency: {
-        type: DataTypes.STRING,
+    Limit: {
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    limit: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-    transactionType: {
+    TransactionType: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    transactionType2: {
+    TransactionType2: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    cutPPh: {
+    CutPPh: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    isBlacklisted: {
+    IsBlacklisted: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    isDeleted: {
+    IsDeleted: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
-    information: {
+    Information: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
             notEmpty: false,
         },
     },
-    createdBy: {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    changedBy: {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -211,10 +211,10 @@ const mastercustomer = db.define('mastercustomer', {
 });
 
 
-mastercountry.hasOne(mastercustomer, { foreignKey: 'country' })
-mastercustomergroup.hasOne(mastercustomer, { foreignKey: 'customerGroup' })
-masterpricelisttype.hasOne(mastercustomer, { foreignKey: 'priceListType' })
-mastercurrency.hasOne(mastercustomer, { foreignKey: 'currency' })
+mastercountry.hasOne(mastercustomer, { foreignKey: 'Country' })
+mastercustomergroup.hasOne(mastercustomer, { foreignKey: 'CustomerGroup' })
+masterpricelisttype.hasOne(mastercustomer, { foreignKey: 'PriceListType' })
+mastercurrency.hasOne(mastercustomer, { foreignKey: 'Currency' })
 
 
 

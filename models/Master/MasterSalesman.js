@@ -5,7 +5,7 @@ import db from "../../config/Database.js";
 const {DataTypes} = Sequelize;
 
 
-const masterlocation = db.define('masterlocation',{
+const mastersales = db.define('mastersales',{
     Code:{
         type: DataTypes.STRING,
         allowNull: false,
@@ -16,6 +16,34 @@ const masterlocation = db.define('masterlocation',{
     },
 
     Name:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+    Address:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+    City:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+    Phone:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+    Mobile:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -42,4 +70,4 @@ const masterlocation = db.define('masterlocation',{
     freezeTableName: true
 });
 
-export default masterlocation;
+export default mastersales;

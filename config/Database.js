@@ -1,31 +1,16 @@
 import { Sequelize } from "sequelize";
 
-const data = {
-    "development": {
-        "username": "root",
-        "password": null,
-        "database": "erp_dev",
-        "host": "127.0.0.1",
-        "dialect": "mysql"
+
+
+const db = new Sequelize('erp_dev', 'root', '', {
+    host: 'localhost',
+    dialect: "mysql",
+    define: {
+        createdAt: 'CreatedDate',
+        updatedAt: 'ChangedDate',
     },
-    "test": {
-        "username": "root",
-        "password": null,
-        "database": "database_test",
-        "host": "127.0.0.1",
-        "dialect": "mysql"
-    },
-    "production": {
-        "username": "root",
-        "password": null,
-        "database": "database_production",
-        "host": "127.0.0.1",
-        "dialect": "mysql"
+    timestamps: {
+        dateFormat: 'YYYY-MM-DD'
     }
-}
-
-
-
-const db = new Sequelize(data.development);
-
-export default db;  
+});
+export default db;

@@ -3,7 +3,7 @@ import {
     getUsers,
     getUserById,
     createUser,
-    updateUser,
+     updatePassword,
     deleteUser,
     createAdmin
 } from "../controllers/Users.js";
@@ -15,7 +15,7 @@ router.get('/users', getUsers);
 router.get('/users/:id', getUserById);
 router.post('/users', createUser);
 router.post('/users/admin', createAdmin);
-router.patch('/users/:id', updateUser);
+router.patch('/users/:id', updatePassword);
 router.delete('/users/:id', deleteUser);
 
 export default router;

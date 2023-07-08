@@ -1,29 +1,32 @@
-import masterLocationModel from "../../models/Master/MasterLocationModel.js";
+import masterSales from "../../models/Master/MasterSalesman.js";
 
-export const getAllLocation = async (req, res) => {
+export const getAllSalesman = async (req, res) => {
     try {
-        const response = await masterLocationModel.findAll();
+        const response = await masterSales.findAll();
         res.status(200).json(response);
     } catch (error) {
-        res.json({ msg: error.message, statusCode: 500 });
+        res.status(500).json({ msg: error.message });
     }
 }
 
-export const createLocation = async (req, res) => {
-    const { code, name, createdBy, changedBy } = req.body;
+export const createSalesman = async (req, res) => {
+    const { code, name, address, city, phone, mobile, createdBy, changedBy } = req.body;
 
-    const codeCheck = await masterLocationModel.findOne({
+    const codeCheck = masterSales.findOne({
         where: {
             Code: code
         }
     })
-    if (codeCheck) return res.status(400).json({ msg: "code udah ada" })
 
-    
+    if (codeCheck.value) return res.status(400).json({ message: "code udah ada" })
     try {
-        await masterLocationModel.create({
+        await masterSales.create({
             Code: code,
             Name: name,
+            Address: address,
+            City: city,
+            Phone: phone,
+            Mobile: mobile,
             CreatedBy: createdBy,
             ChangedBy: changedBy
         });
@@ -33,15 +36,15 @@ export const createLocation = async (req, res) => {
     }
 }
 
-export const deleteLocation = async (req, res) => {
-    const code = await masterLocationModel.findOne({
+export const deleteSalesman = async (req, res) => {
+    const code = await masterSales.findOne({
         where: {
             Code: req.params.id
         }
     });
     if (!code) return res.json({ msg: "code tidak ditemukan" });
     try {
-        await masterLocationModel.destroy({
+        await masterSales.destroy({
             where: {
                 Code: code.Code
             }
@@ -53,9 +56,9 @@ export const deleteLocation = async (req, res) => {
 }
 
 
-export const getLocationByCode = async (req, res) => {
+export const getSalesmanByCode = async (req, res) => {
     try {
-        const response = await masterLocationModel.findOne({
+        const response = await masterSales.findOne({
             where: {
                 Code: req.params.id
             }
