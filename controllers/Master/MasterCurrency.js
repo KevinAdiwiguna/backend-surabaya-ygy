@@ -63,3 +63,27 @@ export const getCurrencyById = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 }
+
+export const updateCurrency = async (req, res) => {
+    const { name, changedBy } = req.body;
+    const user = await currencyModel.findOne({
+        where: {
+            Code: req.params.id
+        }
+    });
+    if (!user) return res.json({ msg: "data tidak ditemukan" });
+    try {
+        await currencyModel.update({
+            Name: name,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                Code: user.Code
+            }
+        });
+
+        res.status(200).json({ msg: "data Updated" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
