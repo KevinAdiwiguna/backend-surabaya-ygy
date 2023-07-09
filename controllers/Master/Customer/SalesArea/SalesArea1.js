@@ -32,6 +32,30 @@ export const createSalesArea1 = async (req, res) => {
     }
 }
 
+export const updateSalesArea1 = async (req, res) => {
+    const { name, changedBy } = req.body;
+    const codeCheck = await salesArea1.findOne({
+        where: {
+            Code: req.params.id
+        }
+    });
+    if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
+    try {
+        await salesArea1.update({
+            Name: name,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                Code: codeCheck.Code
+            }
+        });
+        res.status(200).json({ msg: "data Updated" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
+
+
 export const deleteSalesArea1 = async (req, res) => {
     const codeCheck = await salesArea1.findOne({
         where: {
