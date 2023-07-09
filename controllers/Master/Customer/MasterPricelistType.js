@@ -9,6 +9,30 @@ export const getAllPriceModel = async (req, res) => {
     }
 }
 
+export const updatePriceModel = async (req, res) => {
+    const { name, changedBy } = req.body;
+    const codeCheck = await pricelistModel.findOne({
+        where: {
+            Code: req.params.id
+        }
+    });
+    if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
+    try {
+        await pricelistModel.update({
+            Name: name,
+            ChangedBy: changedBy
+        }, {
+
+            where: {
+                Code: codeCheck.Code
+            }
+        });
+        res.status(200).json({ msg: "data Updated" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
+
 export const createPriceModel = async (req, res) => {
     const { code, name, createdBy, changedBy } = req.body;
     const user = await pricelistModel.findOne({
