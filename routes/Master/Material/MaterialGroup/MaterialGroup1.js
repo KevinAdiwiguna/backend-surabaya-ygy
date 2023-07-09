@@ -3,9 +3,11 @@ import { createMaterialGroup,deleteMaterialGroup,getAllMaterialGroup,getMaterial
 
 const router = express.Router();
 
-router.get('/materialgroup1', getAllMaterialGroup);
-router.post('/materialgroup1', createMaterialGroup);
-router.delete('/materialgroup1/:id', deleteMaterialGroup);
-router.get('/materialgroup1/:id', getMaterialGroupByCode);
+import { verifyUser, adminOnly } from "../../../../middleware/AuthUser.js";
+
+router.get('/materialgroup1',verifyUser, getAllMaterialGroup);
+router.post('/materialgroup1',verifyUser, createMaterialGroup);
+router.delete('/materialgroup1/:id',verifyUser, deleteMaterialGroup);
+router.get('/materialgroup1/:id',verifyUser, getMaterialGroupByCode);
 
 export default router;

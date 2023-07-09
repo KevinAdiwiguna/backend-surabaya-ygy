@@ -16,19 +16,6 @@ export const createMaterialGroup = async (req, res) => {
             Code: code
         }
     });
-    if (codeCheck) return res.json({ msg: "Code sudah ada" });
-    const group1Check = await MaterialGroup.findOne({
-        where: {
-            Group1: group1
-        }
-    });
-    if (group1Check) return res.json({ msg: "Group1 sudah ada" });
-    const group2Check = await MaterialGroup.findOne({
-        where: {
-            Group2: group2
-        }
-    });
-    if (group2Check) return res.json({ msg: "Group2 sudah ada" });
 
     try {
         await MaterialGroup.create({

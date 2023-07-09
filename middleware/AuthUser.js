@@ -6,22 +6,24 @@ export const verifyUser = async (req, res, next) =>{
     }
     const user = await User.findOne({
         where: {
-            uuid: req.session.userId
+            User: req.session.userId
         }
     });
     if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
-    req.userId = user.id;
-    req.role = user.role; 
+    req.role = user.Role;
+    req.myUser = user.User;
+    req.name = user.Name;
+    req.role = user.Role; 
     next();
 }
 
 export const adminOnly = async (req, res, next) =>{
     const user = await User.findOne({
         where: {
-            uuid: req.session.userId
+            User: req.session.userId
         }
     });
     if(!user) return res.status(404).json({msg: "User tidak ditemukan"});
-    if(user.role !== "admin") return res.status(403).json({msg: "Akses terlarang"});
+    if(user.Role !== "admin") return res.status(403).json({msg: "Akses terlarang"});
     next();
 }

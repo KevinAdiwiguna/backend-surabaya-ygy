@@ -46,7 +46,7 @@ app.use(
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    // store: store,
+    store: store,
     cookie: {
       secure: "auto",
     },
@@ -90,6 +90,10 @@ routes.forEach((route) => {
 });
 
 store.sync();
+
+app.get('/', (req, res) => {
+  res.send("Hello there!");
+});
 
 app.listen(process.env.APP_PORT, () => {
   console.log("Server up and running...");
