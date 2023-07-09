@@ -62,3 +62,26 @@ export const getUnitByCode = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 }
+
+export const updateUnit = async (req, res) => {
+    const { code, name, changedBy } = req.body;
+    const codeCheck = await MasterUnitModel.findOne({
+        where: {
+            Code: code
+        }
+    });
+    if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
+    try {
+        await MasterUnitModel.update({
+            Name: name,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                Code: codeCheck.Code
+            }
+        });
+        res.status(200).json({ msg: "data updated" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
