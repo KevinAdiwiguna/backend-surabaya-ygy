@@ -10,6 +10,32 @@ export const getSalesArea2 = async (req, res) => {
     }
 }
 
+
+export const updateSalesArea2 = async (req, res) => {
+    const { name, area1, changedBy } = req.body;
+    const codeCheck = await salesArea2.findOne({
+        where: {
+            Code: req.params.id
+        }
+    });
+    if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
+    try {
+        await salesArea2.update({
+            Name: name,
+            Area1: area1,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                Code: codeCheck.Code
+            }
+        });
+        res.status(200).json({ msg: "data Updated" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
+
+
 export const createSalesArea2 = async (req, res) => {
     const { code, area1, name, createdBy, changedBy } = req.body;
 
