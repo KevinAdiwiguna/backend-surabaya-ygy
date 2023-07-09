@@ -72,3 +72,38 @@ export const getDocumentSeriesById = async (req, res) => {
         res.json({ msg: error.message, statusCode: 500 });
     }
 }
+
+export const updateDocumentSeries = async (req, res) => {
+    const { document, series, users, needQC, autoTaxNo, iso, createdBy, changedBy } = req.body;
+    const documentCheck = await documentSeriesModel.findOne({
+        where: {
+            Document: document
+        }
+    })
+    const seriesCheck = await documentSeriesModel.findOne({
+        where: {
+            Series: series
+        }
+    })
+    if (!documentCheck) return res.status(400).json({ message: "document tidak ada" })
+    if (!seriesCheck) return res.status(400).json({ message: "series tidak ada" })
+    try {
+        await documentSeriesModel.update({
+            Document: document,
+            Series: series,
+            Users: users,
+            NeedQC: needQC,
+            AutoTaxNo: autoTaxNo,
+            ISO: iso,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                Series: series
+            }
+        });
+        res.status(201).json({ msg: "update Berhasil" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
