@@ -64,3 +64,26 @@ export const getMaterialGroupByCode = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 }
+
+export const updateMaterialGroup = async (req, res) => {
+    const { name, changedBy } = req.body;
+    const codeCheck = await MaterialGroup.findOne({
+        where: {
+            Code: req.params.id
+        }
+    });
+    if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
+    try {
+        await MaterialGroup.update({
+            Name: name,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                Code: codeCheck.Code
+            }
+        });
+        res.status(200).json({ msg: "data Updated" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
