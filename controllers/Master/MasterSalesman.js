@@ -68,3 +68,31 @@ export const getSalesmanByCode = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 }
+
+export const updateSalesman = async (req, res) => {
+    const { code, name, address, city, phone, mobile, createdBy, changedBy } = req.body;
+    const codeCheck = await masterSales.findOne({
+        where: {
+            Code: code
+        }
+    });
+    if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
+    try {
+        await masterSales.update({
+            Name: name,
+            Address: address,
+            City: city,
+            Phone: phone,
+            Mobile: mobile,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                Code: codeCheck.Code
+            }
+        });
+        res.status(200).json({ msg: "update berhasil" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
