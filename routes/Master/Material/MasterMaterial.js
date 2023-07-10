@@ -1,9 +1,10 @@
 import express from "express";
-import { createMaterial,deleteMaterial,getAllMasterMaterial,getMaterialByCode } from '../../../controllers/Master/Material/MasterMaterial.js'
+import { createMaterial,deleteMaterial,getAllMasterMaterial,getMaterialByCode, updateMaterial } from '../../../controllers/Master/Material/MasterMaterial.js'
 
 const router = express.Router();
 
 router.get('/material', getAllMasterMaterial);
+router.patch('/material', updateMaterial);
 router.post('/material', createMaterial);
 router.delete('/material/:id', deleteMaterial);
 router.get('/material/:id', getMaterialByCode);
