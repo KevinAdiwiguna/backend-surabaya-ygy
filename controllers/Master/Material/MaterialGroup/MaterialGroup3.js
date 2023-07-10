@@ -89,3 +89,16 @@ export const updateMaterialGroup = async (req, res) => {
         res.status(400).json({ msg: error.message });
     }
 }
+
+export const getAllMaterialGroupByGroup2 = async (req, res) => {
+    try {
+        const response = await MaterialGroup.findAll({
+            where: {
+                Group2: req.params.id
+            }
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
