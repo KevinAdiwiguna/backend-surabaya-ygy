@@ -98,7 +98,6 @@ export const updateMaterial = async (req, res) => {
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
     try {
         await masterMaterial.update({
-            Code: code,
             Name: name,
             NameInPO: nameInPO,
             SmallestUnit: smallestUnit,
