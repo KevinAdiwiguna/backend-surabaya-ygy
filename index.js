@@ -4,6 +4,7 @@ import session from "express-session";
 import dotenv from "dotenv";
 import db from "./config/Database.js";
 import SequelizeStore from "connect-session-sequelize";
+dotenv.config();
 
 
 import UserRoute from "./routes/UserRoute.js";
@@ -26,6 +27,8 @@ import MasterSalesArea1 from './routes/Master/Customer/SalesArea/SalesArea1.js'
 import MasterSalesArea2 from './routes/Master/Customer/SalesArea/SalesArea2.js'
 import MasterSalesArea3 from './routes/Master/Customer/SalesArea/SalesArea3.js'
 import MasterSalesman from "./routes/Master/MasterSalesman.js";
+import salesOrderHeader from "./routes/Transaction/SalesOrderHeader.js";
+import salesOrderDetail from "./routes/Transaction/SalesOrderDetail.js";
 
 dotenv.config();
 
@@ -82,7 +85,9 @@ const routes = [
   MasterSalesArea1,
   MasterSalesArea2,
   MasterSalesArea3,
-  MasterSalesman
+  MasterSalesman,
+  salesOrderDetail,
+  salesOrderHeader
 ];
 
 routes.forEach((route) => {

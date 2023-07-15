@@ -1,8 +1,8 @@
 import UserModel from "../models/UserModel.js";
-import argon2 from "argon2";
-import bcrypt from 'bcrypt'
+// import argon2 from "argon2";
+// import bcrypt from 'bcrypt'
 
-export const Login = async (req, res) => {
+export const    Login = async (req, res) => {
     const user = await UserModel.findOne({
         where: {
             User: req.body.user

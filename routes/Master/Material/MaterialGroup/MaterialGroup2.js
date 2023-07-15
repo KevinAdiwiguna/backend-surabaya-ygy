@@ -5,7 +5,7 @@ import { createMaterialGroup, deleteMaterialGroup, getAllMaterialGroup, getMater
 const router = express.Router();
 
 router.get("/materialgroup2", getAllMaterialGroup);
-router.patch("/materialgroup2", updateMaterialGroup);
+router.patch("/materialgroup2/:id", updateMaterialGroup);
 router.get("/materialgroup2Code/:id", getMaterialGroup2ByCodeMaterialGroup1);
 router.post("/materialgroup2", createMaterialGroup);
 router.delete("/materialgroup2/:id", deleteMaterialGroup);

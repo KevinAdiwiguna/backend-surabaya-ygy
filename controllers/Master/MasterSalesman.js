@@ -2,7 +2,7 @@ import masterSales from "../../models/Master/MasterSalesman.js";
 
 export const getAllSalesman = async (req, res) => {
     try {
-        const response = await masterSales.findAll();
+        const response = await masterSales.findAll({});
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({ msg: error.message });
@@ -70,10 +70,10 @@ export const getSalesmanByCode = async (req, res) => {
 }
 
 export const updateSalesman = async (req, res) => {
-    const { code, name, address, city, phone, mobile, createdBy, changedBy } = req.body;
+    const { name, address, city, phone, mobile, createdBy, changedBy } = req.body;
     const codeCheck = await masterSales.findOne({
         where: {
-            Code: code
+            Code: req.params.id
         }
     });
     if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });

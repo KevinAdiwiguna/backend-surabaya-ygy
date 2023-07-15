@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.get("/materialgroup3", getAllMaterialGroup);
-router.patch("/materialgroup3", updateMaterialGroup);
+router.patch("/materialgroup3/:id", updateMaterialGroup);
 router.post("/materialgroup3", createMaterialGroup);
 router.get("/materialgroup3Code/:id", getAllMaterialGroupByGroup2);
 router.delete("/materialgroup3/:id", deleteMaterialGroup);

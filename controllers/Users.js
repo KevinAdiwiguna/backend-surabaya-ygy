@@ -78,17 +78,22 @@ export const createAdmin = async (req, res) => {
 }
 
 export const updatePassword = async (req, res) => {
-    const { id } = req.params;
     const { password, confPassword } = req.body;
+    const getMyData = await User.findOne({
+        where: {
+            User: req.params.id
+        }
+    });
+    if (!getMyData) return res.status(404).json({ msg: "User tidak ditemukan" });
+    if(getMyData.Password !== req.body.oldPassword) return res.status(400).json({ msg: "Password lama salah" })
 
     if (password !== confPassword) {
         return res.status(400).json({ msg: "Password dan Confirm Password tidak cocok" });
     }
-
     try {
         const user = await User.findOne({
             where: {
-                User: id
+                User: getMyData.User
             }
         });
 
@@ -102,7 +107,7 @@ export const updatePassword = async (req, res) => {
             Password: password
         }, {
             where: {
-                User: id
+                User: getMyData.User
             }
         });
 

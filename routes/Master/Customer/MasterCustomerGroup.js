@@ -3,10 +3,10 @@ import { createCustomerGroup, deleteCustomerGroup, getCustomerGroup, getCustomer
 
 const router = express.Router();
 
-import { verifyUser, adminOnly } from "../../../middleware/AuthUser.js"
+import { verifyUser } from "../../../middleware/AuthUser.js"
 
 router.get('/customergroup',verifyUser, getCustomerGroup);
-router.patch('/customergroup',verifyUser, updateCustomerGroup);
+router.patch('/customergroup/:id',verifyUser, updateCustomerGroup);
 router.post('/customergroup',verifyUser, createCustomerGroup);
 router.delete('/customergroup/:id',verifyUser, deleteCustomerGroup);
 router.get('/customergroup/:id',verifyUser, getCustomerGroupByCode);

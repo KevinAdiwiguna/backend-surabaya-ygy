@@ -11,7 +11,7 @@ export const getSalesArea3 = async (req, res) => {
 }
 
 export const updateSalesArea3 = async (req, res) => {
-    const { name, area1, area2, changedBy } = req.body;
+    const { name, changedBy } = req.body;
     const codeCheck = await salesArea3.findOne({
         where: {
             Code: req.params.id
@@ -21,8 +21,6 @@ export const updateSalesArea3 = async (req, res) => {
     try {
         await salesArea3.update({
             Name: name,
-            Area1: area1,
-            Area2: area2,
             ChangedBy: changedBy
         }, {
             where: {
@@ -85,6 +83,18 @@ export const getAreaById = async (req, res) => {
         const response = await salesArea3.findOne({
             where: {
                 Code: req.params.id
+            }
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+export const getAreaByArea2 = async (req, res) => {
+    try {
+        const response = await salesArea3.findAll({
+            where: {
+                Area2: req.params.id
             }
         });
         res.status(200).json(response);

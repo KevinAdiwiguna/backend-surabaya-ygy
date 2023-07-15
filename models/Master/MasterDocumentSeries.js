@@ -23,6 +23,15 @@ const masterdocumentseries = db.define('masterdocumentseries', {
         primaryKey: true
     },
 
+    Users: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+        primaryKey: true
+    },
+
     NeedQC: {
         type: DataTypes.BOOLEAN,
         allowNull: true,

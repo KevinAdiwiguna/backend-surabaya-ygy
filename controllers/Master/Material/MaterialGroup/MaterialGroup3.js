@@ -16,6 +16,7 @@ export const createMaterialGroup = async (req, res) => {
             Code: code
         }
     });
+    if (codeCheck) return res.json({ msg: "data sudah ada" });
 
     try {
         await MaterialGroup.create({
@@ -102,3 +103,4 @@ export const getAllMaterialGroupByGroup2 = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 }
+

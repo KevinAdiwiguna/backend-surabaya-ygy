@@ -4,7 +4,7 @@ import { createUnitConversion, deleteUnitConversion, getAllUnitConversion, getUn
 const router = express.Router();
 
 router.get('/unitconversion', getAllUnitConversion);
-router.patch('/unitconversion', updateUnitConversion);
+router.patch('/unitconversion/:id', updateUnitConversion);
 router.post('/unitconversion', createUnitConversion);
 router.delete('/unitconversion/:id', deleteUnitConversion);
 router.get('/unitconversion/:id', getUnitConversionByMaterialCode);

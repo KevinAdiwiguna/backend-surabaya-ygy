@@ -3,7 +3,7 @@ import { createCustomerGroup, deleteCustomerGroup, getCustomerGroup, getCustomer
 
 const router = express.Router();
 
-import { verifyUser, adminOnly } from "../../../middleware/AuthUser.js"
+import { verifyUser } from "../../../middleware/AuthUser.js"
 
 router.get('/customer', verifyUser, getCustomerGroup);
 router.patch('/customer', verifyUser, updateCustomerGroup);

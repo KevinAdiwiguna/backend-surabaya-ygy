@@ -3,7 +3,7 @@ import { createSalesman, deleteSalesman, getAllSalesman, getSalesmanByCode, upda
 
 const router = express.Router();
 
-import { verifyUser, adminOnly } from "../../middleware/AuthUser.js";
+import { verifyUser } from "../../middleware/AuthUser.js";
 
 router.get('/salesman', verifyUser, getAllSalesman);
 router.patch('/salesman', verifyUser, updateSalesman);

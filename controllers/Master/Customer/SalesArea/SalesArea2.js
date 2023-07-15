@@ -10,6 +10,20 @@ export const getSalesArea2 = async (req, res) => {
     }
 }
 
+export const getSalesArea2ByArea1 = async (req, res) => {
+    try {
+        const response = await salesArea2.findAll({
+            where: {
+                Area1: req.params.id
+            }
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+
+
 
 export const updateSalesArea2 = async (req, res) => {
     const { name, area1, changedBy } = req.body;
@@ -85,19 +99,6 @@ export const getAreaById = async (req, res) => {
         const response = await salesArea2.findOne({
             where: {
                 Code: req.params.id
-            }
-        });
-        res.status(200).json(response);
-    } catch (error) {
-        res.status(500).json({ msg: error.message });
-    }
-}
-
-export const getAreaByArea1 = async (req, res) => {
-    try {
-        const response = await salesArea2.findAll({
-            where: {
-                Area1: req.params.id
             }
         });
         res.status(200).json(response);

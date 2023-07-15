@@ -79,7 +79,7 @@ export const getMaterialGroup2ByCodeMaterialGroup1 = async (req, res) => {
 }
 
 export const updateMaterialGroup = async (req, res) => {
-    const { code, group1, name, changedBy } = req.body;
+    const {  group1, name, changedBy } = req.body;
     const codeCheck = await MaterialGroup.findOne({
         where: {
             Code: req.params.id,
@@ -89,7 +89,6 @@ export const updateMaterialGroup = async (req, res) => {
     try {
         await MaterialGroup.update(
             {
-                Code: code,
                 Group1: group1,
                 Name: name,
                 ChangedBy: changedBy,

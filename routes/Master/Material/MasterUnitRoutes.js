@@ -4,7 +4,7 @@ import { createUnit, deleteUnit, getAllUnit, getUnitByCode, updateUnit } from '.
 const router = express.Router();
 
 router.get('/unit', getAllUnit);
-router.patch('/unit', updateUnit);
+router.patch('/unit/:id', updateUnit);
 router.post('/unit', createUnit);
 router.delete('/unit/:id', deleteUnit);
 router.get('/unit/:id', getUnitByCode);

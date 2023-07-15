@@ -89,7 +89,7 @@ export const getMaterialByCode = async (req, res) => {
 }
 
 export const updateMaterial = async (req, res) => {
-    const { code, name, nameInPO, smallestUnit, soldUnit, skuUnit, group1, group2, group3, type, isBatch, isService, isAsset, mass, volume, hs, barcode, minStock, maxStock, currency, defaultPrice, transactionType1, transactionType2, transactionType3, transactionType4, info, changedBy } = req.body;
+    const { name, nameInPO, smallestUnit, soldUnit, skuUnit, group1, group2, group3, type, isBatch, isService, isAsset, mass, volume, hs, barcode, minStock, maxStock, currency, defaultPrice, transactionType1, transactionType2, transactionType3, transactionType4, info, changedBy } = req.body;
     const codeCheck = await masterMaterial.findOne({
         where: {
             Code: req.params.id

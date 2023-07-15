@@ -66,10 +66,10 @@ export const getLocationByCode = async (req, res) => {
     }
 }
 export const updateLocation = async (req, res) => {
-    const { code, name, changedBy } = req.body;
+    const { name, changedBy } = req.body;
     const codeCheck = await masterLocationModel.findOne({
         where: {
-            Code: code
+            Code: req.params.id
         }
     });
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });

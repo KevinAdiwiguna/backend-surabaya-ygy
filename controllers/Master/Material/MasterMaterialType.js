@@ -65,10 +65,10 @@ export const getMaterialTypeByCode = async (req, res) => {
 }
 
 export const updateMaterialType = async (req, res) => {
-    const { code, name, isWaste, changedBy } = req.body;
+    const {name, isWaste, changedBy } = req.body;
     const codeCheck = await materialType.findOne({
         where: {
-            Code: code
+            Code: req.params.id
         }
     });
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });

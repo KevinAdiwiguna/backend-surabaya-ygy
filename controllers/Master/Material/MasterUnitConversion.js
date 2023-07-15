@@ -41,7 +41,7 @@ export const deleteUnitConversion = async (req, res) => {
     try {
         await MasterUnitConversion.destroy({
             where: {
-                MaterialCode: codeCheck.Code
+                MaterialCode: codeCheck.MaterialCode    
             }
         });
         res.status(200).json({ msg: "data Deleted" });
@@ -68,7 +68,7 @@ export const updateUnitConversion = async (req, res) => {
     const { materialCode, unit, content, createdBy, changedBy } = req.body;
     const codeCheck = await MasterUnitConversion.findOne({
         where: {
-            MaterialCode: materialCode
+            MaterialCode: req.params.id
         }
     });
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });

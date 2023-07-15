@@ -9,6 +9,7 @@ export const getSalesArea1 = async (req, res) => {
     }
 }
 
+
 export const createSalesArea1 = async (req, res) => {
     const { code, name, createdBy, changedBy } = req.body;
 

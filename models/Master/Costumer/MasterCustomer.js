@@ -33,10 +33,6 @@ const mastercustomer = db.define('mastercustomer', {
     },
     Address2: {
         type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-            notEmpty: false
-        },
     },
     City: {
         type: DataTypes.STRING,

@@ -9,8 +9,9 @@ export const getCustomerGroup = async (req, res) => {
     }
 }
 
+
 export const updateCustomerGroup = async (req, res) => {
-    const { code, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, infromation, createdBy, changedBy } = req.body;
+    const { name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, information, changedBy } = req.body;
     const user = await mastercustomer.findOne({
         where: {
             Code: req.params.id
@@ -19,7 +20,6 @@ export const updateCustomerGroup = async (req, res) => {
     if (!user) return res.json({ msg: "data tidak ditemukan" });
     try {
         await mastercustomer.update({
-            Code: code,
             Name: name,
             Address: address,
             Address2: address2,
@@ -44,8 +44,7 @@ export const updateCustomerGroup = async (req, res) => {
             CutPph: cutPph,
             IsBlackList: isBlackList,
             IsDeleted: isDeleted,
-            Infromation: infromation,
-            CreatedBy: createdBy,
+            Information: information,
             ChangedBy: changedBy
         }, {
             where: {
@@ -59,7 +58,7 @@ export const updateCustomerGroup = async (req, res) => {
 }
 
 
-export const    createCustomerGroup = async (req, res) => {
+export const createCustomerGroup = async (req, res) => {
     const { code, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, infromation, createdBy, changedBy } = req.body;
     const user = await mastercustomer.findOne({
         where: {
@@ -94,7 +93,7 @@ export const    createCustomerGroup = async (req, res) => {
             CutPph: cutPph,
             IsBlackList: isBlackList,
             IsDeleted: isDeleted,
-            Infromation: infromation,
+            Information: information,
             CreatedBy: createdBy,
             ChangedBy: changedBy
         });

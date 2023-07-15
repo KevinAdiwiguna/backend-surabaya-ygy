@@ -4,7 +4,7 @@ import { createMaterial,deleteMaterial,getAllMasterMaterial,getMaterialByCode, u
 const router = express.Router();
 
 router.get('/material', getAllMasterMaterial);
-router.patch('/material', updateMaterial);
+router.patch('/material/:id', updateMaterial);
 router.post('/material', createMaterial);
 router.delete('/material/:id', deleteMaterial);
 router.get('/material/:id', getMaterialByCode);

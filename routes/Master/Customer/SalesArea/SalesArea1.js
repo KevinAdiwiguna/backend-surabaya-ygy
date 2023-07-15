@@ -3,11 +3,11 @@ import { createSalesArea1, deleteSalesArea1, getAreaById, getSalesArea1,updateSa
 
 const router = express.Router();
 
-import { verifyUser, adminOnly } from "../../../../middleware/AuthUser.js";
+import { verifyUser } from "../../../../middleware/AuthUser.js";
 
 router.get('/salesarea1',verifyUser, getSalesArea1);
 router.post('/salesarea1',verifyUser, createSalesArea1);
-router.patch('/salesarea1',verifyUser, updateSalesArea1);
+router.patch('/salesarea1/:id',verifyUser, updateSalesArea1);
 router.delete('/salesarea1/:id',verifyUser, deleteSalesArea1);
 router.get('/salesarea1/:id',verifyUser, getAreaById);
 
