@@ -47,7 +47,7 @@ const masterprice = db.define('masterprice',{
 	Currency: {
 		type: DataTypes.STRING,
 		allowNull: false,
-		validate{
+		validate:{
 			notEmpty: true
 		},
 		primaryKey: true
