@@ -3,7 +3,7 @@ import db from "../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const salesOrderHeader = db.define('salesorderd', {
+const salesOrderDetail = db.define('salesorderd', {
     DocNo: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -144,4 +144,4 @@ const salesOrderHeader = db.define('salesorderd', {
     freezeTableName: true
 });
 
-export default salesOrderHeader;
+export default salesOrderDetail;

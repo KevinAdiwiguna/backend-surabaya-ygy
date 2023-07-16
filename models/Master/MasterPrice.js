@@ -63,7 +63,7 @@ const masterprice = db.define('masterprice',{
 	},
 
 	MinQty: {
-		type: DataTypes.DECIMAL,
+		type: DataTypes.STRING,
 		allowNull: false,
 		validate: {
 			notEmpty: true
@@ -72,7 +72,7 @@ const masterprice = db.define('masterprice',{
 	},
 
 	MaxQty: {
-		type: DataTypes.DECIMAL,
+		type: DataTypes.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: true
@@ -80,7 +80,7 @@ const masterprice = db.define('masterprice',{
 	},
 
 	Price: {
-		type: DataTypes.DECIMAL,
+		type: DataTypes.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: true
@@ -88,7 +88,7 @@ const masterprice = db.define('masterprice',{
 	},
 
 	PercentDisc: {
-		type: DataTypes.DECIMAL,
+		type: DataTypes.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: true
@@ -96,7 +96,7 @@ const masterprice = db.define('masterprice',{
 	},
 
 	ValueDisc: {
-		type: DataTypes.DECIMAL,
+		type: DataTypes.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: true
