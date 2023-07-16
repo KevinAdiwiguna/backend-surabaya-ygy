@@ -4,7 +4,7 @@ import { createSalesOrderHeader, getAllSalesOrderHeader, deleteSalesOrderHeader,
 const router = express.Router();
 
 router.get('/salesorderh', getAllSalesOrderHeader);
-router.post('/salesorderh', createSalesOrderHeader);
+router.get('/salesorderhc', createSalesOrderHeader);
 router.get('/salesorderh/:id', getSalesOrderByCode);
 router.patch('/salesorderh/:id', updateSalesOrderHeader);
 router.delete('/salesorderh/:id', deleteSalesOrderHeader);
