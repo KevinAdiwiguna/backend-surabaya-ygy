@@ -24,7 +24,7 @@ export const getPurchaseRequestByCode = async (req, res) => {
 }
 
 export const updatePurchaseRequest = async (req, res) => {
-    const { series, docDate, information, status, createdBy, changedBy } = req.body
+    const { series, docNo, docDate, information, status, createdBy, changedBy } = req.body
 
     const purchaseRequesth = await PurchaseRequesth.findOne({
         where: {

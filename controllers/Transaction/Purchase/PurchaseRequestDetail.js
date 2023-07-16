@@ -1,6 +1,8 @@
-import PurchaseRequestd from '../../models/Transaction/Purchase/PurchaseRequestHetailade'.js'exportport cogetAllpurchaseRequestdesth = async (req, res) => {
+import PurchaseRequestd from '../../models/Transaction/Purchase/PurchaseRequestDetail.js'
+
+export const getAllpurchaseRequestd = async (req, res) => {
     try {
-        const purchaseReqdesth = await PurchaseReqhdesth.findAll()
+        const purchaseRequestd = await PurchaseRequestd.findAll()
         res.status(200).json(purchaseRequest)
     } catch (error) {
         res.status(500).json({ msg: error.message })
@@ -8,21 +10,21 @@ import PurchaseRequestd from '../../models/Transaction/Purchase/PurchaseRequestH
 }
 
 export const getPurchaseRequestByCode = async (req, res) => {
-    const purchaseRequesth = await PurchaseRequesth.findOne({
+    const purchaseRequestd = await PurchaseRequestd.findOne({
         where: {
             DocNo: req.params.id
         }
     })
-    if (!purchaseRequesth) return res.status(400).json({ msg: "data tidak ditemukan" })
+    if (!purchaseRequestd) return res.status(400).json({ msg: "data tidak ditemukan" })
     try {
-        res.status(200).json(purchaseRequesth)
+        res.status(200).json(purchaseRequestd)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
 }
 
 export const updatePurchaseRequest = async (req, res) => {
-    const { series, docDate, information, status, createdBy, changedBy } = req.body
+    const { docNo, materialCode, info, unit, qty, qtyPO, requiredDate, createdBy, changedBy } = req.body
 
     const purchaseRequesth = await PurchaseRequesth.findOne({
         where: {
@@ -35,13 +37,12 @@ export const updatePurchaseRequest = async (req, res) => {
         await PurchaseRequesth.update({
 
             DocNo: docNo,
-            Series: series,
-            DocDate: docDate,
-            JODocNo: JODoNo,
-            Trip: trip,
-            Department: department,
-            Information: information,
-            Status: status,
+            MaterialCode: materialCode,
+            Info: info,
+            Unit: unit,
+            Qty: qty,
+            QtyPO: qtyPO,
+            RequiredDate: requiredDate,
             CreatedBy: createdBy,
             ChangedBy: changedBy
         }, {
@@ -56,31 +57,30 @@ export const updatePurchaseRequest = async (req, res) => {
 
 }
 
-export const createPurchaseRequestH = async (req, res) => {
+export const createPurchaseRequestD = async (req, res) => {
     const {
         docNo,
-        series,
-        docDate,
-        JODoNo,
-        trip,
-        department,
-        information,
-        status,
+        materialCode,
+        info,
+        unit,
+        qty,
+        qtyPO,
+        requiredDate,
         createdBy,
         changedBy } = req.body
     }
 
-    export const deletePurchaseRequesth = async (req, res) => {
-        const purchaseRequesth = await PurchaseRequesth.findOne({
+    export const deletePurchaseRequestd = async (req, res) => {
+        const purchaseRequestd = await PurchaseRequestd.findOne({
             where: {
                 DocNo: req.params.id
             }
         })
-        if (!purchaseRequesth) return res.status(400).json({ msg: "data tidak ditemukan" })
+        if (!PurchaseRequestd) return res.status(400).json({ msg: "data tidak ditemukan" })
         try {
-            await PurchaseRequesth.destroy({
+            await PurchaseRequestd.destroy({
                 where: {
-                    DocNo: purchaseRequesth.DocNo
+                    DocNo: purchaseRequestd.DocNo
                 }
             })
             res.status(200).json({ msg: "data Deleted" })
@@ -88,5 +88,7 @@ export const createPurchaseRequestH = async (req, res) => {
             res.status(500).json({ msg: error.message })
         }
     }
+
+
 
 
