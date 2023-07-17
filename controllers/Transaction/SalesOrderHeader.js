@@ -73,87 +73,94 @@ export const updateSalesOrderHeader = async (req, res) => {
     }
 
 }
-
 export const createSalesOrderHeader = async (req, res) => {
-    const {
-        series,
-        docDate,
-        customerCode,
-        shipToCode,
-        taxToCode,
-        salesCode,
-        deliveryDate,
-        poNo,
-        top,
-        discPercent,
-        taxStatus,
-        taxPercent,
-        currency,
-        exchangeRate,
-        totalGross,
-        totalDisc,
-        taxValue,
-        totalNetto,
-        information,
-        status,
-        isPurchaseReturn,
-        createdBy,
-        changedBy,
-    } = req.body;
+    const salesOrderDataArray = req.body; // Menggunakan array dari request body
 
     try {
-        const existingHeader = await SalesOrderHeader.findOne({
-            attributes: ['DocNo'],
-            where: {
-                DocNo: {
-                    [Op.like]: `${series}-${docDate}-%`,
-                },
-            },
-            order: [
-                [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
-            ],
-            raw: true,
-            limit: 1,
-        });
+        const responseArray = await Promise.all(
+            salesOrderDataArray.map(async (data) => {
+                const {
+                    series,
+                    docDate,
+                    customerCode,
+                    shipToCode,
+                    taxToCode,
+                    salesCode,
+                    deliveryDate,
+                    poNo,
+                    top,
+                    discPercent,
+                    taxStatus,
+                    taxPercent,
+                    currency,
+                    exchangeRate,
+                    totalGross,
+                    totalDisc,
+                    taxValue,
+                    totalNetto,
+                    information,
+                    status,
+                    isPurchaseReturn,
+                    createdBy,
+                    changedBy,
+                } = data;
 
-        let DocNo;
-        if (existingHeader) {
-            let Series = parseInt(existingHeader.DocNo.split('-')[2], 10);
-            Series = (Series + 1).toString();
-            Series = Series.padStart(4, '0');
-            DocNo = `${series}-${docDate}-${Series}`;
-        } else {
-            DocNo = `${series}-${docDate}-0001`;
-        }
+                const existingHeader = await SalesOrderHeader.findOne({
+                    attributes: ['DocNo'],
+                    where: {
+                        DocNo: {
+                            [Op.like]: `${series}-${docDate}-%`,
+                        },
+                    },
+                    order: [
+                        [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
+                    ],
+                    raw: true,
+                    limit: 1,
+                });
 
-        const response = await SalesOrderHeader.create({
-            DocNo: DocNo,
-            Series: series,
-            DocDate: docDate,
-            CustomerCode: customerCode,
-            ShipToCode: shipToCode,
-            TaxToCode: taxToCode,
-            SalesCode: salesCode,
-            DeliveryDate: deliveryDate,
-            PONo: poNo,
-            TOP: top,
-            DiscPercent: discPercent,
-            TaxStatus: taxStatus,
-            TaxPercent: taxPercent,
-            Currency: currency,
-            ExchangeRate: exchangeRate,
-            TotalGross: totalGross,
-            TotalDisc: totalDisc,
-            TaxValue: taxValue,
-            TotalNetto: totalNetto,
-            Information: information,
-            Status: status,
-            IsPurchaseReturn: isPurchaseReturn,
-            CreatedBy: createdBy,
-            ChangedBy: changedBy,
-        });
+                let DocNo;
+                if (existingHeader) {
+                    let Series = parseInt(existingHeader.DocNo.split('-')[2], 10);
+                    Series = (Series + 1).toString();
+                    Series = Series.padStart(4, '0');
+                    DocNo = `${series}-${docDate}-${Series}`;
+                } else {
+                    DocNo = `${series}-${docDate}-0001`;
+                }
 
-        res.status(200).json(response);
+                const response = await SalesOrderHeader.create({
+                    DocNo: DocNo,
+                    Series: series,
+                    DocDate: docDate,
+                    CustomerCode: customerCode,
+                    ShipToCode: shipToCode,
+                    TaxToCode: taxToCode,
+                    SalesCode: salesCode,
+                    DeliveryDate: deliveryDate,
+                    PONo: poNo,
+                    TOP: top,
+                    DiscPercent: discPercent,
+                    TaxStatus: taxStatus,
+                    TaxPercent: taxPercent,
+                    Currency: currency,
+                    ExchangeRate: exchangeRate,
+                    TotalGross: totalGross,
+                    TotalDisc: totalDisc,
+                    TaxValue: taxValue,
+                    TotalNetto: totalNetto,
+                    Information: information,
+                    Status: status,
+                    IsPurchaseReturn: isPurchaseReturn,
+                    CreatedBy: createdBy,
+                    ChangedBy: changedBy,
+                });
+
+                return response;
+            })
+        );
+
+        res.status(200).json(responseArray);
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
