@@ -1,6 +1,9 @@
 import SalesOrderHeader from '../../models/Transaction/SalesOrderHeader.js'
+import SalesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
+
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
+import salesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
 
 export const getAllSalesOrderHeader = async (req, res) => {
     try {
@@ -73,99 +76,131 @@ export const updateSalesOrderHeader = async (req, res) => {
     }
 
 }
+
 export const createSalesOrderHeader = async (req, res) => {
-    const salesOrderDataArray = req.body; // Menggunakan array dari request body
+    const {
+        series,
+        docDate,
+        customerCode,
+        shipToCode,
+        taxToCode,
+        salesCode,
+        deliveryDate,
+        poNo,
+        top,
+        discPercent,
+        taxStatus,
+        taxPercent,
+        currency,
+        exchangeRate,
+        totalGross,
+        totalDisc,
+        taxValue,
+        totalNetto,
+        information,
+        status,
+        isPurchaseReturn,
+        createdBy,
+        changedBy,
+    } = req.body;
+
+
+    const {
+        number,
+        materialCode,
+        info,
+        unit,
+        qty,
+        price,
+        gross,
+        discPercent1,
+        discPercent2,
+        discPercent3,
+        discValue,
+        discNominal,
+        netto,
+        qtyDelivered,
+        qtyWO
+    } = req.body;
 
     try {
-        const responseArray = await Promise.all(
-            salesOrderDataArray.map(async (data) => {
-                const {
-                    series,
-                    docDate,
-                    customerCode,
-                    shipToCode,
-                    taxToCode,
-                    salesCode,
-                    deliveryDate,
-                    poNo,
-                    top,
-                    discPercent,
-                    taxStatus,
-                    taxPercent,
-                    currency,
-                    exchangeRate,
-                    totalGross,
-                    totalDisc,
-                    taxValue,
-                    totalNetto,
-                    information,
-                    status,
-                    isPurchaseReturn,
-                    createdBy,
-                    changedBy,
-                } = data;
+        const existingHeader = await SalesOrderHeader.findOne({
+            attributes: ['DocNo'],
+            where: {
+                DocNo: {
+                    [Op.like]: `${series}-${docDate}-%`,
+                },
+            },
+            order: [
+                [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
+            ],
+            raw: true,
+            limit: 1,
+        });
 
-                const existingHeader = await SalesOrderHeader.findOne({
-                    attributes: ['DocNo'],
-                    where: {
-                        DocNo: {
-                            [Op.like]: `${series}-${docDate}-%`,
-                        },
-                    },
-                    order: [
-                        [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
-                    ],
-                    raw: true,
-                    limit: 1,
-                });
+        let DocNo;
+        if (existingHeader) {
+            let Series = parseInt(existingHeader.DocNo.split('-')[2], 10);
+            Series = (Series + 1).toString();
+            Series = Series.padStart(4, '0');
+            DocNo = `${series}-${docDate}-${Series}`;
+        } else {
+            DocNo = `${series}-${docDate}-0001`;
+        }
 
-                let DocNo;
-                if (existingHeader) {
-                    let Series = parseInt(existingHeader.DocNo.split('-')[2], 10);
-                    Series = (Series + 1).toString();
-                    Series = Series.padStart(4, '0');
-                    DocNo = `${series}-${docDate}-${Series}`;
-                } else {
-                    DocNo = `${series}-${docDate}-0001`;
-                }
+        const response = await SalesOrderHeader.create({
+            DocNo: DocNo,
+            Series: series,
+            DocDate: docDate,
+            CustomerCode: customerCode,
+            ShipToCode: shipToCode,
+            TaxToCode: taxToCode,
+            SalesCode: salesCode,
+            DeliveryDate: deliveryDate,
+            PONo: poNo,
+            TOP: top,
+            DiscPercent: discPercent,
+            TaxStatus: taxStatus,
+            TaxPercent: taxPercent,
+            Currency: currency,
+            ExchangeRate: exchangeRate,
+            TotalGross: totalGross,
+            TotalDisc: totalDisc,
+            TaxValue: taxValue,
+            TotalNetto: totalNetto,
+            Information: information,
+            Status: status,
+            IsPurchaseReturn: isPurchaseReturn,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy,
+        });
 
-                const response = await SalesOrderHeader.create({
-                    DocNo: DocNo,
-                    Series: series,
-                    DocDate: docDate,
-                    CustomerCode: customerCode,
-                    ShipToCode: shipToCode,
-                    TaxToCode: taxToCode,
-                    SalesCode: salesCode,
-                    DeliveryDate: deliveryDate,
-                    PONo: poNo,
-                    TOP: top,
-                    DiscPercent: discPercent,
-                    TaxStatus: taxStatus,
-                    TaxPercent: taxPercent,
-                    Currency: currency,
-                    ExchangeRate: exchangeRate,
-                    TotalGross: totalGross,
-                    TotalDisc: totalDisc,
-                    TaxValue: taxValue,
-                    TotalNetto: totalNetto,
-                    Information: information,
-                    Status: status,
-                    IsPurchaseReturn: isPurchaseReturn,
-                    CreatedBy: createdBy,
-                    ChangedBy: changedBy,
-                });
+        await salesOrderDetail.create({
+            DocNo: DocNo,
+            Number: number,
+            MaterialCode: materialCode,
+            Info: info,
+            Unit: unit,
+            Qty: qty,
+            Price: price,
+            Gross: gross,
+            DiscPercent: discPercent1,
+            DiscPercent2: discPercent2,
+            DiscPercent3: discPercent3,
+            DiscValue: discValue,
+            DiscNominal: discNominal,
+            Netto: netto,
+            QtyDelivered: qtyDelivered,
+            QtyWO: qtyWO,
+        });
 
-                return response;
-            })
-        );
-
-        res.status(200).json(responseArray);
+        res.status(200).json(response);
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
     }
 };
+
 
 
 export const deleteSalesOrderHeader = async (req, res) => {
