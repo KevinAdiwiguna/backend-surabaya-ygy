@@ -10,40 +10,59 @@ export const getAllSalesOrderDetail = async (req, res) => {
 }
 
 
+
 export const createSalesOrderDetail = async (req, res) => {
-    const { docNo, number, materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyDelivered, qtyWo } = req.body
+    const salesOrderDetails = req.body;
 
-    const DocCheck = await SalesOrderDetail.findOne({
-        where: {
-            DocNo: docNo
-        }
-    })
-    if (DocCheck) return res.status(400).json({ msg: "Doc Sudah Ada" })
     try {
-        await SalesOrderDetail.create({
-            DocNo: docNo,
-            Number: number,
-            MaterialCode: materialCode,
-            Info: info,
-            Unit: unit,
-            Qty: qty,
-            Price: price,
-            Gross: gross,
-            DiscPercent: discPercent,
-            DiscPercent2: discPercent2,
-            DiscPercent3: discPercent3,
-            DiscValue: discValue,
-            DiscNominal: discNominal,
-            Netto: netto,
-            QtyDelivered: qtyDelivered,
-            QtyWo: qtyWo
-        })
-        res.status(200).json({ msg: "create Berhasil" })
-    } catch (error) {
-        console.log(error)
-    }
+        const createdDetails = await Promise.all(
+            salesOrderDetails.map(async (data) => {
+                const { docNo, number, materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyDelivered, qtyWo } = data;
 
-}
+                const DocCheck = await SalesOrderDetail.findOne({
+                    where: {
+                        DocNo: docNo
+                    }
+                });
+
+                if (DocCheck) {
+                    return { error: true, msg: `Dokumen dengan nomor ${docNo} sudah ada.` };
+                }
+
+                try {
+                    await SalesOrderDetail.create({
+                        DocNo: docNo,
+                        Number: number,
+                        MaterialCode: materialCode,
+                        Info: info,
+                        Unit: unit,
+                        Qty: qty,
+                        Price: price,
+                        Gross: gross,
+                        DiscPercent: discPercent,
+                        DiscPercent2: discPercent2,
+                        DiscPercent3: discPercent3,
+                        DiscValue: discValue,
+                        DiscNominal: discNominal,
+                        Netto: netto,
+                        QtyDelivered: qtyDelivered,
+                        QtyWo: qtyWo
+                    });
+
+                    return { error: false, msg: `Sales Order Detail dengan nomor ${docNo} berhasil dibuat.` };
+                } catch (error) {
+                    console.log(error);
+                    return { error: true, msg: `Gagal membuat Sales Order Detail dengan nomor ${docNo}`, detailError: error.message };
+                }
+            })
+        );
+
+        res.status(200).json(createdDetails);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Gagal membuat Sales Order Detail', error: error.message });
+    }
+};
 
 export const updateSalesOrderDetail = async (req, res) => {
     const { docNo, number, materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyDelivered, qtyWo } = req.body
