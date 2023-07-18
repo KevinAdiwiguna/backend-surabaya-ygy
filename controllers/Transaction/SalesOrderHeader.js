@@ -105,13 +105,14 @@ export const createSalesOrderHeader = async (req, res) => {
             createdBy,
             changedBy,
             salesOrderDetail,
+            generateDocDate
         } = req.body;
 
         const existingHeader = await SalesOrderHeader.findOne({
             attributes: ['DocNo'],
             where: {
                 DocNo: {
-                    [Op.like]: `${series}-${docDate}-%`,
+                    [Op.like]: `${series}-${generateDocDate}-%`,
                 },
             },
             order: [
@@ -121,14 +122,13 @@ export const createSalesOrderHeader = async (req, res) => {
             limit: 1,
         });
 
+
         let DocNo;
         if (existingHeader) {
-            let Series = parseInt(existingHeader.DocNo.split('-')[2], 10);
-            Series = (Series + 1).toString();
-            Series = Series.padStart(4, '0');
-            DocNo = `${series}-${docDate}-${Series}`;
+            const Series = parseInt(existingHeader.DocNo.split('-')[2], 10) + 1;
+            DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, '0')}`;
         } else {
-            DocNo = `${series}-${docDate}-0001`;
+            DocNo = `${series}-${generateDocDate}-0001`;
         }
 
         const createdHeader = await SalesOrderHeader.create({
@@ -202,11 +202,13 @@ export const createSalesOrderHeader = async (req, res) => {
         }
 
         res.status(200).json(createdHeader);
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
     }
 };
+
 
 
 
