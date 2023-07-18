@@ -123,25 +123,11 @@ const salesOrderDetail = db.define('salesorderd', {
         },
     },
 
-    CreatedBy: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    ChangedBy: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-
 }, {
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
 });
 
 export default salesOrderDetail;
