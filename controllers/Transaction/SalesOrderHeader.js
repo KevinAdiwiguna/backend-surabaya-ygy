@@ -77,53 +77,36 @@ export const updateSalesOrderHeader = async (req, res) => {
 
 }
 
+
 export const createSalesOrderHeader = async (req, res) => {
-    const {
-        series,
-        docDate,
-        customerCode,
-        shipToCode,
-        taxToCode,
-        salesCode,
-        deliveryDate,
-        poNo,
-        top,
-        discPercent,
-        taxStatus,
-        taxPercent,
-        currency,
-        exchangeRate,
-        totalGross,
-        totalDisc,
-        taxValue,
-        totalNetto,
-        information,
-        status,
-        isPurchaseReturn,
-        createdBy,
-        changedBy,
-    } = req.body;
-
-
-    const {
-        number,
-        materialCode,
-        info,
-        unit,
-        qty,
-        price,
-        gross,
-        discPercent1,
-        discPercent2,
-        discPercent3,
-        discValue,
-        discNominal,
-        netto,
-        qtyDelivered,
-        qtyWO
-    } = req.body;
-
     try {
+        const {
+            series,
+            docDate,
+            customerCode,
+            shipToCode,
+            taxToCode,
+            salesCode,
+            deliveryDate,
+            poNo,
+            top,
+            discPercent,
+            taxStatus,
+            taxPercent,
+            currency,
+            exchangeRate,
+            totalGross,
+            totalDisc,
+            taxValue,
+            totalNetto,
+            information,
+            status,
+            isPurchaseReturn,
+            createdBy,
+            changedBy,
+            salesOrderDetail,
+        } = req.body;
+
         const existingHeader = await SalesOrderHeader.findOne({
             attributes: ['DocNo'],
             where: {
@@ -148,7 +131,7 @@ export const createSalesOrderHeader = async (req, res) => {
             DocNo = `${series}-${docDate}-0001`;
         }
 
-        const response = await SalesOrderHeader.create({
+        const createdHeader = await SalesOrderHeader.create({
             DocNo: DocNo,
             Series: series,
             DocDate: docDate,
@@ -175,26 +158,50 @@ export const createSalesOrderHeader = async (req, res) => {
             ChangedBy: changedBy,
         });
 
-        await salesOrderDetail.create({
-            DocNo: DocNo,
-            Number: number,
-            MaterialCode: materialCode,
-            Info: info,
-            Unit: unit,
-            Qty: qty,
-            Price: price,
-            Gross: gross,
-            DiscPercent: discPercent1,
-            DiscPercent2: discPercent2,
-            DiscPercent3: discPercent3,
-            DiscValue: discValue,
-            DiscNominal: discNominal,
-            Netto: netto,
-            QtyDelivered: qtyDelivered,
-            QtyWO: qtyWO,
-        });
+        if (salesOrderDetail && Array.isArray(salesOrderDetail)) {
+            await Promise.all(
+                salesOrderDetail.map(async (detail) => {
+                    const {
+                        number,
+                        materialCode,
+                        info,
+                        unit,
+                        qty,
+                        price,
+                        gross,
+                        discPercent1,
+                        discPercent2,
+                        discPercent3,
+                        discValue,
+                        discNominal,
+                        netto,
+                        qtyDelivered,
+                        qtyWO,
+                    } = detail;
 
-        res.status(200).json(response);
+                    await SalesOrderDetail.create({
+                        DocNo: DocNo,
+                        Number: number,
+                        MaterialCode: materialCode,
+                        Info: info,
+                        Unit: unit,
+                        Qty: qty,
+                        Price: price,
+                        Gross: gross,
+                        DiscPercent: discPercent1,
+                        DiscPercent2: discPercent2,
+                        DiscPercent3: discPercent3,
+                        DiscValue: discValue,
+                        DiscNominal: discNominal,
+                        Netto: netto,
+                        QtyDelivered: qtyDelivered,
+                        QtyWO: qtyWO,
+                    });
+                })
+            );
+        }
+
+        res.status(200).json(createdHeader);
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
