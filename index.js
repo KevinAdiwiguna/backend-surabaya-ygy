@@ -29,6 +29,8 @@ import MasterSalesArea3 from './routes/Master/Customer/SalesArea/SalesArea3.js'
 import MasterSalesman from "./routes/Master/MasterSalesman.js";
 import salesOrderHeader from "./routes/Transaction/SalesOrderHeader.js";
 import salesOrderDetail from "./routes/Transaction/SalesOrderDetail.js";
+import PurhaseRequestHeader from "./routes/Transaction/Purchase/PurchaseRequestHeader.js"
+import PurchaseRequestDetail from "./routes/Transaction/Purchase/PurchaseRequestDetail.js"
 
 dotenv.config();
 
@@ -87,7 +89,9 @@ const routes = [
   MasterSalesArea3,
   MasterSalesman,
   salesOrderDetail,
-  salesOrderHeader
+  salesOrderHeader,
+  PurhaseRequestHeader,
+  PurchaseRequestDetail
 ];
 
 routes.forEach((route) => {

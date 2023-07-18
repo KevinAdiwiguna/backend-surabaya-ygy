@@ -1,4 +1,4 @@
-import PurchaseRequesth from '../../models/Transaction/Purchase/PurchaseRequestHeader.js'
+import PurchaseRequesth from '../../../models/Transaction/Purchase/PurchaseRequestHeader.js'
 
 export const getAllpurchaseRequesth = async (req, res) => {
     try {
