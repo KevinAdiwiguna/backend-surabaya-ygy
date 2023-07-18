@@ -30,9 +30,9 @@ const salesOrderDetail = db.define('salesorderd', {
     },
     Info: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
     Unit: {
@@ -59,9 +59,9 @@ const salesOrderDetail = db.define('salesorderd', {
     },
     Gross: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
@@ -96,16 +96,16 @@ const salesOrderDetail = db.define('salesorderd', {
     },
     DiscNominal: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
     Netto: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
     QtyDelivered: {
