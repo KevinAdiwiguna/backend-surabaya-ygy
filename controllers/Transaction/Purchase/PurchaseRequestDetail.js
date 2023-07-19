@@ -24,9 +24,9 @@ export const getPurchaseRequestByCode = async (req, res) => {
 }
 
 export const updatePurchaseRequest = async (req, res) => {
-    const { docNo, materialCode, info, unit, qty, qtyPO, requiredDate, createdBy, changedBy } = req.body
+    const { docNo, materialCode, info, unit, qty, qtyPO, requiredDate } = req.body
 
-    const purchaseRequesth = await PurchaseRequesth.findOne({
+    const purchaseRequestd = await PurchaseRequestd.findOne({
         where: {
             DocNo: req.params.id
         }
@@ -43,8 +43,7 @@ export const updatePurchaseRequest = async (req, res) => {
             Qty: qty,
             QtyPO: qtyPO,
             RequiredDate: requiredDate,
-            CreatedBy: createdBy,
-            ChangedBy: changedBy
+            
         }, {
             where: {
                 DocNo: purchaseRequesth.DocNo
@@ -65,9 +64,7 @@ export const createPurchaseRequestD = async (req, res) => {
         unit,
         qty,
         qtyPO,
-        requiredDate,
-        createdBy,
-        changedBy } = req.body
+        requiredDate } = req.body
     }
 
     export const deletePurchaseRequestd = async (req, res) => {

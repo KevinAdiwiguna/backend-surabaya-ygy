@@ -249,14 +249,6 @@ const purchaseOrderH = db.define('purchaseOrderH', {
         },
     },
 
-    CreatedDate:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
     ChangedBy:{
         type: DataTypes.STRING,
         allowNull: false,
@@ -265,15 +257,6 @@ const purchaseOrderH = db.define('purchaseOrderH', {
         },
     },
 
-    ChangedDate:{
-        type: DataTypes.DATE,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-
 }, {
     freezeTableName: true,
     timestamps: false,
@@ -281,4 +264,4 @@ const purchaseOrderH = db.define('purchaseOrderH', {
     updatedAt: false
 });
 
-export default salesOrderDetail;
+export default purchaseOrderH;

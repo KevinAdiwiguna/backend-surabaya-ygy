@@ -3,7 +3,7 @@ import db from "../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const purchaseRequestDetail = db.define('purchasereqd',{
+const purchaseRequestDetail = db.define('purchaserequestd',{
 
     DocNo:{
         type: DataTypes.STRING,
@@ -62,30 +62,12 @@ const purchaseRequestDetail = db.define('purchasereqd',{
             notEmpty: true
         },
     },
-
-
-    
-    CreatedBy:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    
-
-    ChangedBy:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
     
 },{
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
 });
 
 export default purchaseRequestDetail;
