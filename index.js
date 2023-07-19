@@ -31,6 +31,7 @@ import salesOrderHeader from "./routes/Transaction/SalesOrderHeader.js";
 import salesOrderDetail from "./routes/Transaction/SalesOrderDetail.js";
 import PurhaseRequestHeader from "./routes/Transaction/Purchase/PurchaseRequestHeader.js"
 import PurchaseRequestDetail from "./routes/Transaction/Purchase/PurchaseRequestDetail.js"
+import MasterPriceRoutes from "./routes/Master/MasterPriceRoutes.js";
 
 dotenv.config();
 
@@ -91,7 +92,8 @@ const routes = [
   salesOrderDetail,
   salesOrderHeader,
   PurhaseRequestHeader,
-  PurchaseRequestDetail
+  PurchaseRequestDetail,
+  MasterPriceRoutes
 ];
 
 routes.forEach((route) => {
