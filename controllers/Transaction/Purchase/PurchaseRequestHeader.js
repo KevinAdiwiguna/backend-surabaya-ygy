@@ -3,7 +3,7 @@ import PurchaseRequesth from '../../../models/Transaction/Purchase/PurchaseReque
 export const getAllpurchaseRequesth = async (req, res) => {
     try {
         const purchaseRequesth = await PurchaseRequesth.findAll()
-        res.status(200).json(purchaseRequest)
+        res.status(200).json(purchaseRequesth)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
