@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllpurchaseRequesth, getPurchaseRequestByCode, updatePurchaseRequest, createPurchaseRequestH, deletePurchaseRequesth } from '../../controllers/Transaction/Purchase/PurchaseRequesrHeader.js'
+import { createPurchaseRequestH, deletePurchaseRequesth, getAllpurchaseRequesth, getPurchaseRequestByCode, updatePurchaseRequest } from '../../../controllers/Transaction/Purchase/PurchaseRequestHeader.js'
 
 const router = express.Router();
 

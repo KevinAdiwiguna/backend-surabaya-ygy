@@ -1,9 +1,9 @@
-import PurchaseRequestd from '../../models/Transaction/Purchase/PurchaseRequestDetail.js'
+import PurchaseRequestd from '../../../models/Transaction/Purchase/PurchaseRequestDetail.js'
 
 export const getAllpurchaseRequestd = async (req, res) => {
     try {
-        const purchaseRequestd = await PurchaseRequestd.findAll()
-        res.status(200).json(purchaseRequest)
+        const response = await PurchaseRequestd.findAll()
+        res.status(200).json(response)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }

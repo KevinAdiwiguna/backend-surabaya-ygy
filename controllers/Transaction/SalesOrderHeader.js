@@ -1,6 +1,9 @@
 import SalesOrderHeader from '../../models/Transaction/SalesOrderHeader.js'
+import SalesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
+
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
+import salesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
 
 export const getAllSalesOrderHeader = async (req, res) => {
     try {
@@ -74,39 +77,42 @@ export const updateSalesOrderHeader = async (req, res) => {
 
 }
 
-export const createSalesOrderHeader = async (req, res) => {
-    const {
-        series,
-        docDate,
-        customerCode,
-        shipToCode,
-        taxToCode,
-        salesCode,
-        deliveryDate,
-        poNo,
-        top,
-        discPercent,
-        taxStatus,
-        taxPercent,
-        currency,
-        exchangeRate,
-        totalGross,
-        totalDisc,
-        taxValue,
-        totalNetto,
-        information,
-        status,
-        isPurchaseReturn,
-        createdBy,
-        changedBy,
-    } = req.body;
 
+export const createSalesOrderHeader = async (req, res) => {
     try {
+        const {
+            series,
+            docDate,
+            customerCode,
+            shipToCode,
+            taxToCode,
+            salesCode,
+            deliveryDate,
+            poNo,
+            top,
+            discPercent,
+            taxStatus,
+            taxPercent,
+            currency,
+            exchangeRate,
+            totalGross,
+            totalDisc,
+            taxValue,
+            totalNetto,
+            information,
+            status,
+            isPurchaseReturn,
+            createdBy,
+            changedBy,
+            salesOrderDetail,
+            generateDocDate
+        } = req.body;
+
         const existingHeader = await SalesOrderHeader.findOne({
             attributes: ['DocNo'],
             where: {
                 DocNo: {
-                    [Op.like]: `${series}-${docDate}-%`,
+                    [Op.like]: `${series}-${generateDocDate}-%`,
                 },
             },
             order: [
@@ -116,17 +122,16 @@ export const createSalesOrderHeader = async (req, res) => {
             limit: 1,
         });
 
+
         let DocNo;
         if (existingHeader) {
-            let Series = parseInt(existingHeader.DocNo.split('-')[2], 10);
-            Series = (Series + 1).toString();
-            Series = Series.padStart(4, '0');
-            DocNo = `${series}-${docDate}-${Series}`;
+            const Series = parseInt(existingHeader.DocNo.split('-')[2], 10) + 1;
+            DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, '0')}`;
         } else {
-            DocNo = `${series}-${docDate}-0001`;
+            DocNo = `${series}-${generateDocDate}-0001`;
         }
 
-        const response = await SalesOrderHeader.create({
+        const createdHeader = await SalesOrderHeader.create({
             DocNo: DocNo,
             Series: series,
             DocDate: docDate,
@@ -153,12 +158,58 @@ export const createSalesOrderHeader = async (req, res) => {
             ChangedBy: changedBy,
         });
 
-        res.status(200).json(response);
+        if (salesOrderDetail && Array.isArray(salesOrderDetail)) {
+            await Promise.all(
+                salesOrderDetail.map(async (detail) => {
+                    const {
+                        number,
+                        materialCode,
+                        info,
+                        unit,
+                        qty,
+                        price,
+                        gross,
+                        discPercent1,
+                        discPercent2,
+                        discPercent3,
+                        discValue,
+                        discNominal,
+                        netto,
+                        qtyDelivered,
+                        qtyWO,
+                    } = detail;
+
+                    await SalesOrderDetail.create({
+                        DocNo: DocNo,
+                        Number: number,
+                        MaterialCode: materialCode,
+                        Info: info,
+                        Unit: unit,
+                        Qty: qty,
+                        Price: price,
+                        Gross: gross,
+                        DiscPercent: discPercent1,
+                        DiscPercent2: discPercent2,
+                        DiscPercent3: discPercent3,
+                        DiscValue: discValue,
+                        DiscNominal: discNominal,
+                        Netto: netto,
+                        QtyDelivered: qtyDelivered,
+                        QtyWO: qtyWO,
+                    });
+                })
+            );
+        }
+
+        res.status(200).json(createdHeader);
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
     }
 };
+
+
 
 
 export const deleteSalesOrderHeader = async (req, res) => {

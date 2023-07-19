@@ -30,9 +30,9 @@ const salesOrderDetail = db.define('salesorderd', {
     },
     Info: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
     Unit: {
@@ -59,9 +59,9 @@ const salesOrderDetail = db.define('salesorderd', {
     },
     Gross: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
@@ -96,16 +96,16 @@ const salesOrderDetail = db.define('salesorderd', {
     },
     DiscNominal: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
     Netto: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
+        allowNull: true,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
     QtyDelivered: {
@@ -123,25 +123,11 @@ const salesOrderDetail = db.define('salesorderd', {
         },
     },
 
-    CreatedBy: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    ChangedBy: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-
 }, {
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
 });
 
 export default salesOrderDetail;

@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import db from "../../config/Database.js";
+import db from "../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
@@ -88,4 +88,4 @@ const purchaseRequestDetail = db.define('purchasereqd',{
     freezeTableName: true
 });
 
-export default purchaseRequest;
+export default purchaseRequestDetail;

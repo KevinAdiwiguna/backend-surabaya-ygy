@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import db from "../../config/Database.js";
+import db from "../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
@@ -94,4 +94,4 @@ const purchaseRequestHeader = db.define('purchasereqh',{
     freezeTableName: true
 });
 
-export default purchaseRequest;
+export default purchaseRequestHeader;
