@@ -42,7 +42,7 @@ export const updateSalesOrderDetail = async (req, res) => {
         });
 
         if (!dataCheck) {
-            return res.status(404).json({ msg: "Data not found" });
+            return res.status(400).json({ msg: "Data not found" });
         }
 
         const updatedData = {
