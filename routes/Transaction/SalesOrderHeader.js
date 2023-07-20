@@ -1,5 +1,5 @@
 import express from "express";
-import { createSalesOrderHeader, getAllSalesOrderHeader, deleteSalesOrderHeader, updateSalesOrderHeader,getSalesOrderByCode } from '../../controllers/Transaction/SalesOrderHeader.js'
+import { createSalesOrderHeader,deleteSalesOrderHeader,getAllSalesOrderHeader,getSalesOrderByCode,updateSalesOrderHeader } from '../../controllers/Transaction/SalesOrderHeader.js'
 
 const router = express.Router();
 

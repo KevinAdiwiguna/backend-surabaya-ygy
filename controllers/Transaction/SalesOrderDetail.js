@@ -1,126 +1,81 @@
-import SalesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
+import salesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
 
 export const getAllSalesOrderDetail = async (req, res) => {
     try {
-        const response = await SalesOrderDetail.findAll()
-        res.status(200).json(salesOrderHeader)
+        const response = await salesOrderDetail.findAll()
+        res.status(200).json(response)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
 }
 
 
+export const updateSalesOrderDetail = async (req, res) => {
+    const {
+        materialCode,
+        info,
+        unit,
+        qty,
+        price,
+        gross,
+        discPercent,
+        discPercent2,
+        discPercent3,
+        discValue,
+        discNominal,
+        netto,
+        Netto,
+        QtyDelivered,
+        QtyWO
+    } = req.body;
 
-export const createSalesOrderDetail = async (req, res) => {
-    const salesOrderDetails = req.body;
+    if (!req.params.id1 || !req.params.id2) {
+        return res.status(400).json({ msg: "Invalid parameters. Both id1 and id2 are required." });
+    }
 
     try {
-        const createdDetails = await Promise.all(
-            salesOrderDetails.map(async (data) => {
-                const { docNo, number, materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyDelivered, qtyWo } = data;
+        const dataCheck = await salesOrderDetail.findOne({
+            where: {
+                DocNo: req.params.id1,
+                Number: req.params.id2
+            }
+        });
 
-                const DocCheck = await SalesOrderDetail.findOne({
-                    where: {
-                        DocNo: docNo
-                    }
-                });
+        if (!dataCheck) {
+            return res.status(404).json({ msg: "Data not found" });
+        }
 
-                if (DocCheck) {
-                    return { error: true, msg: `Dokumen dengan nomor ${docNo} sudah ada.` };
-                }
+        const updatedData = {
+            MaterialCode: materialCode || dataCheck.MaterialCode,
+            Info: info || dataCheck.info,
+            Unit: unit || dataCheck.unit,
+            Qty: qty || dataCheck.qty,
+            Price: price || dataCheck.price,
+            Gross: gross || dataCheck.gross,
+            DiscPercent: discPercent || dataCheck.discPercent,
+            DiscPercent2: discPercent2 || dataCheck.discPercent2,
+            DiscPercent3: discPercent3 || dataCheck.discPercent3,
+            DiscValue: discValue || dataCheck.discValue,
+            DiscNominal: discNominal || dataCheck.discNominal,
+            Netto: Netto || dataCheck.Netto,
+            QtyDelivered: QtyDelivered || dataCheck.QtyDelivered,
+            QtyWO: QtyWO || dataCheck.QtyWO
+        };
 
-                try {
-                    await SalesOrderDetail.create({
-                        DocNo: docNo,
-                        Number: number,
-                        MaterialCode: materialCode,
-                        Info: info,
-                        Unit: unit,
-                        Qty: qty,
-                        Price: price,
-                        Gross: gross,
-                        DiscPercent: discPercent,
-                        DiscPercent2: discPercent2,
-                        DiscPercent3: discPercent3,
-                        DiscValue: discValue,
-                        DiscNominal: discNominal,
-                        Netto: netto,
-                        QtyDelivered: qtyDelivered,
-                        QtyWo: qtyWo
-                    });
+        const [numUpdatedRows, updatedRows] = await salesOrderDetail.update(updatedData, {
+            where: {
+                DocNo: req.params.id1,
+                Number: req.params.id2
+            },
+            returning: true
+        });
 
-                    return { error: false, msg: `Sales Order Detail dengan nomor ${docNo} berhasil dibuat.` };
-                } catch (error) {
-                    console.log(error);
-                    return { error: true, msg: `Gagal membuat Sales Order Detail dengan nomor ${docNo}`, detailError: error.message };
-                }
-            })
-        );
+        if (numUpdatedRows === 0) {
+            return res.status(200).json({ msg: "No changes to update" });
+        }
 
-        res.status(200).json(createdDetails);
+        res.status(200).json(updatedRows);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Gagal membuat Sales Order Detail', error: error.message });
+        res.status(500).json({ msg: "An error occurred while updating the data" });
     }
 };
-
-export const updateSalesOrderDetail = async (req, res) => {
-    const { docNo, number, materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyDelivered, qtyWo } = req.body
-
-    const DocCheck = await SalesOrderDetail.findOne({
-        where: {
-            DocNo: req.params.id
-        }
-    })
-
-    if (!DocCheck) return res.status(400).json({ msg: "Doc Tidak Ada" })
-
-    try {
-        await SalesOrderDetail.update({
-            Number: number,
-            MaterialCode: materialCode,
-            Info: info,
-            Unit: unit,
-            Qty: qty,
-            Price: price,
-            Gross: gross,
-            DiscPercent: discPercent,
-            DiscPercent2: discPercent2,
-            DiscPercent3: discPercent3,
-            DiscValue: discValue,
-            DiscNominal: discNominal,
-            Netto: netto,
-            QtyDelivered: qtyDelivered,
-            QtyWo: qtyWo
-        }, {
-            where: {
-                DocNo: DocCheck.DocNo
-            }
-        })
-        res.status(200).json({ msg: "update Berhasil" })
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export const deleteSalesOrderDetail = async (req, res) => {
-    const DocCheck = await SalesOrderDetail.findOne({
-        where: {
-            DocNo: req.params.id
-        }
-    })
-
-    if (!DocCheck) return res.status(400).json({ msg: "Doc Tidak Ada" })
-
-    try {
-        await SalesOrderDetail.destroy({
-            where: {
-                DocNo: DocCheck.DocNo
-            }
-        })
-        res.status(200).json({ msg: "delete Berhasil" })
-    } catch (error) {
-        console.log(error)
-    }
-}
-

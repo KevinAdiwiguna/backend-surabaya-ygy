@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 
 
 
-const db = new Sequelize('sim_ide', 'root', '', {
+const db = new Sequelize('sim_ide', 'root', 'adiwigunakevin', {
     host: 'localhost',
     dialect: "mysql",
     define: {
