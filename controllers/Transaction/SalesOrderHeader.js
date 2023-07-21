@@ -7,7 +7,11 @@ import { Op } from 'sequelize'
 
 export const getAllSalesOrderHeader = async (req, res) => {
     try {
-        const salesOrderHeader = await SalesOrderHeader.findAll()
+        const salesOrderHeader = await SalesOrderHeader.findAll({
+        where: {
+            DocNo: req.params.id
+        }
+        })
         res.status(200).json(salesOrderHeader)
     } catch (error) {
         res.status(500).json({ msg: error.message })
@@ -59,7 +63,7 @@ export const updateSalesOrderHeader = async (req, res) => {
 
         const getDocNo = await SalesOrderHeader.findOne({
             where: {
-                DOCNo: req.params.id
+                DocNo: req.params.id
             }
         });
         if (!getDocNo) return res.status(400).json({ msg: "Data tidak ditemukan" });
@@ -153,7 +157,7 @@ export const createSalesOrderHeader = async (req, res) => {
             DocNo = `${series}-${generateDocDate}-0001`;
         }
 
-        const createdHeader = await saelsorder.create({
+        const createdHeader = await SalesOrderHeader.create({
             DocNo: DocNo,
             Series: series,
             DocDate: docDate,
