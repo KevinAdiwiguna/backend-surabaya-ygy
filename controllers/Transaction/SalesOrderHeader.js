@@ -7,11 +7,7 @@ import { Op } from 'sequelize'
 
 export const getAllSalesOrderHeader = async (req, res) => {
     try {
-        const salesOrderHeader = await SalesOrderHeader.findAll({
-        where: {
-            DocNo: req.params.id
-        }
-        })
+        const salesOrderHeader = await SalesOrderHeader.findAll({})
         res.status(200).json(salesOrderHeader)
     } catch (error) {
         res.status(500).json({ msg: error.message })
