@@ -1,5 +1,6 @@
-import SalesOrderHeader from '../../models/Transaction/SalesOrderHeader.js'
+
 import SalesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
+import SalesOrderHeader from '../../models/Transaction/SalesOrderHeader.js'
 
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
@@ -56,7 +57,7 @@ export const updateSalesOrderHeader = async (req, res) => {
             changedBy,
         } = req.body;
 
-        const getDocNo = await salesOrderHeader.findOne({
+        const getDocNo = await SalesOrderHeader.findOne({
             where: {
                 DOCNo: req.params.id
             }
@@ -87,7 +88,7 @@ export const updateSalesOrderHeader = async (req, res) => {
             ChangedBy: changedBy || getDocNo.ChangedBy,
         }, {
             where: {
-                DOCNo: req.params.id
+                DocNo: req.params.id
             }
         });
 
@@ -152,7 +153,7 @@ export const createSalesOrderHeader = async (req, res) => {
             DocNo = `${series}-${generateDocDate}-0001`;
         }
 
-        const createdHeader = await SalesOrderHeader.create({
+        const createdHeader = await saelsorder.create({
             DocNo: DocNo,
             Series: series,
             DocDate: docDate,
