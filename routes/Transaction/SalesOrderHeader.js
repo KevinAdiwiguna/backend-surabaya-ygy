@@ -9,4 +9,4 @@ router.get('/salesorderh/:id', getSalesOrderByCode);
 router.patch('/salesorderh/:id', updateSalesOrderHeader);
 router.delete('/salesorderh/:id', deleteSalesOrderHeader);
 
-export default router;
+export default router;  

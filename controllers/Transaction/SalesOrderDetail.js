@@ -2,7 +2,11 @@ import salesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
 
 export const getAllSalesOrderDetail = async (req, res) => {
     try {
-        const response = await salesOrderDetail.findAll()
+        const response = await salesOrderDetail.findAll({
+            where: {
+                DocNo: req.params.id
+            }
+        })
         res.status(200).json(response)
     } catch (error) {
         res.status(500).json({ msg: error.message })

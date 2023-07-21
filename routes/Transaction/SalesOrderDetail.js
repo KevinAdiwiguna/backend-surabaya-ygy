@@ -3,7 +3,7 @@ import { getAllSalesOrderDetail,updateSalesOrderDetail } from '../../controllers
 
 const router = express.Router();
 
-router.get('/salesorderd', getAllSalesOrderDetail);
+router.get('/salesorderd/:id', getAllSalesOrderDetail);
 router.patch('/salesorderd/:id1/:id2', updateSalesOrderDetail);
 // router.delete('/salesorderd/:id', deleteSalesOrderDetail);
 // router.patch('/salesorderd/:id', updateSalesOrderDetail);
