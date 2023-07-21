@@ -1,4 +1,6 @@
 import salesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
+import sequelize from 'sequelize'
+import { Op } from 'sequelize'
 
 export const getAllSalesOrderDetail = async (req, res) => {
     try {
@@ -8,6 +10,49 @@ export const getAllSalesOrderDetail = async (req, res) => {
             }
         })
         res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
+export const createSalesORderDetail = async (req, res) => {
+    const { materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyDelivered, qtyWO } = req.body
+
+    const existingNumber = await salesOrderDetail.findOne({
+        attributes: [[sequelize.fn('MAX', sequelize.col('Number')), 'maxNumber']],
+        where: {
+          DocNo: req.params.id,
+        },
+      });
+      
+      const maxNumber = existingNumber.getDataValue('maxNumber');
+      let number;
+      if (maxNumber !== null) {
+        number = maxNumber + 1;
+      } else {
+        number = 1;
+      }
+      
+    try {
+        const response = await salesOrderDetail.create({
+            DocNo: req.params.id,
+            Number: number,
+            MaterialCode: materialCode,
+            Info: info,
+            Unit: unit,
+            Qty: qty,
+            Price: price,
+            Gross: gross,
+            DiscPercent: discPercent,
+            DiscPercent2: discPercent2,
+            DiscPercent3: discPercent3,
+            DiscValue: discValue,
+            DiscNominal: discNominal,
+            Netto: netto,
+            QtyDelivered: qtyDelivered,
+            QtyWO: qtyWO
+        })
+        return res.status(201).json(response)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
