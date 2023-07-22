@@ -1,27 +1,27 @@
 import masterPrice from "../../models/Master/MasterPrice.js";
 
 export const getAllPrice = async (req, res) => {
-	try {
-		const response = await masterPrice.findAll();
-		res.status(200).json(response);
-	} catch (error) {
-		res.json({ msg: error.message, statusCode: 500 });
-	}
+    try {
+        const response = await masterPrice.findAll({});
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
 }
 
 export const createPrice = async (req, res) => {
-	const { begDa, endDa, priceListType, materialCode, currency, unit, minQty, maxQty, price, percentDisc, valueDisc, createdBy, createdDate, changedBy, changeDate } = req.body;
+	const { begDa, endDa, priceListType, materialCode, currency, unit, minQty, maxQty, price, percentDisc, valueDisc, createdBy, changedBy } = req.body;
 
-	const codeCheck = masterPrice.findOne({
+	const codePrice = await masterPrice.findOne({
 		where: {
-			begDa
+			PriceListType: priceListType
 		}
-	})
-if (codeCheck.value) return res.status(400).json({ message: "code udah ada" })
+	});
+if (codePrice) return res.status(400).json({ message: "code udah ada" })
     try {
         await masterPrice.create({
-            BegDa: begDa,
-            EndDa: endDa,
+            Begda: begDa,
+            Endda: endDa,
             PriceListType: priceListType,
             MaterialCode: materialCode,
             Currency: currency,
@@ -32,9 +32,8 @@ if (codeCheck.value) return res.status(400).json({ message: "code udah ada" })
             PercentDisc: percentDisc,
             ValueDisc: valueDisc,
             CreatedBy: createdBy,
-            CreatedDate: createdDate,
-            ChangedBy: changedBy, 
-            ChangedDate: changedDate
+            ChangedBy: changedBy
+
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
@@ -43,16 +42,16 @@ if (codeCheck.value) return res.status(400).json({ message: "code udah ada" })
 }
 
 export const deletePrice = async (req, res) => {
-    const begDa = await masterPrice.findOne({
+    const price = await masterPrice.findOne({
         where: {
-            BegDa: req.params.id
+            PriCeListType: req.params.id
         }
     });
-    if (!begDa) return res.json({ msg: "code tidak ditemukan" });
+    if (!price) return res.json({ msg: "code tidak ditemukan" });
     try {
         await masterPrice.destroy({
             where: {
-                BegDa: begDa.BegDa
+                PriCeListType: price.PriCeListType
             }
         });
         res.status(200).json({ msg: "data Deleted" });
@@ -62,11 +61,11 @@ export const deletePrice = async (req, res) => {
 }
 
 
-export const getPricebyCode = async (req, res) => {
+export const getPriceByCode = async (req, res) => {
     try {
         const response = await masterPrice.findOne({
             where: {
-                BegDa: req.params.id
+                PriCeListType: req.params.id
             }
         });
         res.status(200).json(response);
@@ -76,17 +75,17 @@ export const getPricebyCode = async (req, res) => {
 }
 
 export const updatePrice = async (req, res) => {
-    const { begDa, endDa, priceListType, materialCode, currency, unit, minQty, maxQty, price, percentDisc, valueDisc, createdBy, createdDate, changedBy, changeDate } = req.body;
+    const { begDa, endDa, priceListType, materialCode, currency, unit, minQty, maxQty, price, percentDisc, valueDisc, createdBy, changedBy } = req.body;
     const codeCheck = await masterPrice.findOne({
         where: {
-            BegDa: req.params.id
+            PriCeListType: req.params.id
         }
     });
     if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
     try {
         await masterPrice.update({
-            BegDa: begDa,
-            EndDa: endDa,
+            Begda: begDa,
+            Endda: endDa,
             PriceListType: priceListType,
             MaterialCode: materialCode,
             Currency: currency,
@@ -97,12 +96,10 @@ export const updatePrice = async (req, res) => {
             PercentDisc: percentDisc,
             ValueDisc: valueDisc,
             CreatedBy: createdBy,
-            CreatedDate: createdDate,
-            ChangedBy: changedBy, 
-            ChangedDate: changedDate
+            ChangedBy: changedBy
         }, {
             where: {
-                BegDa: codeCheck.BegDa
+                PriCeListType: codeCheck.PriCeListType
             }
         });
         res.status(200).json({ msg: "update berhasil" });
