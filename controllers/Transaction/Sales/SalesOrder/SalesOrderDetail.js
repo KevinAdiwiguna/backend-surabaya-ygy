@@ -1,4 +1,4 @@
-import salesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
+import salesOrderDetail from '../../../../models/Transaction/Sales/SalesOrder//SalesOrderDetail.js'
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
 

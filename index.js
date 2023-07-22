@@ -27,8 +27,8 @@ import MasterSalesArea1 from './routes/Master/Customer/SalesArea/SalesArea1.js'
 import MasterSalesArea2 from './routes/Master/Customer/SalesArea/SalesArea2.js'
 import MasterSalesArea3 from './routes/Master/Customer/SalesArea/SalesArea3.js'
 import MasterSalesman from "./routes/Master/MasterSalesman.js";
-import salesOrderHeader from "./routes/Transaction/SalesOrderHeader.js";
-import salesOrderDetail from "./routes/Transaction/SalesOrderDetail.js";
+import salesOrderHeader from "./routes/Transaction/Sales/SalesOrder/SalesOrderHeader.js";
+import salesOrderDetail from "./routes/Transaction/Sales/SalesOrder/SalesOrderDetail.js";
 import PurhaseRequestHeader from "./routes/Transaction/Purchase/PurchaseRequestHeader.js"
 import PurchaseRequestDetail from "./routes/Transaction/Purchase/PurchaseRequestDetail.js"
 import PurchaseOrderHeader from "./routes/Transaction/Purchase/PurchaseOrderHeader.js"
