@@ -50,6 +50,7 @@ export const updatePurchaseRequest = async (req, res) => {
             Currency: currency, 
             ExchangeRate: exchangeRate,
             JODocNo: JODocNo,
+            Trip: trip,
             SIDocNo: SIDocNo,
             TotalGross: totalGross,
             TotalDisc: totalDisc,
