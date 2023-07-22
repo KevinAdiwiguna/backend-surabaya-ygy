@@ -52,7 +52,6 @@ export const deleteLocation = async (req, res) => {
     }
 }
 
-
 export const getLocationByCode = async (req, res) => {
     try {
         const response = await masterLocationModel.findOne({

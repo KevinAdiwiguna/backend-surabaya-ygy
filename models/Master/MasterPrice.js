@@ -1,10 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../../config/Database.js"
 
-import mastercurrency from "./MasterCurrencyModel.js"
-import masterpricelisttype from "./Costumer/MasterPricelistType.js"
-import masterUnitConversion from "./Material/MasterUnitConversion.js"
-
 const { DataTypes } = Sequelize;
 
 const masterprice = db.define('masterprice',{
@@ -111,13 +107,6 @@ const masterprice = db.define('masterprice',{
 		},
 	},
 
-	CreatedDate: {
-		type: DataTypes.DATE,
-		allowNull: false,
-		validate: {
-			notEmpty: true
-		},
-	},
 
 	ChangedBy: {
 		type: DataTypes.DATE,
@@ -127,22 +116,11 @@ const masterprice = db.define('masterprice',{
 		},
 	},
 
-	ChangedDate: {
-		type: DataTypes.DATE,
-		allowNull: false,
-		validate: {
-			notEmpty: true
-		},
-	},
 
 },{
 	freezeTableName: true
 });
 
-mastercurrency.hasOne(masterprice, { foreignKey: 'Currency' })
-masterpricelisttype.hasOne(masterprice, { foreignKey: 'PriceListType' })
-masterUnitConversion.hasOne(masterprice, { foreignKey: 'MaterialCode' })
-masterUnitConversion.hasOne(masterprice, { foreignKey: 'Unit' })
 
 export default masterprice;
 

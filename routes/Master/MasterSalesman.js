@@ -5,9 +5,9 @@ const router = express.Router();
 
 import { verifyUser } from "../../middleware/AuthUser.js";
 
-router.get('/salesman', verifyUser, getAllSalesman);
+router.get('/salesman', getAllSalesman);
 router.patch('/salesman', verifyUser, updateSalesman);
-router.post('/salesman', verifyUser, createSalesman);
+router.post('/salesman', createSalesman);
 router.delete('/salesman/:id', verifyUser, deleteSalesman);
 router.get('/salesman/:id', verifyUser, getSalesmanByCode);
 
