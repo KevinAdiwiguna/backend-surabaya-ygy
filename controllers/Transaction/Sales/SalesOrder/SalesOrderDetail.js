@@ -91,7 +91,6 @@ export const updateSalesOrderDetail = async (req, res) => {
     discValue,
     discNominal,
     netto,
-    Netto,
     QtyDelivered,
     QtyWO,
   } = req.body;
@@ -126,7 +125,7 @@ export const updateSalesOrderDetail = async (req, res) => {
       DiscPercent3: discPercent3 || dataCheck.discPercent3,
       DiscValue: discValue || dataCheck.discValue,
       DiscNominal: discNominal || dataCheck.discNominal,
-      Netto: Netto || dataCheck.Netto,
+      Netto: netto || dataCheck.Netto,
       QtyDelivered: QtyDelivered || dataCheck.QtyDelivered,
       QtyWO: QtyWO || dataCheck.QtyWO,
     };
