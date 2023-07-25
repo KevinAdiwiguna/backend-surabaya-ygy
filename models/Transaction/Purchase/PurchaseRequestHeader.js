@@ -3,7 +3,7 @@ import db from "../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const purchaseRequestHeader = db.define('purchasereqh',{
+const purchaseRequestHeader = db.define('purchaserequesth',{
 
     DocNo:{
         type: DataTypes.STRING,
