@@ -1,13 +1,13 @@
-import SalesOrderHeader from '../../models/Transaction/SalesOrderHeader.js'
-import SalesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
+
+import SalesOrderDetail from '../../../../models/Transaction/Sales/SalesOrder/SalesOrderDetail.js'
+import SalesOrderHeader from '../../../../models/Transaction/Sales/SalesOrder/SalesOrderHeader.js'
 
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
-import salesOrderDetail from '../../models/Transaction/SalesOrderDetail.js'
 
 export const getAllSalesOrderHeader = async (req, res) => {
     try {
-        const salesOrderHeader = await SalesOrderHeader.findAll()
+        const salesOrderHeader = await SalesOrderHeader.findAll({})
         res.status(200).json(salesOrderHeader)
     } catch (error) {
         res.status(500).json({ msg: error.message })
@@ -29,53 +29,75 @@ export const getSalesOrderByCode = async (req, res) => {
 }
 
 
+
+
 export const updateSalesOrderHeader = async (req, res) => {
-    const { series, docDate, customerCode, shipToCode, taxToCode, salesCode, deliveryDate, poNo, top, discPercent, taxStatus, taxPercent, currency, exchangeRate, totalGross, totalDisc, taxValue, totalNetto, information, status, isPurchaseReturn, createdBy, changedBy } = req.body
-
-    const salesOrderHeader = await SalesOrderHeader.findOne({
-        where: {
-            DocNo: req.params.id
-        }
-    })
-    if (!salesOrderHeader) return res.status(400).json({ msg: "data tidak ditemukan" })
-
-
     try {
-        await SalesOrderHeader.update({
-            Series: series,
-            DocDate: docDate,
-            CustomerCode: customerCode,
-            ShipToCode: shipToCode,
-            TaxToCode: taxToCode,
-            SalesCode: salesCode,
-            DeliveryDate: deliveryDate,
-            PONo: poNo,
-            TOP: top,
-            DiscPercent: discPercent,
-            TaxStatus: taxStatus,
-            TaxPercent: taxPercent,
-            Currency: currency,
-            ExchangeRate: exchangeRate,
-            TotalGross: totalGross,
-            TotalDisc: totalDisc,
-            TaxValue: taxValue,
-            TotalNetto: totalNetto,
-            Information: information,
-            Status: status,
-            IsPurchaseReturn: isPurchaseReturn,
-            CreatedBy: createdBy,
-            ChangedBy: changedBy
+        const {
+            customerCode,
+            shipToCode,
+            taxToCode,
+            salesCode,
+            deliveryDate,
+            poNo,
+            top,
+            discPercent,
+            taxStatus,
+            taxPercent,
+            currency,
+            exchangeRate,
+            totalGross,
+            totalDisc,
+            taxValue,
+            totalNetto,
+            information,
+            status,
+            isPurchaseReturn,
+            createdBy,
+            changedBy,
+        } = req.body;
+
+        const getDocNo = await SalesOrderHeader.findOne({
+            where: {
+                DocNo: req.params.id
+            }
+        });
+        if (!getDocNo) return res.status(400).json({ msg: "Data tidak ditemukan" });
+
+        const updatedHeader = await SalesOrderHeader.update({
+            CustomerCode: customerCode || getDocNo.CustomerCode,
+            ShipToCode: shipToCode || getDocNo.ShipToCode,
+            TaxToCode: taxToCode || getDocNo.TaxToCode,
+            SalesCode: salesCode || getDocNo.SalesCode,
+            DeliveryDate: deliveryDate || getDocNo.DeliveryDate,
+            PONo: poNo || getDocNo.PONo,
+            TOP: top || getDocNo.TOP,
+            DiscPercent: discPercent || getDocNo.DiscPercent,
+            TaxStatus: taxStatus || getDocNo.TaxStatus,
+            TaxPercent: taxPercent || getDocNo.TaxPercent,
+            Currency: currency || getDocNo.Currency,
+            ExchangeRate: exchangeRate || getDocNo.ExchangeRate,
+            TotalGross: totalGross || getDocNo.TotalGross,
+            TotalDisc: totalDisc || getDocNo.TotalDisc,
+            TaxValue: taxValue || getDocNo.TaxValue,
+            TotalNetto: totalNetto || getDocNo.TotalNetto,
+            Information: information || getDocNo.Information,
+            Status: status || getDocNo.Status,
+            IsPurchaseReturn: isPurchaseReturn || getDocNo.IsPurchaseReturn,
+            CreatedBy: createdBy || getDocNo.CreatedBy,
+            ChangedBy: changedBy || getDocNo.ChangedBy,
         }, {
             where: {
-                DocNo: salesOrderHeader.DocNo
+                DocNo: req.params.id
             }
-        })
-        res.status(200).json({ msg: "update berhasiil" })
-    } catch (error) {
-        res.status(500).json({ msg: error.message })
-    }
+        });
 
-}
+        res.status(200).json(updatedHeader);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Gagal memperbarui Sales Order Header', error: error.message });
+    }
+};
 
 
 export const createSalesOrderHeader = async (req, res) => {
@@ -209,24 +231,26 @@ export const createSalesOrderHeader = async (req, res) => {
     }
 };
 
-
-
-
 export const deleteSalesOrderHeader = async (req, res) => {
-    const salesOrderHeader = await SalesOrderHeader.findOne({
-        where: {
-            DocNo: req.params.id
-        }
-    })
-    if (!salesOrderHeader) return res.status(400).json({ msg: "data tidak ditemukan" })
     try {
-        await SalesOrderHeader.destroy({
+        const salesOrderHeader = await SalesOrderHeader.findOne({
             where: {
-                DocNo: salesOrderHeader.DocNo
+                DocNo: req.params.id
             }
-        })
-        res.status(200).json({ msg: "data Deleted" })
+        });
+        if (!salesOrderHeader) return res.status(400).json({ msg: "Data not found" });
+
+        await SalesOrderHeader.update(
+            { Status: "DELETED" },
+            {
+                where: {
+                    DocNo: salesOrderHeader.DocNo
+                }
+            }
+        );
+
+        res.status(200).json({ msg: "Data deleted" });
     } catch (error) {
-        res.status(500).json({ msg: error.message })
+        res.status(500).json({ msg: error.message });
     }
-}
+};

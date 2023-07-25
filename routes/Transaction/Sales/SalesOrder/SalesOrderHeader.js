@@ -1,5 +1,5 @@
 import express from "express";
-import { createSalesOrderHeader, getAllSalesOrderHeader, deleteSalesOrderHeader, updateSalesOrderHeader,getSalesOrderByCode } from '../../controllers/Transaction/SalesOrderHeader.js'
+import { createSalesOrderHeader,deleteSalesOrderHeader,getAllSalesOrderHeader,getSalesOrderByCode,updateSalesOrderHeader } from '../../../../controllers/Transaction/Sales/SalesOrder/SalesOrderHeader.js'
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.get('/salesorderh/:id', getSalesOrderByCode);
 router.patch('/salesorderh/:id', updateSalesOrderHeader);
 router.delete('/salesorderh/:id', deleteSalesOrderHeader);
 
-export default router;
+export default router;  
