@@ -107,7 +107,6 @@ const masterprice = db.define('masterprice',{
 		},
 	},
 
-
 	ChangedBy: {
 		type: DataTypes.DATE,
 		allowNull: false,
