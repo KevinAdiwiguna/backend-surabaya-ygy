@@ -1,5 +1,8 @@
 import PurchaseRequestd from '../../../models/Transaction/Purchase/PurchaseRequestDetail.js'
 
+import sequelize from 'sequelize'
+import { Op } from 'sequelize'
+
 export const getAllpurchaseRequestd = async (req, res) => {
     try {
         const response = await PurchaseRequestd.findAll()
@@ -74,42 +77,53 @@ export const updatePurchaseRequest = async (req, res) => {
     };
     
 
-export const createPurchaseRequestD = async (req, res) => {
-    const purchaseRequestDetails = req.body;
-
-    try {
-
-        const createPurchaseRequestDetails = await Promise.all(
-            purchaseRequestDetails.map(async (detail) => {
-                const {
-                    docNo,
-                    materialCode,
-                    info,
-                    unit,
-                    qty,
-                    qtyPO,
-                    requiredDate } = detail;
-
-
-                const response = await PurchaseRequestd.create({
-                    DocNo: docNo,
-                    MaterialCode: materialCode,
-                    Info: info,
-                    Unit: unit,
-                    Qty: qty,
-                    QtyPO: qtyPO,
-                    RequiredDate: requiredDate
-                });
-
-                return response;
-            })
-        );
-
-        return res.status(201).json(createdSalesOrderDetails);
-    } catch (error) {
-        res.status(500).json({ msg: error.message });
-    }
-};
+    export const createPurchaseRequestD = async (req, res) => {
+        const purchaseRequestDetails = req.body;
+    
+        try {
+            // Check if the purchase request exists first
+            const purchaseRequest = await PurchaseRequestd.findOne({
+                where: {
+                    DocNo: req.params.id
+                }
+            });
+    
+            if (!purchaseRequest) {
+                return res.status(404).json({ msg: "Purchase request not found" });
+            }
+    
+            const createPurchaseRequestDetails = await Promise.all(
+                purchaseRequestDetails.map(async (detail) => {
+                    const {
+                        docNo,
+                        materialCode,
+                        info,
+                        unit,
+                        qty,
+                        qtyPO,
+                        requiredDate
+                    } = detail;
+    
+                    const response = await PurchaseRequestd.create({
+                        DocNo: req.params.id,
+                        MaterialCode: materialCode,
+                        Info: info,
+                        Unit: unit,
+                        Qty: qty,
+                        QtyPO: qtyPO,
+                        RequiredDate: requiredDate
+                    });
+    
+                    return response;
+                })
+            );
+    
+            return res.status(201).json(createPurchaseRequestDetails);
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
+    };
+    
 
 
 export const deletePurchaseRequestd = async (req, res) => {
