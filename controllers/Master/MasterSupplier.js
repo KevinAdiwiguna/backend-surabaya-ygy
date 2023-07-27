@@ -10,14 +10,15 @@ export const getAllSupplier = async (req, res) => {
 }
 
 export const createSupplier = async (req, res) => {
-	const { code, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, top, currency, limit, transactionType, transactionType2, cutPph, createdBy, changedBy } = req.body;
+    const { code, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, top, currency, limit, transactionType, transactionType2, cutPph, createdBy, changedBy } = req.body;
 
-	const codeCheck = await masterSupplier.findOne({
-		where: {
-			Code: code
-		}
-	})
-if (codeCheck) return res.status(400).json({ message: "code udah ada" })
+    const validation = await masterSupplier.findOne({
+        where: {
+            Code: code
+        }
+    })
+
+    if (validation) return res.status(400).json({ message: "code udah ada" })
     try {
         await masterSupplier.create({
             Code: code, 
@@ -37,7 +38,7 @@ if (codeCheck) return res.status(400).json({ message: "code udah ada" })
             Limit: limit, 
             TransactionType: transactionType, 
             TransactionType2: transactionType2, 
-            CutPph: cutPph, 
+            CutPPh: cutPph, 
             CreatedBy: createdBy, 
             ChangedBy: changedBy
         });
@@ -106,7 +107,7 @@ export const updateSupplier = async (req, res) => {
             Limit: limit, 
             TransactionType: transactionType, 
             TransactionType2: transactionType2, 
-            CutPph: cutPph, 
+            CutPPh: cutPph, 
             CreatedBy: createdBy, 
             ChangedBy: changedBy
         }, {
