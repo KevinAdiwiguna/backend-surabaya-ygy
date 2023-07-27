@@ -168,22 +168,27 @@ export const createPurchaseRequestH = async (req, res) => {
 
 
 export const deletePurchaseRequesth = async (req, res) => {
+    try {
     const purchaseRequesth = await PurchaseRequesth.findOne({
         where: {
             DocNo: req.params.id
         }
-    })
+    });
     if (!purchaseRequesth) return res.status(400).json({ msg: "data tidak ditemukan" })
-    try {
-        await PurchaseRequesth.destroy({
-            where: {
-                DocNo: purchaseRequesth.DocNo
+    
+        await PurchaseRequesth.update(
+            { Status: "DELETED" },
+            {
+                where: {
+                    DocNo: purchaseRequesth.DocNo
+                }
             }
-        })
-        res.status(200).json({ msg: "data Deleted" })
+        );
+
+        res.status(200).json({ msg: "Data deleted" });
     } catch (error) {
-        res.status(500).json({ msg: error.message })
+        res.status(500).json({ msg: error.message });
     }
-}
+};
 
 

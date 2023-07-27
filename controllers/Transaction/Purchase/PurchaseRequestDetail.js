@@ -5,7 +5,11 @@ import { Op } from 'sequelize'
 
 export const getAllpurchaseRequestd = async (req, res) => {
     try {
-        const response = await PurchaseRequestd.findAll()
+        const response = await salesOrderDetail.findAll({
+            where: {
+              DocNo: req.params.id,
+            },
+          });
         res.status(200).json(response)
     } catch (error) {
         res.status(500).json({ msg: error.message })

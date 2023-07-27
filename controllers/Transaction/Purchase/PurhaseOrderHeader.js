@@ -1,5 +1,10 @@
 // import purchaseOrderHeader from '../../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
 import purchaseOrderHeader from '../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
+import purchaseOrderDetails from '../../../models/Transaction/Purchase/PurchaseOrderDetail.js'
+
+import sequelize from 'sequelize'
+import { Op } from 'sequelize'
+
 
 export const getAllpurchaseOrderHeader = async (req, res) => {
     try {
@@ -82,13 +87,14 @@ export const updatePurchaseRequest = async (req, res) => {
 
 export const createPurchaseRequestH = async (req, res) => {
     const {
-        docNo,
+        generateDocDate,
         series,
         transactionType,
         docDate,
         supplierCode,
         deliveryDate,
         TOP,
+        trip,
         discPercent,
         taxStatus,
         taxPercent,
@@ -111,8 +117,161 @@ export const createPurchaseRequestH = async (req, res) => {
         status,
         information,
         createdBy,
-        changedBy } = req.body
+        changedBy,
+        PurchaseOrderd
+     } = req.body;
+
+    
+        try {
+            const existingHeader = await purchaseOrderHeader.findOne({
+                attributes: ['DocNo'],
+                where: {
+                    DocNo: {
+                        [Op.like]: `${series}-${generateDocDate}-%`,
+                    },
+                },
+                order: [
+                    [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
+                ],
+                raw: true,
+                limit: 1,
+            });
+        
+            let DocNo;
+        if (existingHeader) {
+            const Series = parseInt(existingHeader.DocNo.split('-')[2], 10) + 1;
+            DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, '0')}`;
+        } else {
+            DocNo = `${series}-${generateDocDate}-0001`;
+        }
+
+        const createHeader = await purchaseOrderHeader.create({
+            DocNo: DocNo,
+            Series: series,
+            TransactionType: transactionType,
+            DocDate: docDate,
+            supplierCode: supplierCode,
+            deliveryDate: deliveryDate,
+            TOP: TOP,
+            DiscPercent: discPercent,
+            TaxStatus: taxStatus,
+            TaxPercent: taxPercent,
+            Currency: currency, 
+            ExchangeRate: exchangeRate,
+            JODocNo: JODocNo,
+            Trip: trip,
+            SIDocNo: SIDocNo,
+            TotalGross: totalGross,
+            TotalDisc: totalDisc,
+            TaxValue: taxValue,
+            TotalNetto: totalNetto,
+            SendTo: sendTo,
+            IsApproved: isApproved,
+            ApprovedBy: approvedBy,
+            ApprovedDate: approvedDate,
+            PrintCounter: printCounter,
+            PrintedBy: printedBy,
+            PrintedDate: printedDate,
+            IsSalesReturn: isSalesReturn,
+            Information: information,
+            Status: status,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy
+            
+        });
+
+        if (PurchaseOrderd && Array.isArray(PurchaseOrderd)) {
+            await Promise.all(
+                PurchaseOrderd.map(async (detail) => {
+                    const {
+                        number,
+                        materialCode,
+                        info,
+                        unit,
+                        qty,
+                        price,
+                        gross,
+                        discPercent,
+                        discPercent2,
+                        discPercent3,
+                        discValue,
+                        discNominal,
+                        netto,
+                        qtyReceived
+                    } = detail;
+
+                    await purchaseOrderDetails.create({
+                        DocNo: DocNo,
+                        Number: number,
+                        MaterialCode: materialCode,
+                        Info: info,
+                        Unit: unit,
+                        Qty: qty,
+                        Price: price,
+                        Gross: gross,
+                        DiscPercent: discPercent,
+                        DiscPercent2: discPercent2,
+                        DiscPercent3: discPercent3,
+                        DiscValue: discValue,
+                        DiscNominal: discNominal,
+                        Netto: netto,
+                        QtyReceived: qtyReceived
+                    });
+                })
+            );
+        }
+
+        const responseObject = {
+            DocNo: DocNo,
+            Series: series,
+            TransactionType: transactionType,
+            DocDate: docDate,
+            supplierCode: supplierCode,
+            deliveryDate: deliveryDate,
+            TOP: TOP,
+            DiscPercent: discPercent,
+            TaxStatus: taxStatus,
+            TaxPercent: taxPercent,
+            Currency: currency, 
+            ExchangeRate: exchangeRate,
+            JODocNo: JODocNo,
+            Trip: trip,
+            SIDocNo: SIDocNo,
+            TotalGross: totalGross,
+            TotalDisc: totalDisc,
+            TaxValue: taxValue,
+            TotalNetto: totalNetto,
+            SendTo: sendTo,
+            IsApproved: isApproved,
+            ApprovedBy: approvedBy,
+            ApprovedDate: approvedDate,
+            PrintCounter: printCounter,
+            PrintedBy: printedBy,
+            PrintedDate: printedDate,
+            IsSalesReturn: isSalesReturn,
+            Information: information,
+            Status: status,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy,
+            PurchaseOrderd: PurchaseOrderd
+        };
+
+        res.status(200).json(responseObject);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
     }
+};
+
+
+        
+
+
+
+
+
+
 
     export const deletePurchaseOrderHeader = async (req, res) => {
         const delPurchaseOrderH = await purchaseOrderHeader.findOne({

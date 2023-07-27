@@ -35,7 +35,7 @@ const purchaseRequestHeader = db.define('purchaserequesth',{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
@@ -43,7 +43,7 @@ const purchaseRequestHeader = db.define('purchaserequesth',{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
@@ -51,7 +51,7 @@ const purchaseRequestHeader = db.define('purchaserequesth',{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
