@@ -6,7 +6,7 @@ const { DataTypes } = Sequelize;
 const masterprice = db.define('masterprice',{
 
 	Begda: {
-		type: DataTypes.DATE,
+		type: DataTypes.STRING, 
 		allowNull: false,
 		validate: {
 			notEmpty: true
