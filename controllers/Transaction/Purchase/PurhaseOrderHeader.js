@@ -52,7 +52,7 @@ export const updatePurchaseRequest = async (req, res) => {
             DiscPercent: discPercent,
             TaxStatus: taxStatus,
             TaxPercent: taxPercent,
-            Currency: currency, 
+            Currency: currency,
             ExchangeRate: exchangeRate,
             JODocNo: JODocNo,
             Trip: trip,
@@ -119,25 +119,25 @@ export const createPurchaseRequestH = async (req, res) => {
         createdBy,
         changedBy,
         PurchaseOrderd
-     } = req.body;
+    } = req.body;
 
-    
-        try {
-            const existingHeader = await purchaseOrderHeader.findOne({
-                attributes: ['DocNo'],
-                where: {
-                    DocNo: {
-                        [Op.like]: `${series}-${generateDocDate}-%`,
-                    },
+
+    try {
+        const existingHeader = await purchaseOrderHeader.findOne({
+            attributes: ['DocNo'],
+            where: {
+                DocNo: {
+                    [Op.like]: `${series}-${generateDocDate}-%`,
                 },
-                order: [
-                    [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
-                ],
-                raw: true,
-                limit: 1,
-            });
-        
-            let DocNo;
+            },
+            order: [
+                [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
+            ],
+            raw: true,
+            limit: 1,
+        });
+
+        let DocNo;
         if (existingHeader) {
             const Series = parseInt(existingHeader.DocNo.split('-')[2], 10) + 1;
             DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, '0')}`;
@@ -150,13 +150,13 @@ export const createPurchaseRequestH = async (req, res) => {
             Series: series,
             TransactionType: transactionType,
             DocDate: docDate,
-            supplierCode: supplierCode,
-            deliveryDate: deliveryDate,
+            SupplierCode: supplierCode,
+            DeliveryDate: deliveryDate,
             TOP: TOP,
             DiscPercent: discPercent,
             TaxStatus: taxStatus,
             TaxPercent: taxPercent,
-            Currency: currency, 
+            Currency: currency,
             ExchangeRate: exchangeRate,
             JODocNo: JODocNo,
             Trip: trip,
@@ -177,7 +177,7 @@ export const createPurchaseRequestH = async (req, res) => {
             Status: status,
             CreatedBy: createdBy,
             ChangedBy: changedBy
-            
+
         });
 
         if (PurchaseOrderd && Array.isArray(PurchaseOrderd)) {
@@ -226,13 +226,13 @@ export const createPurchaseRequestH = async (req, res) => {
             Series: series,
             TransactionType: transactionType,
             DocDate: docDate,
-            supplierCode: supplierCode,
-            deliveryDate: deliveryDate,
+            SupplierCode: supplierCode,
+            DeliveryDate: deliveryDate,
             TOP: TOP,
             DiscPercent: discPercent,
             TaxStatus: taxStatus,
             TaxPercent: taxPercent,
-            Currency: currency, 
+            Currency: currency,
             ExchangeRate: exchangeRate,
             JODocNo: JODocNo,
             Trip: trip,
@@ -265,7 +265,6 @@ export const createPurchaseRequestH = async (req, res) => {
 };
 
 
-        
 
 
 
@@ -273,23 +272,24 @@ export const createPurchaseRequestH = async (req, res) => {
 
 
 
-    export const deletePurchaseOrderHeader = async (req, res) => {
-        const delPurchaseOrderH = await purchaseOrderHeader.findOne({
+
+export const deletePurchaseOrderHeader = async (req, res) => {
+    const delPurchaseOrderH = await purchaseOrderHeader.findOne({
+        where: {
+            DocNo: req.params.id
+        }
+    })
+    if (!delPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
+    try {
+        await purchaseOrderHeader.destroy({
             where: {
-                DocNo: req.params.id
+                DocNo: delPurchaseOrderH.DocNo
             }
         })
-        if (!delPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
-        try {
-            await purchaseOrderHeader.destroy({
-                where: {
-                    DocNo: delPurchaseOrderH.DocNo
-                }
-            })
-            res.status(200).json({ msg: "data Deleted" })
-        } catch (error) {
-            res.status(500).json({ msg: error.message })
-        }
+        res.status(200).json({ msg: "data Deleted" })
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
     }
+}
 
 

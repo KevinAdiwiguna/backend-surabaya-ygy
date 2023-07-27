@@ -41,7 +41,7 @@ const purchaseRequestHeader = db.define(
 			allowNull: true,
 		},
 
-<<<<<<< HEAD
+
     JODocNo:{
         type: DataTypes.STRING,
         allowNull: false,
@@ -65,7 +65,7 @@ const purchaseRequestHeader = db.define(
             notEmpty: false
         },
     },
-=======
+
 		Department: {
 			type: DataTypes.STRING,
 			allowNull: true,
@@ -83,7 +83,7 @@ const purchaseRequestHeader = db.define(
 				notEmpty: true,
 			},
 		},
->>>>>>> 623e93316f16108268d26700770614cc49ad26ac
+
 
 		CreatedBy: {
 			type: DataTypes.STRING,
