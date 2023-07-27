@@ -5,10 +5,10 @@ const router = express.Router();
 
 import { verifyUser } from "../../middleware/AuthUser.js"
 
-router.get('/price', getAllPrice);
-router.patch('/price/:id', updatePrice);
-router.post('/price', createPrice);
-router.delete('/price/:id/:id2/:id3/:id4/:id5/:id6', deletePrice);
-router.get('/price/:id', getPriceByCode);
+router.get('/price', verifyUser, getAllPrice);
+router.patch('/price/:id/:id2/:id3/:id4/:id5/:id6', verifyUser, updatePrice);
+router.post('/price', verifyUser, createPrice);
+router.delete('/price/:id/:id2/:id3/:id4/:id5/:id6', verifyUser, deletePrice);
+router.get('/price/:id/:id2/:id3/:id4/:id5/:id6', verifyUser, getPriceByCode);
 
 export default router;
