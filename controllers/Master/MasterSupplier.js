@@ -89,8 +89,7 @@ export const updateSupplier = async (req, res) => {
     });
     if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
     try {
-        await masterSupplier.update({
-            Code: code, 
+        await masterSupplier.update({ 
             Name: name, 
             Address: address, 
             Address2: address2, 

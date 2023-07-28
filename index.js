@@ -29,6 +29,7 @@ import MasterSalesArea3 from './routes/Master/Customer/SalesArea/SalesArea3.js'
 import MasterSalesman from "./routes/Master/MasterSalesman.js";
 import MasterPrice from "./routes/Master/MasterPriceRoutes.js";
 import MasterSupplier from "./routes/Master/MasterSupplierRoutes.js";
+import MasterDepartment from "./routes/Master/MasterDepartmentRoutes.js";
 import salesOrderHeader from "./routes/Transaction/Sales/SalesOrder/SalesOrderHeader.js";
 import salesOrderDetail from "./routes/Transaction/Sales/SalesOrder/SalesOrderDetail.js";
 import PurhaseRequestHeader from "./routes/Transaction/Purchase/PurchaseRequestHeader.js"
@@ -95,6 +96,7 @@ const routes = [
   MasterSalesman,
   MasterPrice,
   MasterSupplier,
+  MasterDepartment,
   salesOrderDetail,
   salesOrderHeader,
   PurhaseRequestHeader,
