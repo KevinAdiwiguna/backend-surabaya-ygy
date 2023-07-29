@@ -82,6 +82,7 @@ export const getSupplierByCode = async (req, res) => {
 
 export const updateSupplier = async (req, res) => {
     const { code, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, top, currency, limit, transactionType, transactionType2, cutPph, createdBy, changedBy } = req.body;
+    
     const codeCheck = await masterSupplier.findOne({
         where: {
             Code: req.params.id
