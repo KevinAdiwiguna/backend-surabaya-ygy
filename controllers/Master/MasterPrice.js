@@ -39,15 +39,12 @@ if (validation) return res.status(400).json({ message: "code udah ada" })
             ValueDisc: valueDisc,
             CreatedBy: createdBy,
             ChangedBy: changedBy
-            
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
 }
-
-
 
 
 export const deletePrice = async (req, res) => {
@@ -103,6 +100,7 @@ export const getPriceByCode = async (req, res) => {
 
 export const updatePrice = async (req, res) => {
     const { begDa, endDa, priceListType, materialCode, currency, unit, minQty, maxQty, price, percentDisc, valueDisc, createdBy, changedBy } = req.body;
+    
     const codeCheck = await masterPrice.findOne({
         where: {
             Begda: req.params.id,
@@ -115,21 +113,14 @@ export const updatePrice = async (req, res) => {
     });
     if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
     try {
-        await masterPrice.update({
-            BegDa: begDa,
-            EndDa: endDa,
-            PriceListType: priceListType,
-            MaterialCode: materialCode,
-            Currency: currency,
-            Unit: unit,
-            MinQty: minQty, 
-            MaxQty: maxQty,
-            Price: price,
-            PercentDisc: percentDisc,
-            ValueDisc: valueDisc,
-            CreatedBy: createdBy,
-            ChangedBy: changedBy
-           
+        await masterPrice.update({ 
+           Endda: endDa, 
+           MaxQty: maxQty,
+           Price: price,
+           PercentDisc: percentDisc,
+           ValueDisc: valueDisc,
+           CreatedBy: createdBy,
+           ChangedBy: changedBy
         }, {
             where: {
                 Begda: codeCheck.Begda,
@@ -140,8 +131,9 @@ export const updatePrice = async (req, res) => {
                 MinQty: codeCheck.MinQty
             }
         });
-        res.status(200).json({ msg: "update berhasil" });
+        res.status(200).json({ msg: "data Updated" });
     } catch (error) {
         res.status(400).json({ msg: error.message });
     }
 }
+
