@@ -188,7 +188,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
@@ -196,7 +196,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
@@ -204,7 +204,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: false
         },
     },
 
@@ -214,7 +214,6 @@ const purchaseOrderH = db.define('purchaseorderh', {
         validate: {
             notEmpty: true
         },
-        primaryKey: true
     },
 
     PrintedBy:{

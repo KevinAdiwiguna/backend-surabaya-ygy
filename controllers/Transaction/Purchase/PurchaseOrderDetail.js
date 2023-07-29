@@ -3,7 +3,11 @@ import purchaseOrderDetail from '../../../models/Transaction/Purchase/PurchaseOr
 
 export const getAllpurchaseOrderDetail = async (req, res) => {
     try {
-        const purchaseOrderD = await purchaseOrderDetail.findAll()
+        const purchaseOrderD = await purchaseOrderDetail.findAll({
+            where: {
+                DocNo: req.params.id,
+            },
+        });
         res.status(200).json(purchaseOrderD)
     } catch (error) {
         res.status(500).json({ msg: error.message })
@@ -68,41 +72,82 @@ export const updatePurchaseRequest = async (req, res) => {
 }
 
 export const createPurchaseOrderD = async (req, res) => {
-    const {
-            docNo,
-            number,
-            materialCode,
-            info,
-            unit,
-            qty,
-            price,
-            gross,
-            discPercent,
-            discPercent2,
-            discPercent3,
-            discValue,
-            discNominal,
-            netto,
-            qtyReceived } = req.body
-    }
+    const purchaseOrderDcreate = req.body;
 
-    export const deletePurchaseOrderDetail = async (req, res) => {
-        const delPurchaseOrderD = await purchaseOrderDetail.findOne({
+    try {
+        const existingNumber = await salesOrderDetail.findOne({
+            attributes: [[sequelize.fn("MAX", sequelize.col("Number")), "maxNumber"]],
             where: {
-                DocNo: req.params.id
+                DocNo: req.params.id,
+            },
+        });
+
+        const maxNumber = existingNumber.getDataValue("maxNumber");
+        let number = maxNumber !== null ? maxNumber + 1 : 1;
+
+        const createdPurchaseOrderDetails = await Promise.all(
+            purchaseOrderDcreate.map(async (detail) => {
+                const {
+                    materialCode,
+                    info,
+                    unit,
+                    qty,
+                    price,
+                    gross,
+                    discPercent,
+                    discPercent2,
+                    discPercent3,
+                    discValue,
+                    discNominal,
+                    netto,
+                    qtyReceived } = detail;
+
+                const response = await salesOrderDetail.create({
+                    DocNo: req.params.id,
+                    Number: number++,
+                    MaterialCode: materialCode,
+                    Info: info,
+                    Unit: unit,
+                    Qty: qty,
+                    Price: price,
+                    Gross: gross,
+                    DiscPercent: discPercent,
+                    DiscPercent2: discPercent2,
+                    DiscPercent3: discPercent3,
+                    DiscValue: discValue,
+                    DiscNominal: discNominal,
+                    Netto: netto,
+                    QtyReceived: qtyReceived
+                });
+
+                return response;
+            })
+        );
+
+        return res.status(201).json(createdSalesOrderDetails);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+};
+
+
+export const deletePurchaseOrderDetail = async (req, res) => {
+    const delPurchaseOrderD = await purchaseOrderDetail.findOne({
+        where: {
+            DocNo: req.params.id
+        }
+    })
+    if (!delPurchaseOrderD) return res.status(400).json({ msg: "data tidak ditemukan" })
+    try {
+        await purchaseOrderDetail.destroy({
+            where: {
+                DocNo: delPurchaseOrderD.DocNo
             }
         })
-        if (!delPurchaseOrderD) return res.status(400).json({ msg: "data tidak ditemukan" })
-        try {
-            await purchaseOrderDetail.destroy({
-                where: {
-                    DocNo: delPurchaseOrderD.DocNo
-                }
-            })
-            res.status(200).json({ msg: "data Deleted" })
-        } catch (error) {
-            res.status(500).json({ msg: error.message })
-        }
+        res.status(200).json({ msg: "data Deleted" })
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
     }
+}
 
 
