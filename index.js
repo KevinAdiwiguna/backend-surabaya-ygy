@@ -30,12 +30,13 @@ import MasterSalesman from "./routes/Master/MasterSalesman.js";
 import MasterPrice from "./routes/Master/MasterPriceRoutes.js";
 import MasterSupplier from "./routes/Master/MasterSupplierRoutes.js";
 import MasterDepartment from "./routes/Master/MasterDepartmentRoutes.js";
-import salesOrderHeader from "./routes/Transaction/Sales/SalesOrder/SalesOrderHeader.js";
-import salesOrderDetail from "./routes/Transaction/Sales/SalesOrder/SalesOrderDetail.js";
+import SalesOrderHeader from "./routes/Transaction/Sales/SalesOrder/SalesOrderHeader.js";
+import SalesOrderDetail from "./routes/Transaction/Sales/SalesOrder/SalesOrderDetail.js";
 import PurhaseRequestHeader from "./routes/Transaction/Purchase/PurchaseRequestHeader.js"
 import PurchaseRequestDetail from "./routes/Transaction/Purchase/PurchaseRequestDetail.js"
 import PurchaseOrderHeader from "./routes/Transaction/Purchase/PurchaseOrderHeader.js"
 import PurchaseOrderDetail from "./routes/Transaction/Purchase/PurchaseOrderDetail.js"
+import MasterPeriode from './routes/Master/MasterPeriode.js'
 
 
 dotenv.config();
@@ -97,12 +98,13 @@ const routes = [
   MasterPrice,
   MasterSupplier,
   MasterDepartment,
-  salesOrderDetail,
-  salesOrderHeader,
+  SalesOrderDetail,
+  SalesOrderHeader,
   PurhaseRequestHeader,
   PurchaseRequestDetail,
   PurchaseOrderHeader,
-  PurchaseOrderDetail
+  PurchaseOrderDetail,
+  MasterPeriode
 ];
 
 routes.forEach((route) => {
