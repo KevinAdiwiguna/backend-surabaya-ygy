@@ -71,7 +71,7 @@ export const updateDepartment = async (req, res) => {
             Code: req.params.id
         }
     });
-    // if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
+    if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
     try {
         await masterDepartment.update({ 
             Name: name,
