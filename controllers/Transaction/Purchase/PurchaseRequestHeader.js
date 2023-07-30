@@ -14,7 +14,7 @@ export const getAllpurchaseRequesth = async (req, res) => {
 }
 
 export const getPurchaseRequestByCode = async (req, res) => {
-    const purchaseRequesth = await PurchaseRequesth.findOne({
+    const purchaseRequesth = await PurchaseRequesth.findAll({
         where: {
             DocNo: req.params.id
         }

@@ -6,6 +6,7 @@ import { createPurchaseRequestD, deletePurchaseRequestd, getAllpurchaseRequestd,
 const router = express.Router();
 
 router.get('/purchaserequestd', getAllpurchaseRequestd);
+router.get('/purchaserequestd/:id', getPurchaseRequestByCode);
 router.post('/purchaserequestd/:id', createPurchaseRequestD);
 router.delete('/purchaserequestd/:id', deletePurchaseRequestd);
 router.patch('/purchaserequestd/:id', updatePurchaseRequest);

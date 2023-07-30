@@ -145,6 +145,8 @@ export const createPurchaseRequestH = async (req, res) => {
             DocNo = `${series}-${generateDocDate}-0001`;
         }
 
+        
+
         const createHeader = await purchaseOrderHeader.create({
             DocNo: DocNo,
             Series: series,
