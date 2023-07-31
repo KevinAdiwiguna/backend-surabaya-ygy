@@ -51,9 +51,6 @@ const masterdocumentseries = db.define('masterdocumentseries', {
     Iso: {
         type: DataTypes.STRING,
         allowNull: true,
-        validate: {
-            notEmpty: true,
-        }
     },
 
     CreatedBy: {
