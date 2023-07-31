@@ -1,6 +1,7 @@
 
 import SalesOrderDetail from '../../../../models/Transaction/Sales/SalesOrder/SalesOrderDetail.js'
 import SalesOrderHeader from '../../../../models/Transaction/Sales/SalesOrder/SalesOrderHeader.js'
+import SalesOrdersch from '../../../../models/Transaction/Sales/SalesOrder/SalesOrdersch.js'
 
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
@@ -27,9 +28,6 @@ export const getSalesOrderByCode = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
-
-
-
 
 export const updateSalesOrderHeader = async (req, res) => {
     try {
@@ -98,7 +96,6 @@ export const updateSalesOrderHeader = async (req, res) => {
         res.status(500).json({ msg: 'Gagal memperbarui Sales Order Header', error: error.message });
     }
 };
-
 
 export const createSalesOrderHeader = async (req, res) => {
     try {
@@ -219,6 +216,12 @@ export const createSalesOrderHeader = async (req, res) => {
                         QtyDelivered: qtyDelivered,
                         QtyWO: qtyWO,
                     });
+
+                    await SalesOrdersch.create({
+                        DocNo: DocNo,
+                        Number: number,
+                        Qty: qty,
+                    })
                 })
             );
         }
