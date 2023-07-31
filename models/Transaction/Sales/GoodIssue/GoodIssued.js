@@ -3,8 +3,8 @@ import db from '../../../../config/Database.js'
 
 const { DataTypes } = Sequelize
 
-const GoodIssueh = db.define(
-	'goodsissueh',
+const GoodIssued = db.define(
+	'goodsissued',
 	{
 		DocNo: {
 			type: DataTypes.STRING,
@@ -14,108 +14,62 @@ const GoodIssueh = db.define(
 			},
 			primaryKey: true,
 		},
-
-		Series: {
-			type: DataTypes.STRING,
+		Number: {
+			type: DataTypes.INTEGER,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 			primaryKey: true,
 		},
-		DocDate: {
-			type: DataTypes.DATE,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
-		SODocNo: {
-			type: DataTypes.STRING,
-			allowNull: true,
-			validate: {
-				notEmpty: false,
-			},
-		},
-		CustomerCode: {
+		MaterialCode: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-		ShipToCode: {
+		Info: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-
-		PONo: {
+		Location: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-		VehicleNo: {
+		BatchNo: {
 			type: DataTypes.STRING,
-			allowNull: true,
-			validate: {
-				notEmpty: false,
-			},
+			allowNull: false,
 		},
-
-		PackingListNo: {
-			type: DataTypes.STRING,
-			defaultValue: '',
-		},
-		Information: {
+		Unit: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-
-		Status: {
-			type: DataTypes.STRING,
+		Qty: {
+			type: DataTypes.DECIMAL,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-		PrintCounter: {
-			type: DataTypes.INTEGER,
+		QtyReturn: {
+			type: DataTypes.DECIMAL,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-		PrintedBy: {
-			type: DataTypes.STRING,
-			allowNull: true,
-			validate: {
-				notEmpty: false,
-			},
-		},
-		PrintedDate: {
-			type: DataTypes.DATE,
-			allowNull: true,
-			validate: {
-				notEmpty: false,
-			},
-		},
-		CreatedBy: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
-		ChangedBy: {
-			type: DataTypes.STRING,
+		QtyNetto: {
+			type: DataTypes.DECIMAL,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
@@ -124,7 +78,10 @@ const GoodIssueh = db.define(
 	},
 	{
 		freezeTableName: true,
+		timestamps: false,
+		createdAt: false,
+		updatedAt: false,
 	}
 )
 
-export default GoodIssueh
+export default GoodIssued
