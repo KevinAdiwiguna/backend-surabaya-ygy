@@ -35,44 +35,44 @@ const GoodIssued = db.define(
 			validate: {
 				notEmpty: true,
 			},
-			Location: {
-				type: DataTypes.STRING,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
+		},
+		Location: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
 			},
-			BatchNo: {
-				type: DataTypes.STRING,
-				allowNull: false,
+		},
+		BatchNo: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		Unit: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
 			},
-			Unit: {
-				type: DataTypes.STRING,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
+		},
+		Qty: {
+			type: DataTypes.DECIMAL,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
 			},
-			Qty: {
-				type: DataTypes.DECIMAL,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
+		},
+		QtyReturn: {
+			type: DataTypes.DECIMAL,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
 			},
-			QtyReturn: {
-				type: DataTypes.DECIMAL,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
-			},
-			QtyNetto: {
-				type: DataTypes.DECIMAL,
-				allowNull: false,
-				validate: {
-					notEmpty: true,
-				},
+		},
+		QtyNetto: {
+			type: DataTypes.DECIMAL,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
 			},
 		},
 	},
