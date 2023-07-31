@@ -1,5 +1,5 @@
 import express from 'express'
-import { createGoodIssueh, getAllGoodIssueh } from '../../../../controllers/Transaction/Sales/GoodsIssue/GoodIssueh.js'
+import { createGoodIssueh, getAllGoodIssueh, getGoodIssued } from '../../../../controllers/Transaction/Sales/GoodsIssue/GoodIssueh.js'
 
 const router = express.Router()
 
