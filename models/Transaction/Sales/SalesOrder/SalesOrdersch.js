@@ -41,6 +41,9 @@ const SalesOrdersch = db.define(
 	},
 	{
 		freezeTableName: true,
+		timestamps: false,
+		createdAt: false,
+		updatedAt: false,
 	}
 )
 
