@@ -98,141 +98,94 @@ export const updateSalesOrderHeader = async (req, res) => {
 };
 
 export const createSalesOrderHeader = async (req, res) => {
-    try {
-        const {
-            series,
-            docDate,
-            customerCode,
-            shipToCode,
-            taxToCode,
-            salesCode,
-            deliveryDate,
-            poNo,
-            top,
-            discPercent,
-            taxStatus,
-            taxPercent,
-            currency,
-            exchangeRate,
-            totalGross,
-            totalDisc,
-            taxValue,
-            totalNetto,
-            information,
-            status,
-            isPurchaseReturn,
-            createdBy,
-            changedBy,
-            salesOrderDetail,
-            generateDocDate
-        } = req.body;
+	try {
+		const { series, docDate, customerCode, shipToCode, taxToCode, salesCode, deliveryDate, poNo, top, discPercent, taxStatus, taxPercent, currency, exchangeRate, totalGross, totalDisc, taxValue, totalNetto, information, status, isPurchaseReturn, createdBy, changedBy, salesOrderDetail, generateDocDate } = req.body
 
-        const existingHeader = await SalesOrderHeader.findOne({
-            attributes: ['DocNo'],
-            where: {
-                DocNo: {
-                    [Op.like]: `${series}-${generateDocDate}-%`,
-                },
-            },
-            order: [
-                [sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC'],
-            ],
-            raw: true,
-            limit: 1,
-        });
+		const existingHeader = await SalesOrderHeader.findOne({
+			attributes: ['DocNo'],
+			where: {
+				DocNo: {
+					[Op.like]: `${series}-${generateDocDate}-%`,
+				},
+			},
+			order: [[sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), 'DESC']],
+			raw: true,
+			limit: 1,
+		})
 
+		let DocNo
+		if (!existingHeader) {
+			DocNo = `${series}-${generateDocDate}-0001`
+		} else {
+			const Series = parseInt(existingHeader.DocNo.split('-')[2], 10) + 1
+			DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, '0')}`
+		}
+		await SalesOrderHeader.create({
+			DocNo: DocNo,
+			Series: series,
+			DocDate: docDate,
+			CustomerCode: customerCode,
+			ShipToCode: shipToCode,
+			TaxToCode: taxToCode,
+			SalesCode: salesCode,
+			DeliveryDate: deliveryDate,
+			PONo: poNo,
+			TOP: top,
+			DiscPercent: discPercent,
+			TaxStatus: taxStatus,
+			TaxPercent: taxPercent,
+			Currency: currency,
+			ExchangeRate: exchangeRate,
+			TotalGross: totalGross,
+			TotalDisc: totalDisc,
+			TaxValue: taxValue,
+			TotalNetto: totalNetto,
+			Information: information,
+			Status: status,
+			IsPurchaseReturn: isPurchaseReturn,
+			CreatedBy: createdBy,
+			ChangedBy: changedBy,
+		})
 
-        let DocNo;
-        if (existingHeader) {
-            const Series = parseInt(existingHeader.DocNo.split('-')[2], 10) + 1;
-            DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, '0')}`;
-        } else {
-            DocNo = `${series}-${generateDocDate}-0001`;
-        }
+		if (salesOrderDetail && Array.isArray(salesOrderDetail)) {
+			await Promise.all(
+				salesOrderDetail.map(async (detail) => {
+					const { number, materialCode, info, unit, qty, price, gross, discPercent1, discPercent2, discPercent3, discValue, discNominal, netto, qtyDelivered, qtyWO } = detail
 
-        const createdHeader = await SalesOrderHeader.create({
-            DocNo: DocNo,
-            Series: series,
-            DocDate: docDate,
-            CustomerCode: customerCode,
-            ShipToCode: shipToCode,
-            TaxToCode: taxToCode,
-            SalesCode: salesCode,
-            DeliveryDate: deliveryDate,
-            PONo: poNo,
-            TOP: top,
-            DiscPercent: discPercent,
-            TaxStatus: taxStatus,
-            TaxPercent: taxPercent,
-            Currency: currency,
-            ExchangeRate: exchangeRate,
-            TotalGross: totalGross,
-            TotalDisc: totalDisc,
-            TaxValue: taxValue,
-            TotalNetto: totalNetto,
-            Information: information,
-            Status: status,
-            IsPurchaseReturn: isPurchaseReturn,
-            CreatedBy: createdBy,
-            ChangedBy: changedBy,
-        });
+					await SalesOrderDetail.create({
+						DocNo: DocNo,
+						Number: number,
+						MaterialCode: materialCode,
+						Info: info,
+						Unit: unit,
+						Qty: qty,
+						Price: price,
+						Gross: gross,
+						DiscPercent: discPercent1,
+						DiscPercent2: discPercent2,
+						DiscPercent3: discPercent3,
+						DiscValue: discValue,
+						DiscNominal: discNominal,
+						Netto: netto,
+						QtyDelivered: qtyDelivered,
+						QtyWO: qtyWO,
+					})
+					await SalesOrdersch.create({
+						DocNo: DocNo,
+						Number: number,
+						Qty: qty,
+						DeliveryDate: docDate,
+					})
+				})
+			)
+		}
 
-        if (salesOrderDetail && Array.isArray(salesOrderDetail)) {
-            await Promise.all(
-                salesOrderDetail.map(async (detail) => {
-                    const {
-                        number,
-                        materialCode,
-                        info,
-                        unit,
-                        qty,
-                        price,
-                        gross,
-                        discPercent1,
-                        discPercent2,
-                        discPercent3,
-                        discValue,
-                        discNominal,
-                        netto,
-                        qtyDelivered,
-                        qtyWO,
-                    } = detail;
-
-                    await SalesOrderDetail.create({
-                        DocNo: DocNo,
-                        Number: number,
-                        MaterialCode: materialCode,
-                        Info: info,
-                        Unit: unit,
-                        Qty: qty,
-                        Price: price,
-                        Gross: gross,
-                        DiscPercent: discPercent1,
-                        DiscPercent2: discPercent2,
-                        DiscPercent3: discPercent3,
-                        DiscValue: discValue,
-                        DiscNominal: discNominal,
-                        Netto: netto,
-                        QtyDelivered: qtyDelivered,
-                        QtyWO: qtyWO,
-                    });
-
-                    await SalesOrdersch.create({
-                        DocNo: DocNo,
-                        Number: number,
-                        Qty: qty,
-                    })
-                })
-            );
-        }
-
-        res.status(200).json(createdHeader);
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
-    }
-};
+		return res.status(200).json({ msg: 'Berhasil membuat data' })
+	} catch (error) {
+		console.log(error)
+		res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message })
+	}
+}
 
 export const deleteSalesOrderHeader = async (req, res) => {
     try {
