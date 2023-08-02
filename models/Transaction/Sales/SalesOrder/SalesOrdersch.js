@@ -4,7 +4,7 @@ import db from '../../../../config/Database.js'
 const { DataTypes } = Sequelize
 
 const SalesOrdersch = db.define(
-	'salesorderscsh',
+	'salesordersch',
 	{
 		DocNo: {
 			type: DataTypes.STRING,
