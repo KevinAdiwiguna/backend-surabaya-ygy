@@ -9,6 +9,6 @@ router.get('/purchaserequestd', getAllpurchaseRequestd);
 router.get('/purchaserequestd/:id', getPurchaseRequestByCode);
 router.post('/purchaserequestd/:id', createPurchaseRequestD);
 router.delete('/purchaserequestd/:id', deletePurchaseRequestd);
-router.patch('/purchaserequestd/:id', updatePurchaseRequest);
+router.patch('/purchaserequestd/:id1/:id2', updatePurchaseRequest);
 
 export default router;

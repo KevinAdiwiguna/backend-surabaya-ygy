@@ -5,11 +5,7 @@ import { Op } from 'sequelize'
 
 export const getAllpurchaseRequestd = async (req, res) => {
     try {
-        const response = await PurchaseRequestd.findAll({
-            where: {
-                DocNo: req.params.id,
-            },
-        });
+        const response = await PurchaseRequestd.findAll();
         res.status(200).json(response)
     } catch (error) {
         res.status(500).json({ msg: error.message })
@@ -19,7 +15,7 @@ export const getAllpurchaseRequestd = async (req, res) => {
 export const getPurchaseRequestByCode = async (req, res) => {
     const purchaseRequestd = await PurchaseRequestd.findAll({
         where: {
-            DocNo: req.params.id
+            DocNo: req.params.id,
         }
     })
     if (!purchaseRequestd) return res.status(400).json({ msg: "data tidak ditemukan" })
@@ -33,7 +29,7 @@ export const getPurchaseRequestByCode = async (req, res) => {
 export const updatePurchaseRequest = async (req, res) => {
     const { docNo, materialCode, info, unit, qty, qtyPO, requiredDate } = req.body
 
-    if (!req.params.id) {
+    if (!req.params.id1 || !req.params.id2) {
         return res
             .status(400)
             .json({ msg: "Invalid parameters. Both id1 and id2 are required." });
@@ -42,16 +38,14 @@ export const updatePurchaseRequest = async (req, res) => {
     try {
         const purchaseRequestd = await PurchaseRequestd.findOne({
             where: {
-                DocNo: req.params.id
+                DocNo: req.params.id1,
+                MaterialCode: req.params.id2
             },
         });
 
         if (!purchaseRequestd) return res.status(400).json({ msg: "data tidak ditemukan" })
 
         const updatedData = {
-
-            DocNo: docNo || purchaseRequestd.DocNo,
-            MaterialCode: materialCode || purchaseRequestd.MaterialCode,
             Info: info || purchaseRequestd.Info,
             Unit: unit || purchaseRequestd.Unit,
             Qty: qty || purchaseRequestd.Qty,
@@ -64,7 +58,8 @@ export const updatePurchaseRequest = async (req, res) => {
             updatedData,
             {
                 where: {
-                    DocNo: req.params.id,
+                    DocNo: req.params.id1,
+                    MaterialCode: req.params.id2
                 },
                 returning: true,
             }
