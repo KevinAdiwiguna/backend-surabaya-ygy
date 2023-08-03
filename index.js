@@ -39,6 +39,7 @@ import PurchaseOrderDetail from "./routes/Transaction/Purchase/PurchaseOrderDeta
 import MasterPeriode from './routes/Master/MasterPeriode.js'
 import MasterApproval from './routes/Master/MasterApproval.js'
 import GoodIssueh from "./routes/Transaction/Sales/GoodsIssue/GoodsIssueh.js";
+import MasterBillofMaterial from "./routes/Master/Production/BOMRoutes.js";
 
 
 
@@ -109,7 +110,9 @@ const routes = [
   PurchaseOrderDetail,
   MasterPeriode,
   MasterApproval,
-  GoodIssueh
+  GoodIssueh,
+
+  MasterBillofMaterial
 ];
 
 routes.forEach((route) => {

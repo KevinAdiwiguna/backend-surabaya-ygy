@@ -5,11 +5,11 @@ const router = express.Router();
 
 import { verifyUser } from "../../middleware/AuthUser.js";
 
-router.get('/supplier', getAllSupplier);
-router.patch('/supplier/:id', updateSupplier);
-router.post('/supplier', createSupplier);
-router.delete('/supplier/:id', deleteSupplier);
-router.get('/supplier/:id', getSupplierByCode);
+router.get('/supplier', verifyUser, getAllSupplier);
+router.patch('/supplier/:id', verifyUser, updateSupplier);
+router.post('/supplier', verifyUser, createSupplier);
+router.delete('/supplier/:id', verifyUser, deleteSupplier);
+router.get('/supplier/:id', verifyUser, getSupplierByCode);
 
 export default router;
 

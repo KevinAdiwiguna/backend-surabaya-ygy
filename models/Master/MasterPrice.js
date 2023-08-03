@@ -85,15 +85,15 @@ const masterprice = db.define('masterprice',{
 
 	PercentDisc: {
 		type: DataTypes.DECIMAL,
-		allowNull: false,
+		allowNull: true,
 		validate: {
-			notEmpty: false
+			notEmpty: true
 		},
 	},
 
 	ValueDisc: {
 		type: DataTypes.DECIMAL,
-		allowNull: false,
+		allowNull: true,
 		validate: {
 			notEmpty: false
 		},
