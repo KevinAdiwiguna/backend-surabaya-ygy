@@ -25,9 +25,6 @@ const purchaseOrderH = db.define('purchaseorderh', {
     TransactionType:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     DocDate:{
@@ -66,9 +63,6 @@ const purchaseOrderH = db.define('purchaseorderh', {
     DiscPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     TaxStatus:{
@@ -82,9 +76,6 @@ const purchaseOrderH = db.define('purchaseorderh', {
     TaxPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     Currency:{
@@ -107,25 +98,16 @@ const purchaseOrderH = db.define('purchaseorderh', {
     JODocNo:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     Trip:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     SIDocNo:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     TotalGross: {
@@ -139,17 +121,11 @@ const purchaseOrderH = db.define('purchaseorderh', {
     TotalDisc: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     TaxValue: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     TotalNetto: {
@@ -171,9 +147,6 @@ const purchaseOrderH = db.define('purchaseorderh', {
     Information:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     Status:{
@@ -187,49 +160,31 @@ const purchaseOrderH = db.define('purchaseorderh', {
     IsApproved:{
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        validate: {
-            notEmpty: false
-        },
     },
 
     ApprovedBy:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: false
-        },
     },
 
     ApprovedDate:{
         type: DataTypes.DATE,
         allowNull: false,
-        validate: {
-            notEmpty: false
-        },
     },
 
     PrintCounter: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     PrintedBy:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     PrintedDate:{
         type: DataTypes.DATE,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     IsSalesReturn:{
