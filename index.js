@@ -39,6 +39,8 @@ import PurchaseOrderDetail from "./routes/Transaction/Purchase/PurchaseOrderDeta
 import MasterPeriode from './routes/Master/MasterPeriode.js'
 import MasterApproval from './routes/Master/MasterApproval.js'
 import GoodIssue from "./routes/Transaction/Sales/GoodsIssue/GoodsIssue.js";
+import PurchaseCostHeader from "./routes/Transaction/Purchase/PurchaseCostHeader.js"
+import PurchaseCostDetail from "./routes/Transaction/Purchase/PurchaseCostDetail.js"
 
 
 
@@ -109,7 +111,9 @@ const routes = [
   PurchaseOrderDetail,
   MasterPeriode,
   MasterApproval,
-  GoodIssue
+  GoodIssue,
+  PurchaseCostHeader,
+  PurchaseCostDetail
 ];
 
 routes.forEach((route) => {

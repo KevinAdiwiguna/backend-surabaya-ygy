@@ -267,28 +267,25 @@ export const createPurchaseRequestH = async (req, res) => {
     }
 };
 
-
-
-
-
-
-
-
-
-
 export const deletePurchaseOrderHeader = async (req, res) => {
+    try {
     const delPurchaseOrderH = await purchaseOrderHeader.findOne({
+        
         where: {
             DocNo: req.params.id
         }
     })
     if (!delPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
-    try {
-        await purchaseOrderHeader.destroy({
+    
+    await purchaseOrderHeader.update(
+        { Status: "DELETED" },
+        {
             where: {
                 DocNo: delPurchaseOrderH.DocNo
             }
-        })
+        }
+    );
+
         res.status(200).json({ msg: "data Deleted" })
     } catch (error) {
         res.status(500).json({ msg: error.message })
