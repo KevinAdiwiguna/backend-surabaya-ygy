@@ -1,21 +1,60 @@
 import GoodIssueh from '../../../../models/Transaction/Sales/GoodIssue/GoodIssueh.js'
 import GoodIssued from '../../../../models/Transaction/Sales/GoodIssue/GoodIssued.js'
+import SalesOrdersch from '../../../../models/Transaction/Sales/SalesOrder/SalesOrdersch.js'
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
-import SalesOrderd from '../../../../models/Transaction/Sales/SalesOrder/SalesOrderDetail.js'
 
 export const getGoodsIssue = async (req, res) => {
-	const goodsIssueh = await GoodIssueh.findOne({
-		where: {
-			DocNo: req.params.id,
-		},
-	})
-	const goodsIssued = await GoodIssued.findAll({
-		where: {
-			DocNo: req.params.id,
-		},
-	})
-	return res.status(200).json({ goodsissueh: goodsIssueh, goodsissued: goodsIssued })
+	try {
+		const salesordersch = await SalesOrdersch.findAll({
+			where: {
+				DocNo: req.params.id,
+			},
+			attributes: ['Qty', 'Number'],
+		})
+
+		const goodsissueh = await GoodIssueh.findAll({
+			where: {
+				SODocNo: req.params.id,
+			},
+			attributes: ['DocNo'],
+		})
+
+		const docNosArray = goodsissueh.map((g) => g.DocNo)
+
+		const goodsissued = await GoodIssued.findAll({
+			where: {
+				DocNo: {
+					[Op.in]: docNosArray,
+				},
+			},
+		})
+
+		const qtyTotalByNumber = {}
+
+		goodsissued.forEach((item) => {
+			if (qtyTotalByNumber[item.Number]) {
+				qtyTotalByNumber[item.Number] += parseFloat(item.Qty)
+			} else {
+				qtyTotalByNumber[item.Number] = parseFloat(item.Qty)
+			}
+		})
+
+		// Menghitung selisih antara salesordersch dan qtyTotalByNumber berdasarkan Number
+		const result = salesordersch.map((item) => {
+			const number = item.Number.toString()
+			const qtyFromGoodsIssued = qtyTotalByNumber[number] || 0 // Jika tidak ada di qtyTotalByNumber, maka dianggap 0
+
+			// Menghitung selisihnya
+			const qtyDifference = parseFloat(item.Qty) - qtyFromGoodsIssued
+
+			return { [number]: qtyDifference }
+		})
+
+		return res.json(result)
+	} catch (error) {
+		return res.json(error.message)
+	}
 }
 
 export const createGoodsIssue = async (req, res) => {
@@ -32,15 +71,6 @@ export const createGoodsIssue = async (req, res) => {
 		raw: true,
 		limit: 1,
 	})
-
-	const getDocNo = await SalesOrderd.findAll({
-		where: {
-			DocNo: soDocNo,
-		},
-	})
-
-	return res.json(getDocNo)
-
 
 	let DocNo
 	if (!existingHeader) {
