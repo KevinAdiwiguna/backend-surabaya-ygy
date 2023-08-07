@@ -4,7 +4,7 @@ import { getAllpurchaseOrderDetail, getPurchaseOrderByCode, deletePurchaseOrderD
 const router = express.Router();
 
 router.get('/purchaseorderd/:id', getAllpurchaseOrderDetail);
-router.post('/purchaseorderd', createPurchaseOrderD);
+router.post('/purchaseorderd/:id', createPurchaseOrderD);
 router.delete('/purchaseorderd/:id', deletePurchaseOrderDetail);
 router.patch('/purchaseorderd/:id1/:id2', updatePurchaseRequest);
 
