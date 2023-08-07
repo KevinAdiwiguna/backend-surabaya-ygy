@@ -42,37 +42,37 @@ export const updatePurchaseRequest = async (req, res) => {
     try {
         await purchaseOrderHeader.update({
 
-            DocNo: docNo,
-            Series: series,
-            TransactionType: transactionType,
-            DocDate: docDate,
-            supplierCode: supplierCode,
-            deliveryDate: deliveryDate,
-            TOP: TOP,
-            DiscPercent: discPercent,
-            TaxStatus: taxStatus,
-            TaxPercent: taxPercent,
-            Currency: currency,
-            ExchangeRate: exchangeRate,
-            JODocNo: JODocNo,
-            Trip: trip,
-            SIDocNo: SIDocNo,
-            TotalGross: totalGross,
-            TotalDisc: totalDisc,
-            TaxValue: taxValue,
-            TotalNetto: totalNetto,
-            SendTo: sendTo,
-            IsApproved: isApproved,
-            ApprovedBy: approvedBy,
-            ApprovedDate: approvedDate,
-            PrintCounter: printCounter,
-            PrintedBy: printedBy,
-            PrintedDate: printedDate,
-            IsSalesReturn: isSalesReturn,
-            Information: information,
-            Status: status,
-            CreatedBy: createdBy,
-            ChangedBy: changedBy
+            DocNo: docNo || updPurchaseOrderH.DocNo,
+            Series: series || updPurchaseOrderH.Series,
+            TransactionType: transactionType || updPurchaseOrderH.TransactionType,
+            DocDate: docDate || updPurchaseOrderH.DocDate,
+            SupplierCode: supplierCode || updPurchaseOrderH.SupplierCode,
+            DeliveryDate: deliveryDate || updPurchaseOrderH.DeliveryDate,
+            TOP: TOP || updPurchaseOrderH.TOP,
+            DiscPercent: discPercent || updPurchaseOrderH.DiscPercent,
+            TaxStatus: taxStatus || updPurchaseOrderH.TaxStatus,
+            TaxPercent: taxPercent || updPurchaseOrderH.TaxPercent,
+            Currency: currency || updPurchaseOrderH.Currency,
+            ExchangeRate: exchangeRate || updPurchaseOrderH.ExchangeRate,
+            JODocNo: JODocNo || updPurchaseOrderH.JODocNo,
+            Trip: trip || updPurchaseOrderH.Trip,
+            SIDocNo: SIDocNo || updPurchaseOrderH.SIDocNo,
+            TotalGross: totalGross || updPurchaseOrderH.TotalGross,
+            TotalDisc: totalDisc || updPurchaseOrderH.TotalDisc,
+            TaxValue: taxValue || updPurchaseOrderH.TaxValue,
+            TotalNetto: totalNetto || updPurchaseOrderH.TotalNetto,
+            SendTo: sendTo || updPurchaseOrderH.SendTo,
+            IsApproved: isApproved || updPurchaseOrderH.IsApproved,
+            ApprovedBy: approvedBy || updPurchaseOrderH.ApprovedBy,
+            ApprovedDate: approvedDate || updPurchaseOrderH.ApprovedDate,
+            PrintCounter: printCounter || updPurchaseOrderH.PrintCounter,
+            PrintedBy: printedBy || updPurchaseOrderH.PrintedBy,
+            PrintedDate: printedDate || updPurchaseOrderH.PrintedDate,
+            IsSalesReturn: isSalesReturn || updPurchaseOrderH.IsSalesReturn,
+            Information: information || updPurchaseOrderH.Information,
+            Status: status || updPurchaseOrderH.Status,
+            CreatedBy: createdBy || updPurchaseOrderH.CreatedBy,
+            ChangedBy: changedBy || updPurchaseOrderH.ChangedBy
         }, {
             where: {
                 DocNo: updPurchaseOrderH.DocNo
@@ -266,28 +266,25 @@ export const createPurchaseRequestH = async (req, res) => {
     }
 };
 
-
-
-
-
-
-
-
-
-
 export const deletePurchaseOrderHeader = async (req, res) => {
+    try {
     const delPurchaseOrderH = await purchaseOrderHeader.findOne({
+        
         where: {
             DocNo: req.params.id
         }
     })
     if (!delPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
-    try {
-        await purchaseOrderHeader.destroy({
+    
+    await purchaseOrderHeader.update(
+        { Status: "DELETED" },
+        {
             where: {
                 DocNo: delPurchaseOrderH.DocNo
             }
-        })
+        }
+    );
+
         res.status(200).json({ msg: "data Deleted" })
     } catch (error) {
         res.status(500).json({ msg: error.message })
