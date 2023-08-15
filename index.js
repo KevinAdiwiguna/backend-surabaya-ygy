@@ -115,7 +115,7 @@ const routes = [
   PurchaseOrderHeader,
   PurchaseOrderDetail,
   PurchaseCostHeader,
-  PurchaseCostDetail
+  PurchaseCostDetail,
   MasterPeriode,
   MasterApproval,
   MasterBomh,
