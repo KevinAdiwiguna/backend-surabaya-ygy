@@ -3,7 +3,7 @@ import db from '../../../../config/Database.js'
 
 const { DataTypes } = Sequelize
 
-
+	
 //table 1
 const masterBomh = db.define(
 	'masterbomh',
@@ -22,7 +22,6 @@ const masterBomh = db.define(
 			validate: {
 				notEmpty: true,
 			},
-			primaryKey: true,
 		},
 		Unit: {
 			type: DataTypes.STRING,
@@ -40,13 +39,6 @@ const masterBomh = db.define(
 		},
 		IsAverageCOGM: {
 			type: DataTypes.BOOLEAN,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
-		PercentValue: {
-			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: true,

@@ -4,9 +4,9 @@ import db from '../../../../config/Database.js'
 const { DataTypes } = Sequelize
 
 
-//table 2
-const masterBomd = db.define(
-	'masterbomd',
+//table 3
+const masterBomCoProduct = db.define(
+	'masterbomcoproduct',
 	{
 		Formula: {
 			type: DataTypes.STRING,
@@ -37,11 +37,21 @@ const masterBomd = db.define(
 			validate: {
 				notEmpty: true,
 			},
-		}
+		},
+		PercentValue: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
+			},
+		},
+
 	},
 	{
 		freezeTableName: true,
+		createdAt: false,
+		updatedAt: false
 	}
 )
 
-export default masterBomd;
+export default masterBomCoProduct;

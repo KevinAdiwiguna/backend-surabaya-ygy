@@ -39,9 +39,9 @@ import PurchaseOrderDetail from "./routes/Transaction/Purchase/PurchaseOrderDeta
 import MasterPeriode from './routes/Master/MasterPeriode.js'
 import MasterApproval from './routes/Master/MasterApproval.js'
 import GoodIssueh from "./routes/Transaction/Sales/GoodsIssue/GoodsIssueh.js";
-import MasterBillofMaterial from "./routes/Master/Production/BOMRoutes.js";
-
-
+import MasterBomh from "./routes/Master/Production/MasterBomhRoutes.js";
+import MasterBomd from "./routes/Master/Production/MasterBomdRoutes.js";
+import MasterBomCoProduct from "./routes/Master/Production/MasterBomCoProductRoutes.js"
 
 dotenv.config();
 
@@ -111,8 +111,9 @@ const routes = [
   MasterPeriode,
   MasterApproval,
   GoodIssueh,
-
-  MasterBillofMaterial
+  MasterBomh,
+  MasterBomd,
+  MasterBomCoProduct
 ];
 
 routes.forEach((route) => {
