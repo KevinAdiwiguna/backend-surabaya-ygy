@@ -40,9 +40,10 @@ import PurchaseCostHeader from "./routes/Transaction/Purchase/PurchaseCostHeader
 import PurchaseCostDetail from "./routes/Transaction/Purchase/PurchaseCostDetail.js"
 import MasterPeriode from './routes/Master/MasterPeriode.js'
 import MasterApproval from './routes/Master/MasterApproval.js'
-import MasterBomh from "./routes/Master/Production/MasterBomhRoutes.js";
-import MasterBomd from "./routes/Master/Production/MasterBomdRoutes.js";
-import MasterBomCoProduct from "./routes/Master/Production/MasterBomCoProductRoutes.js"
+import MasterBomh from "./routes/Master/Production/BOM/MasterBomhRoutes.js";
+import MasterBomd from "./routes/Master/Production/BOM/MasterBomdRoutes.js";
+import MasterBomCoProduct from "./routes/Master/Production/BOM/MasterBomCoProductRoutes.js";
+import MasterDownTimeReason from "./routes/Master/Production/MasterDownTimeReasonRoutes.js";
 import GoodIssue from "./routes/Transaction/Sales/GoodsIssue/GoodsIssue.js";
 
 
@@ -121,6 +122,7 @@ const routes = [
   MasterBomh,
   MasterBomd,
   MasterBomCoProduct,
+  MasterDownTimeReason,
   GoodIssue,
 
 ];
