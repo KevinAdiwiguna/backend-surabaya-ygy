@@ -145,12 +145,50 @@ const jobOrder = db.define('joborder', {
         },
     },
 
-    SendTo:{
+    Formula:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
+    },
+
+    MaterialCode :{
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
+    Unit :{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    QtyTarget:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+    },
+
+    QtyOutput:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+    },
+
+    CheckQtyOutput:{
+        type: DataTypes.BIT,
+        allowNull: false,
+    },
+
+    TotalCost: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+    },
+
+    Status:{
+        type: DataTypes.STRING,
+        allowNull: false,
     },
 
     Information:{
@@ -158,51 +196,6 @@ const jobOrder = db.define('joborder', {
         allowNull: false,
     },
 
-    Status:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    IsApproved:{
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-    },
-
-    ApprovedBy:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    ApprovedDate:{
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-
-    PrintCounter: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-
-    PrintedBy:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    PrintedDate:{
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-
-    IsSalesReturn:{
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
 
     CreatedBy:{
         type: DataTypes.STRING,
@@ -227,4 +220,4 @@ const jobOrder = db.define('joborder', {
     updatedAt: false
 });
 
-export default purchaseOrderH;
+export default jobOrder;
