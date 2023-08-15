@@ -94,7 +94,8 @@ export const getAreaByArea2 = async (req, res) => {
     try {
         const response = await salesArea3.findAll({
             where: {
-                Area2: req.params.id
+                Area1: req.params.id1,
+                Area2: req.params.id2
             }
         });
         res.status(200).json(response);
