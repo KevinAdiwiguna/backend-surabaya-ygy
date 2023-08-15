@@ -1,4 +1,4 @@
-import masterBomd from "../../../models/Master/Production/BOM/MasterBomdModels.js"
+import masterBomd from "../../../../models/Master/Production/BOM/MasterBomdModels.js"
 import { Op } from "sequelize";
 
 export const getAllBomd = async (req, res) => {

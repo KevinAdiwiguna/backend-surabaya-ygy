@@ -1,4 +1,4 @@
-import masterBomh from "../../../models/Master/Production/BOM/MasterBomhModels.js"
+import masterBomh from "../../../../models/Master/Production/BOM/MasterBomhModels.js"
 // import { Op } from "sequelize";
 
 export const getAllBomh = async (req, res) => {

@@ -1,4 +1,4 @@
-import masterBomcoProduct from "../../../models/Master/Production/BOM/MasterBomCoProductModels.js"
+import masterBomcoProduct from "../../../../models/Master/Production/BOM/MasterBomCoProductModels.js"
 import { Op } from "sequelize";
 
 export const getAllBomcoProduct = async (req, res) => {
