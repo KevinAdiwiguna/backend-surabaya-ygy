@@ -36,11 +36,16 @@ import PurhaseRequestHeader from "./routes/Transaction/Purchase/PurchaseRequestH
 import PurchaseRequestDetail from "./routes/Transaction/Purchase/PurchaseRequestDetail.js"
 import PurchaseOrderHeader from "./routes/Transaction/Purchase/PurchaseOrderHeader.js"
 import PurchaseOrderDetail from "./routes/Transaction/Purchase/PurchaseOrderDetail.js"
-import MasterPeriode from './routes/Master/MasterPeriode.js'
-import MasterApproval from './routes/Master/MasterApproval.js'
-import GoodIssue from "./routes/Transaction/Sales/GoodsIssue/GoodsIssue.js";
 import PurchaseCostHeader from "./routes/Transaction/Purchase/PurchaseCostHeader.js"
 import PurchaseCostDetail from "./routes/Transaction/Purchase/PurchaseCostDetail.js"
+import MasterPeriode from './routes/Master/MasterPeriode.js'
+import MasterApproval from './routes/Master/MasterApproval.js'
+import MasterBomh from "./routes/Master/Production/MasterBomhRoutes.js";
+import MasterBomd from "./routes/Master/Production/MasterBomdRoutes.js";
+import MasterBomCoProduct from "./routes/Master/Production/MasterBomCoProductRoutes.js"
+import GoodIssue from "./routes/Transaction/Sales/GoodsIssue/GoodsIssue.js";
+
+
 
 
 
@@ -109,11 +114,15 @@ const routes = [
   PurchaseRequestDetail,
   PurchaseOrderHeader,
   PurchaseOrderDetail,
+  PurchaseCostHeader,
+  PurchaseCostDetail,
   MasterPeriode,
   MasterApproval,
+  MasterBomh,
+  MasterBomd,
+  MasterBomCoProduct,
   GoodIssue,
-  PurchaseCostHeader,
-  PurchaseCostDetail
+
 ];
 
 routes.forEach((route) => {

@@ -20,7 +20,7 @@ export const createMasterApproval = async (req, res) => {
             ]
         }
     })
-    if (validation) return res.status(400).json({ msg: "Approval udah ada" })
+    if (validation) return res.status(400).json({ msg: "Approval udah ada" });
     try {
         await MasterApproval.create({
             Series: series,

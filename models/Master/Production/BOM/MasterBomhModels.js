@@ -3,19 +3,13 @@ import db from '../../../../config/Database.js'
 
 const { DataTypes } = Sequelize
 
-const GoodIssued = db.define(
-	'goodsissued',
+	
+//table 1
+const masterBomh = db.define(
+	'masterbomh',
 	{
-		DocNo: {
+		Formula: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-			primaryKey: true,
-		},
-		Number: {
-			type: DataTypes.INTEGER,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
@@ -28,24 +22,6 @@ const GoodIssued = db.define(
 			validate: {
 				notEmpty: true,
 			},
-		},
-		Info: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
-		Location: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
-		BatchNo: {
-			type: DataTypes.STRING,
-			allowNull: true,
 		},
 		Unit: {
 			type: DataTypes.STRING,
@@ -61,15 +37,22 @@ const GoodIssued = db.define(
 				notEmpty: true,
 			},
 		},
-		QtyReturn: {
-			type: DataTypes.DECIMAL,
+		IsAverageCOGM: {
+			type: DataTypes.BOOLEAN,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-		QtyNetto: {
-			type: DataTypes.DECIMAL,
+		CreatedBy: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: true,
+			},
+		},
+		ChangedBy: {
+			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
@@ -78,10 +61,10 @@ const GoodIssued = db.define(
 	},
 	{
 		freezeTableName: true,
-		timestamps: false,
-		createdAt: false,
-		updatedAt: false,
 	}
 )
 
-export default GoodIssued
+export default masterBomh;
+
+
+

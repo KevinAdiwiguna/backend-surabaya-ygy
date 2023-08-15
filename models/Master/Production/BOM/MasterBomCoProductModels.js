@@ -3,19 +3,13 @@ import db from '../../../../config/Database.js'
 
 const { DataTypes } = Sequelize
 
-const GoodIssued = db.define(
-	'goodsissued',
+
+//table 3
+const masterBomCoProduct = db.define(
+	'masterbomcoproduct',
 	{
-		DocNo: {
+		Formula: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-			primaryKey: true,
-		},
-		Number: {
-			type: DataTypes.INTEGER,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
@@ -28,24 +22,7 @@ const GoodIssued = db.define(
 			validate: {
 				notEmpty: true,
 			},
-		},
-		Info: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
-		Location: {
-			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
-		BatchNo: {
-			type: DataTypes.STRING,
-			allowNull: true,
+			primaryKey: true,
 		},
 		Unit: {
 			type: DataTypes.STRING,
@@ -61,27 +38,20 @@ const GoodIssued = db.define(
 				notEmpty: true,
 			},
 		},
-		QtyReturn: {
-			type: DataTypes.DECIMAL,
+		PercentValue: {
+			type: DataTypes.STRING,
 			allowNull: false,
 			validate: {
 				notEmpty: true,
 			},
 		},
-		QtyNetto: {
-			type: DataTypes.DECIMAL,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		},
+
 	},
 	{
 		freezeTableName: true,
-		timestamps: false,
 		createdAt: false,
-		updatedAt: false,
+		updatedAt: false
 	}
 )
 
-export default GoodIssued
+export default masterBomCoProduct;
