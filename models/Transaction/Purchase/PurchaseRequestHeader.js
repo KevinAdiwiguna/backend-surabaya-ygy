@@ -41,31 +41,6 @@ const purchaseRequestHeader = db.define(
 			allowNull: true,
 		},
 
-
-    JODocNo:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: false
-        },
-    },
-
-    Trip:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: false
-        },
-    },
-
-    Department:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: false
-        },
-    },
-
 		Department: {
 			type: DataTypes.STRING,
 			allowNull: true,

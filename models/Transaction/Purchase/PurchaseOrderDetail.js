@@ -74,33 +74,21 @@ const purchaseOrderD = db.define('purchaseorderd', {
     DiscPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     DiscPercent2: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     DiscPercent3: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     DiscValue: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     DiscNominal: {

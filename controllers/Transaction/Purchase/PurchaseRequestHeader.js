@@ -14,7 +14,7 @@ export const getAllpurchaseRequesth = async (req, res) => {
 }
 
 export const getPurchaseRequestByCode = async (req, res) => {
-    const purchaseRequesth = await PurchaseRequesth.findOne({
+    const purchaseRequesth = await PurchaseRequesth.findAll({
         where: {
             DocNo: req.params.id
         }
@@ -162,10 +162,6 @@ export const createPurchaseRequestH = async (req, res) => {
         res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
     }
 };
-
-
-
-
 
 export const deletePurchaseRequesth = async (req, res) => {
     try {

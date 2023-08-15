@@ -6,6 +6,6 @@ const router = express.Router();
 router.get('/purchaseorderd/:id', getAllpurchaseOrderDetail);
 router.post('/purchaseorderd', createPurchaseOrderD);
 router.delete('/purchaseorderd/:id', deletePurchaseOrderDetail);
-router.patch('/purchaseorderd/:id', updatePurchaseRequest);
+router.patch('/purchaseorderd/:id1/:id2', updatePurchaseRequest);
 
 export default router;

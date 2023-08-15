@@ -3,7 +3,7 @@ import db from "../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const purchaseOrderH = db.define('purchaseorderh', {
+const jobOrder = db.define('joborder', {
 
     DocNo:{
         type: DataTypes.STRING,
@@ -11,7 +11,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
         validate: {
             notEmpty: true
         },
-        primaryKey: true
+        primaryKey: true    
     },
 
     Series:{
@@ -22,12 +22,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
         },
     },
 
-    TransactionType:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    DocDate:{
+    PlannedStartDate:{
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
@@ -35,15 +30,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
         },
     },
 
-    SupplierCode:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    DeliveryDate:{
+    PlannedFinishDate:{
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
@@ -51,21 +38,47 @@ const purchaseOrderH = db.define('purchaseorderh', {
         },
     },
 
-    TOP: {
-        type: DataTypes.INTEGER,
+    ActualStartDate:{
+        type: DataTypes.DATE,
         allowNull: false,
         validate: {
             notEmpty: true
         },
-        primaryKey: true
     },
 
-    DiscPercent: {
-        type: DataTypes.DECIMAL,
+    ActualStartTime:{
+        type: DataTypes.TIME,
         allowNull: false,
+        validate: {
+            notEmpty: true
+        },
     },
 
-    TaxStatus:{
+    ActualFinishDate:{
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    ActualFinishTime:{
+        type: DataTypes.TIME,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    RequiredDate:{
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    SODocNo:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -73,21 +86,8 @@ const purchaseOrderH = db.define('purchaseorderh', {
         },
     },
 
-    TaxPercent: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-    },
-
-    Currency:{
+    IODocNo:{
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    ExchangeRate: {
-        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
             notEmpty: true
@@ -95,53 +95,100 @@ const purchaseOrderH = db.define('purchaseorderh', {
     },
     
 
-    JODocNo:{
+    WODocNo:{
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notEmpty: true
+        },
     },
 
-    Trip:{
+    ParentJODocNo:{
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    SIDocNo:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    TotalGross: {
-        type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
 
-    TotalDisc: {
-        type: DataTypes.DECIMAL,
+    Level: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
 
-    TaxValue: {
-        type: DataTypes.DECIMAL,
+    Priority: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
 
-    TotalNetto: {
-        type: DataTypes.DECIMAL,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    SendTo:{
+    Location:{
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
+    },
+
+    Department:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    ExcludeCostDistribution:{
+        type: DataTypes.BIT,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    Formula:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    MaterialCode :{
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
+    Unit :{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    QtyTarget:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+    },
+
+    QtyOutput:{
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+    },
+
+    CheckQtyOutput:{
+        type: DataTypes.BIT,
+        allowNull: false,
+    },
+
+    TotalCost: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+    },
+
+    Status:{
+        type: DataTypes.STRING,
+        allowNull: false,
     },
 
     Information:{
@@ -149,51 +196,6 @@ const purchaseOrderH = db.define('purchaseorderh', {
         allowNull: false,
     },
 
-    Status:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    IsApproved:{
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-    },
-
-    ApprovedBy:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    ApprovedDate:{
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-
-    PrintCounter: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-
-    PrintedBy:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    PrintedDate:{
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-
-    IsSalesReturn:{
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
 
     CreatedBy:{
         type: DataTypes.STRING,
@@ -218,4 +220,4 @@ const purchaseOrderH = db.define('purchaseorderh', {
     updatedAt: false
 });
 
-export default purchaseOrderH;
+export default jobOrder;
