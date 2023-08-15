@@ -6,7 +6,7 @@ const router = express.Router();
 import { verifyUser } from "../../../middleware/AuthUser.js"
 
 router.get('/customer', verifyUser, getCustomerGroup);
-router.patch('/customer', verifyUser, updateCustomerGroup);
+router.patch('/customer/:id', verifyUser, updateCustomerGroup);
 router.post('/customer', verifyUser, createCustomerGroup);
 router.delete('/customer/:id', verifyUser, deleteCustomerGroup);
 router.get('/customer/:id', verifyUser, getCustomerGroupByCode);

@@ -1,5 +1,7 @@
 // import purchaseOrderHeader from '../../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
 import purchaseOrderDetail from "../../../models/Transaction/Purchase/PurchaseOrderDetail.js";
+import sequelize from "sequelize";
+import {Op} from "sequelize";
 
 export const getAllpurchaseOrderDetail = async (req, res) => {
   try {
@@ -29,7 +31,7 @@ export const getPurchaseOrderByCode = async (req, res) => {
 };
 
 export const updatePurchaseRequest = async (req, res) => {
-  const { materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyReceived} = req.body;
+  const {materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyReceived} = req.body;
 
   if (!req.params.id1 || !req.params.id2) {
     return res.status(400).json({msg: "Invalid parameters. Both id1 and id2 are required."});
@@ -46,33 +48,44 @@ export const updatePurchaseRequest = async (req, res) => {
     const updatedData = {
       MaterialCode: materialCode || dataCheck.MaterialCode,
       Info: info || dataCheck.info,
-      Unit: unit || dataCheck.unit,
-      Qty: qty || dataCheck.qty,
-      Price: price || dataCheck.price,
-      Gross: gross || dataCheck.gross,
-      DiscPercent: discPercent || dataCheck.discPercent,
-      DiscPercent2: discPercent2 || dataCheck.discPercent2,
-      DiscPercent3: discPercent3 || dataCheck.discPercent3,
-      DiscValue: discValue || dataCheck.discValue,
-      DiscNominal: discNominal || dataCheck.discNominal,
+      Unit: unit || dataCheck.Unit,
+      Qty: qty || dataCheck.Qty,
+      Price: price || dataCheck.Price,
+      Gross: gross || dataCheck.Gross,
+      DiscPercent: discPercent || dataCheck.DiscPercent,
+      DiscPercent2: discPercent2 || dataCheck.DiscPercent2,
+      DiscPercent3: discPercent3 || dataCheck.DiscPercent3,
+      DiscValue: discValue || dataCheck.DiscValue,
+      DiscNominal: discNominal || dataCheck.DiscNominal,
       Netto: netto || dataCheck.Netto,
-      QtyDelivered: QtyDelivered || dataCheck.QtyDelivered,
-      QtyWO: QtyWO || dataCheck.QtyWO,
+      qtyReceived: qtyReceived || dataCheck.QtyReceived,
     };
+
+    // const [numUpdatedRows, updatedRows] = await purchaseOrderDetail.update({
+    //   updatedData,
+    //   where {
+    //     DocNo: req.params.id1,
+    //     Number: req.params.id2,
+    //   },
+    //   {
+    //     returning: true,
+    //   }
+    // )};
 
     const [numUpdatedRows, updatedRows] = await purchaseOrderDetail.update(updatedData, {
       where: {
         DocNo: req.params.id1,
         Number: req.params.id2,
-      },
-      returning: true,
+      }, returning: true
     });
+
+
     if (numUpdatedRows === 0) {
       return res.status(200).json({msg: "No changes to update"});
     }
     res.status(200).json(updatedRows);
   } catch (error) {
-    res.status(500).json({msg: error.msg});
+    res.status(500).json({msg: error.message});
   }
 };
 
@@ -80,7 +93,7 @@ export const createPurchaseOrderD = async (req, res) => {
   const purchaseOrderDcreate = req.body;
 
   try {
-    const existingNumber = await salesOrderDetail.findOne({
+    const existingNumber = await purchaseOrderDetail.findOne({
       attributes: [[sequelize.fn("MAX", sequelize.col("Number")), "maxNumber"]],
       where: {
         DocNo: req.params.id,
@@ -94,7 +107,7 @@ export const createPurchaseOrderD = async (req, res) => {
       purchaseOrderDcreate.map(async (detail) => {
         const {materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyReceived} = detail;
 
-        const response = await salesOrderDetail.create({
+        const response = await purchaseOrderDetail.create({
           DocNo: req.params.id,
           Number: number++,
           MaterialCode: materialCode,
@@ -116,7 +129,7 @@ export const createPurchaseOrderD = async (req, res) => {
       })
     );
 
-    return res.status(201).json(createdSalesOrderDetails);
+    return res.status(201).json(createdPurchaseOrderDetails);
   } catch (error) {
     res.status(500).json({msg: error.message});
   }

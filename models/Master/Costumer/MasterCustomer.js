@@ -107,23 +107,14 @@ const mastercustomer = db.define('mastercustomer', {
     SalesArea1: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
     SalesArea2: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
     SalesArea3: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
     TOP: {
         type: DataTypes.INTEGER,
@@ -149,16 +140,10 @@ const mastercustomer = db.define('mastercustomer', {
     TransactionType: {
         type: DataTypes.STRING,
         allowNull: true,
-        validate: {
-            notEmpty: false
-        },
     },
     TransactionType2: {
         type: DataTypes.STRING,
         allowNull: true,
-        validate: {
-            notEmpty: false
-        },
     },
     CutPPh: {
         type: DataTypes.BOOLEAN,

@@ -73,6 +73,7 @@ export const updatePurchaseRequest = async (req, res) => {
             Status: status || updPurchaseOrderH.Status,
             CreatedBy: createdBy || updPurchaseOrderH.CreatedBy,
             ChangedBy: changedBy || updPurchaseOrderH.ChangedBy
+
         }, {
             where: {
                 DocNo: updPurchaseOrderH.DocNo

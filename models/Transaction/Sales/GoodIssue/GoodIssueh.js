@@ -54,29 +54,21 @@ const GoodIssueh = db.define(
 
 		PONo: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
+			allowNull: true,
 		},
 		VehicleNo: {
 			type: DataTypes.STRING,
 			allowNull: true,
-			validate: {
-				notEmpty: false,
-			},
 		},
 
 		PackingListNo: {
 			type: DataTypes.STRING,
 			defaultValue: '',
+			allowNull: true
 		},
 		Information: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
+			allowNull: true,
 		},
 
 		Status: {
@@ -88,24 +80,15 @@ const GoodIssueh = db.define(
 		},
 		PrintCounter: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
+			allowNull: true,
 		},
 		PrintedBy: {
 			type: DataTypes.STRING,
 			allowNull: true,
-			validate: {
-				notEmpty: false,
-			},
 		},
 		PrintedDate: {
 			type: DataTypes.DATE,
 			allowNull: true,
-			validate: {
-				notEmpty: false,
-			},
 		},
 		CreatedBy: {
 			type: DataTypes.STRING,

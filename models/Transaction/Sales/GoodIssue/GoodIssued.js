@@ -45,7 +45,7 @@ const GoodIssued = db.define(
 		},
 		BatchNo: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 		},
 		Unit: {
 			type: DataTypes.STRING,
