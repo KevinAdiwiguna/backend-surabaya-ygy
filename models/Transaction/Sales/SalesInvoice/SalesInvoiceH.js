@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
-import db from "../../../config/Database.js";
+import db from "../../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const jobOrder = db.define(
-  "joborder",
+const SalesInvoiceh = db.define(
+  "salesinvoiceh",
   {
     DocNo: {
       type: DataTypes.STRING,
@@ -14,7 +14,6 @@ const jobOrder = db.define(
       },
       primaryKey: true,
     },
-
     Series: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -22,63 +21,13 @@ const jobOrder = db.define(
         notEmpty: true,
       },
     },
-
-    PlannedStartDate: {
+    DocDate: {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-
-    PlannedFinishDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    ActualStartDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    ActualStartTime: {
-      type: DataTypes.TIME,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    ActualFinishDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    ActualFinishTime: {
-      type: DataTypes.TIME,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    RequiredDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
     SODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -86,116 +35,202 @@ const jobOrder = db.define(
         notEmpty: true,
       },
     },
-
-    IODocNo: {
+    GIDocNo: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-
-    WODocNo: {
+    PONo: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-
-    ParentJODocNo: {
+    CustomerCode: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-
-    Level: {
+    TaxToCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    SalesCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TOP: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-
-    Priority: {
+    Currency: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    },
-
-    Location: {
-      type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-
-    Department: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    ExcludeCostDistribution: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    Formula: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    MaterialCode: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    Unit: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-
-    QtyTarget: {
+    ExchangeRate: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-
-    QtyOutput: {
+    TaxStatus: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TaxPercent: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TaxPrefix: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-
-    CheckQtyOutput: {
-      type: DataTypes.BOOLEAN,
+    TaxNo: {
+      type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-
+    DiscPercent: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TotalGross: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TotalDisc: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    DownPayment: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TaxValue: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TaxValueInTaxCur: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    TotalNetto: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     TotalCost: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-
-    Status: {
-      type: DataTypes.STRING,
+    CutPPh: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-
+    PPhPercent: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    PPhValue: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     Information: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
-
+    Status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    PrintCounter: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    PrintedBy: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    PrintedDate: {
+      type: DataTypes.TIME,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     CreatedBy: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -203,8 +238,7 @@ const jobOrder = db.define(
         notEmpty: true,
       },
     },
-
-    ChangedBy: {
+    ChangedBy : {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -214,10 +248,7 @@ const jobOrder = db.define(
   },
   {
     freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false,
   }
 );
 
-export default jobOrder;
+export default SalesInvoiceh;

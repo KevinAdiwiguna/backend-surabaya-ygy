@@ -45,6 +45,7 @@ import MasterBomd from "./routes/Master/Production/BOM/MasterBomdRoutes.js";
 import MasterBomCoProduct from "./routes/Master/Production/BOM/MasterBomCoProductRoutes.js";
 import MasterDownTimeReason from "./routes/Master/Production/MasterDownTimeReasonRoutes.js";
 import GoodIssue from "./routes/Transaction/Sales/GoodsIssue/GoodsIssue.js";
+import JobOrder from "./routes/Transaction/Production/JobOrder.js"
 
 
 
@@ -124,6 +125,7 @@ const routes = [
   MasterBomCoProduct,
   MasterDownTimeReason,
   GoodIssue,
+  JobOrder,
 
 ];
 

@@ -5,18 +5,18 @@ export const getCustomerGroup = async (req, res) => {
     const response = await mastercustomer.findAll();
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 };
 
 export const updateCustomerGroup = async (req, res) => {
-  const {name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, information, changedBy} = req.body;
+  const { name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, information, changedBy } = req.body;
   const user = await mastercustomer.findOne({
     where: {
       Code: req.params.id,
     },
   });
-  if (!user) return res.json({msg: "data tidak ditemukan"});
+  if (!user) return res.json({ msg: "data tidak ditemukan" });
   try {
     await mastercustomer.update(
       {
@@ -53,21 +53,26 @@ export const updateCustomerGroup = async (req, res) => {
         },
       }
     );
-    res.status(200).json({msg: "data Updated"});
+    res.status(200).json({ msg: "data Updated" });
   } catch (error) {
-    res.status(400).json({msg: error.message});
+    res.status(400).json({ msg: error.message });
   }
 };
 
 export const createCustomerGroup = async (req, res) => {
-  const {code, information, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, infromation, createdBy, changedBy} = req.body;
+  const { code, information, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, infromation, createdBy, changedBy } = req.body;
   const user = await mastercustomer.findOne({
     where: {
       Code: code,
     },
   });
+<<<<<<< HEAD
 //   return res.json({cutPph, isBlackList, isDeleted});
   if (user) return res.status(400).json({msg: "data sudah ada"});
+=======
+  // return res.json({cutPph, isBlackList, isDeleted});/
+  if (user) return res.status(400).json({ msg: "data sudah ada" });
+>>>>>>> af421d253c20dec18af360e0db0e17b09d0215d7
   try {
     await mastercustomer.create({
       Code: code,
@@ -99,9 +104,9 @@ export const createCustomerGroup = async (req, res) => {
       CreatedBy: createdBy,
       ChangedBy: changedBy,
     });
-    res.status(201).json({msg: "create Berhasil"});
+    res.status(201).json({ msg: "create Berhasil" });
   } catch (error) {
-    res.status(400).json({msg: error.message});
+    res.status(400).json({ msg: error.message });
   }
 };
 
@@ -111,16 +116,16 @@ export const deleteCustomerGroup = async (req, res) => {
       Code: req.params.id,
     },
   });
-  if (!user) return res.json({msg: "data tidak ditemukan"});
+  if (!user) return res.json({ msg: "data tidak ditemukan" });
   try {
     await mastercustomer.destroy({
       where: {
         Code: user.Code,
       },
     });
-    res.status(200).json({msg: "data Deleted"});
+    res.status(200).json({ msg: "data Deleted" });
   } catch (error) {
-    res.status(400).json({msg: error.message});
+    res.status(400).json({ msg: error.message });
   }
 };
 
@@ -133,6 +138,6 @@ export const getCustomerGroupByCode = async (req, res) => {
     });
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 };
