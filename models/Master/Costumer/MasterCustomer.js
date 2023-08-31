@@ -146,21 +146,21 @@ const mastercustomer = db.define('mastercustomer', {
         allowNull: true,
     },
     CutPPh: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.BLOB('tiny'),
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
     IsBlacklisted: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.BLOB('tiny'),
         allowNull: true,
         validate: {
             notEmpty: false
         },
     },
     IsDeleted: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.BLOB('tiny'),
         allowNull: true,
         validate: {
             notEmpty: false
