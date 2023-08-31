@@ -99,7 +99,7 @@ export const getPriceByCode = async (req, res) => {
 }
 
 export const updatePrice = async (req, res) => {
-    const { begDa, endDa, priceListType, materialCode, currency, unit, minQty, maxQty, price, percentDisc, valueDisc, createdBy, changedBy } = req.body;
+    const { endDa, maxQty, price, percentDisc, valueDisc, createdBy, changedBy } = req.body;
     
     const codeCheck = await masterPrice.findOne({
         where: {
