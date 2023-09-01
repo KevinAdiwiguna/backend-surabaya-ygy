@@ -29,6 +29,41 @@ export const getPurchaseRequestByCode = async (req, res) => {
     }
 }
 
+export const printInvoice = async (req, res) => {
+    const data = await purchaseOrderHeader.findOne({
+      where: {
+        DocNo: req.params.id,
+      },
+    });
+    if (!data) return res.status(404).json({ msg: "data tidak ada" });
+  
+    let count;
+    try {
+      if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
+        count = 1;
+      } else {
+        count = data.PrintCounter + 1;
+      }
+  
+      await purchaseOrderHeader.update(
+        {
+          Status: "PRINTED",
+          PrintCounter: count,
+        },
+        {
+          where: {
+            DocNo: req.params.id,
+          },
+        }
+      );
+  
+      res.status(200).json({ msg: "printed" });
+    } catch (error) {
+      res.status(500).json({ msg: error.message });
+    }
+  };
+
+
 export const updatePurchaseRequest = async (req, res) => {
     const { docNo, series, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
 

@@ -124,8 +124,8 @@ export const createSalesinvoice = async (req, res) => {
 
     if (detail && Array.isArray(detail)) {
       await Promise.all(
-        detail.map(async (detail) => {
-          const { numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d, discPercent3d, discValued, discNominald, nettod, costd } = detail;
+        detail.map(async (detailItem) => {
+          const { numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d, discPercent3d, discValued, discNominald, nettod, costd } = detailItem;
           try {
             await salesInvoiced.create({
               DocNo: DocNo,
@@ -147,7 +147,7 @@ export const createSalesinvoice = async (req, res) => {
               Cost: costd,
             });
           } catch (error) {
-            console.error("Error while saving salesInvoice detail:", error);
+            res.status(500).json({ msg: error.message });
           }
         })
       );
