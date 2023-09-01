@@ -1,4 +1,6 @@
 import JobOrder from '../../../models/Transaction/Production/JobOrder.js'
+import sequelize from 'sequelize'
+import { Op } from 'sequelize'
 
 
 export const getAllJobOrder = async (req, res) => {

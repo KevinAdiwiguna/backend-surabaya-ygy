@@ -4,7 +4,7 @@ import db from "../../../config/Database.js";
 const { DataTypes } = Sequelize;
 
 const jobOrder = db.define(
-  "joborder",
+ "joborder",
   {
     DocNo: {
       type: DataTypes.STRING,
