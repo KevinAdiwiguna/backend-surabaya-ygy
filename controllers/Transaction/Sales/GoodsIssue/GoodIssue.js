@@ -2,7 +2,7 @@ import GoodIssueh from "../../../../models/Transaction/Sales/GoodIssue/GoodIssue
 import GoodIssued from "../../../../models/Transaction/Sales/GoodIssue/GoodIssued.js"
 import SalesOrdersch from "../../../../models/Transaction/Sales/SalesOrder/SalesOrdersch.js"
 import sequelize from "sequelize"
-import {Op} from "sequelize"
+import { Op } from "sequelize";
 
 export const getGoodsIssue = async (req, res) => {
 	try {
