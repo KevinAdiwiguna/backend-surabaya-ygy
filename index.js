@@ -46,6 +46,8 @@ import MasterDownTimeReason from "./routes/Master/Production/MasterDownTimeReaso
 import GoodIssue from "./routes/Transaction/Sales/GoodsIssue/GoodsIssue.js";
 import JobOrder from "./routes/Transaction/Production/JobOrder.js";
 import SalesInvoice from "./routes/Transaction/Sales/SalesInvoice/SalesInvoice.js";
+import GoodReceiptHeader from "./routes/Transaction/Purchase/GoodReceiptHeader.js"
+import GoodReceiptDetail from "./routes/Transaction/Purchase/GoodReceiptDetail.js"
 
 dotenv.config();
 
@@ -82,7 +84,7 @@ app.use(
 
 app.use(express.json());
 
-const routes = [SalesInvoice, UserRoute, AuthRoute, MasterCurrencyRoute, MasterdocumentseriesRoute, MasterPricelistRoute, MasterLocationRoutes, MasterUnitRoutes, MasterCustomerGroupRoutes, MasterMaterialTypeRoutes, MasterCustomerRoute, MasterGroup1, MasterGroup2, MasterGroup3, MasterCountry, masterMaterial, masterUnitConversion, MasterSalesArea1, MasterSalesArea2, MasterSalesArea3, MasterSalesman, MasterPrice, MasterSupplier, MasterDepartment, SalesOrderDetail, SalesOrderHeader, PurhaseRequestHeader, PurchaseRequestDetail, PurchaseOrderHeader, PurchaseOrderDetail, PurchaseCostHeader, PurchaseCostDetail, MasterPeriode, MasterApproval, MasterBomh, MasterBomd, MasterBomCoProduct, MasterDownTimeReason, GoodIssue, JobOrder];
+const routes = [SalesInvoice, UserRoute, AuthRoute, MasterCurrencyRoute, MasterdocumentseriesRoute, MasterPricelistRoute, MasterLocationRoutes, MasterUnitRoutes, MasterCustomerGroupRoutes, MasterMaterialTypeRoutes, MasterCustomerRoute, MasterGroup1, MasterGroup2, MasterGroup3, MasterCountry, masterMaterial, masterUnitConversion, MasterSalesArea1, MasterSalesArea2, MasterSalesArea3, MasterSalesman, MasterPrice, MasterSupplier, MasterDepartment, SalesOrderDetail, SalesOrderHeader, PurhaseRequestHeader, PurchaseRequestDetail, PurchaseOrderHeader, PurchaseOrderDetail, PurchaseCostHeader, PurchaseCostDetail, MasterPeriode, MasterApproval, MasterBomh, MasterBomd, MasterBomCoProduct, MasterDownTimeReason, GoodIssue, JobOrder, GoodReceiptHeader, GoodReceiptDetail];
 
 routes.forEach((route) => {
   app.use(route);
