@@ -1,9 +1,10 @@
 import express from "express";
-import { getGoodsIssue, createGoodsIssue, getGoodIssueDocNo, getDetailDocNo, getAllDocNo, deleteHeader, updateDetail, updateHeader, getTotalQty } from "../../../../controllers/Transaction/Sales/GoodsIssue/GoodIssue.js";
+import { getGoodsIssue, createGoodsIssue, printGoodsissue, getGoodIssueDocNo, getDetailDocNo, getAllDocNo, deleteHeader, updateDetail, updateHeader, getTotalQty } from "../../../../controllers/Transaction/Sales/GoodsIssue/GoodIssue.js";
 
 const router = express.Router();
 
 router.get("/goodsissue/:id", getGoodsIssue);
+router.get("/printgoodsissue/:id", printGoodsissue);
 router.get("/goodsissuedocno/:id", getGoodIssueDocNo);
 router.post("/goodsissue", createGoodsIssue);
 router.get("/goodsissuedetail/:id", getDetailDocNo);
