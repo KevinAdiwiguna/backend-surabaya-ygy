@@ -18,6 +18,40 @@ export const goodsissueStatus = async (req, res) => {
   }
 };
 
+export const printInvoice = async (req, res) => {
+  const data = await salesInvoiceh.findOne({
+    where: {
+      DocNo: req.params.id,
+    },
+  });
+  if (!data) return res.status(404).json({ msg: "data tidak ada" });
+
+  let count;
+  try {
+    if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
+      count = 1;
+    } else {
+      count = data.PrintCounter + 1;
+    }
+
+    await salesInvoiceh.update(
+      {
+        Status: "PRINTED",
+        PrintCounter: count,
+      },
+      {
+        where: {
+          DocNo: req.params.id,
+        },
+      }
+    );
+
+    res.status(200).json({ msg: "printed" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 export const createSalesinvoice = async (req, res) => {
   const { docNo, series, docDate, sODocNo, gIDocNo, pONo, customerCode, taxToCode, salesCode, top, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
 
@@ -97,6 +131,8 @@ export const createSalesinvoice = async (req, res) => {
         })
       );
     }
+
+    res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
