@@ -1,5 +1,6 @@
 import goodsissue from "../../../../models/Transaction/Sales/GoodIssue/GoodIssueh.js";
 import salesInvoiceh from "../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js";
+import taxno from "../../../../models/Master/MasterGenerateTaxNo.js";
 
 export const goodsissueStatus = async (req, res) => {
   try {
@@ -15,6 +16,7 @@ export const goodsissueStatus = async (req, res) => {
 };
 
 export const createSalesinvoice = async (req, res) => {
+  const taxno = await taxno.fin
   const { docNo, series, docDate, sODocNo, gIDocNo, pONo, customerCode, taxToCode, salesCode, tOP, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy } = req.body;
   try {
     await salesInvoiceh.create({
