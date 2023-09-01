@@ -60,14 +60,14 @@ export const updateCustomerGroup = async (req, res) => {
 };
 
 export const createCustomerGroup = async (req, res) => {
-  const { code, information, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, infromation, createdBy, changedBy } = req.body;
+  const { code, information, name, address, address2, city, country, phone, fax, email, contact, mobile, taxNumber, customerGroup, priceListType, salesArea1, salesArea2, salesArea3, top, currency, limit, transactionType, transactionType2, cutPph, isBlackList, isDeleted, createdBy, changedBy } = req.body;
   const user = await mastercustomer.findOne({
     where: {
       Code: code,
     },
   });
-  // return res.json({cutPph, isBlackList, isDeleted});/
-  if (user) return res.status(400).json({ msg: "data sudah ada" });
+//   return res.json({cutPph, isBlackList, isDeleted});
+  if (user) return res.status(400).json({msg: "data sudah ada"});
   try {
     await mastercustomer.create({
       Code: code,
