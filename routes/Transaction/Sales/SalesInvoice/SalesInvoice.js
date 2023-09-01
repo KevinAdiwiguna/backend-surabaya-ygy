@@ -4,6 +4,6 @@ import { createSalesinvoice, goodsissueStatus } from "../../../../controllers/Tr
 const router = express.Router();
 
 router.get("/goodsissuestatus/:id", goodsissueStatus);
-router.get("/goodsissue", createSalesinvoice);
+router.post("/salesinvoice", createSalesinvoice);
 
 export default router;
