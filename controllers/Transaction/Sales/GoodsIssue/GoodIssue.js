@@ -4,6 +4,40 @@ import SalesOrdersch from "../../../../models/Transaction/Sales/SalesOrder/Sales
 import sequelize from "sequelize";
 import { Op } from "sequelize";
 
+export const printGoodsissue = async (req, res) => {
+  const data = await GoodIssueh.findOne({
+    where: {
+      DocNo: req.params.id,
+    },
+  });
+  if (!data) return res.status(404).json({ msg: "data tidak ada" });
+
+  let count;
+  try {
+    if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
+      count = 1;
+    } else {
+      count = data.PrintCounter + 1;
+    }
+
+    await GoodIssueh.update(
+      {
+        Status: "PRINTED",
+        PrintCounter: count,
+      },
+      {
+        where: {
+          DocNo: req.params.id,
+        },
+      }
+    );
+
+    res.status(200).json({ msg: "printed" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 export const getGoodIssueDocNo = async (req, res) => {
   try {
     const response = await GoodIssueh.findOne({
