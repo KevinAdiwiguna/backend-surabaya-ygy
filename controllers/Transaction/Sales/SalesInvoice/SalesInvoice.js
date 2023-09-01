@@ -11,7 +11,7 @@ export const goodsissueStatus = async (req, res) => {
         Status: req.params.id,
       },
     });
-    res.status(200).json({ response });
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
