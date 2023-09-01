@@ -66,13 +66,8 @@ export const createCustomerGroup = async (req, res) => {
       Code: code,
     },
   });
-<<<<<<< HEAD
-//   return res.json({cutPph, isBlackList, isDeleted});
-  if (user) return res.status(400).json({msg: "data sudah ada"});
-=======
   // return res.json({cutPph, isBlackList, isDeleted});/
   if (user) return res.status(400).json({ msg: "data sudah ada" });
->>>>>>> af421d253c20dec18af360e0db0e17b09d0215d7
   try {
     await mastercustomer.create({
       Code: code,
