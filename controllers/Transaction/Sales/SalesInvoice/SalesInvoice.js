@@ -20,7 +20,6 @@ export const goodsissueStatus = async (req, res) => {
 
 export const createSalesinvoice = async (req, res) => {
   const { docNo, series, docDate, sODocNo, gIDocNo, pONo, customerCode, taxToCode, salesCode, top, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
-  const { docNod, numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d, discPercent3d, piscValude, discNominald, nettod, costd } = req.body;
 
   const response = await TaxNo.findOne({
     where: {
