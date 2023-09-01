@@ -15,7 +15,7 @@ const goodreceiptD = db.define('goodsreceiptd', {
     },
 
     Number:{
-        type: DataTypes.INT,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
@@ -71,4 +71,4 @@ const goodreceiptD = db.define('goodsreceiptd', {
     updatedAt: false
 });
 
-export default purchaseCostD;
+export default goodreceiptD;
