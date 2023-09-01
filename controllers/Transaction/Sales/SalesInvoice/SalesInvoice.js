@@ -15,7 +15,6 @@ export const goodsissueStatus = async (req, res) => {
 };
 
 export const createSalesinvoice = async (req, res) => {
-  // const taxNo =
   const { docNo, series, docDate, sODocNo, gIDocNo, pONo, customerCode, taxToCode, salesCode, tOP, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy } = req.body;
   try {
     await salesInvoiceh.create({
