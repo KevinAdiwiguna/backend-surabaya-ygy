@@ -238,7 +238,7 @@ const SalesInvoiceh = db.define(
         notEmpty: true,
       },
     },
-    ChangedBy : {
+    ChangedBy: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

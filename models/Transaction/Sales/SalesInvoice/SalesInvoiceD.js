@@ -4,7 +4,7 @@ import db from "../../../../config/Database.js";
 const { DataTypes } = Sequelize;
 
 const SalesInvoiceD = db.define(
-  "salesorderd",
+  "salesinvoiced",
   {
     DocNo: {
       type: DataTypes.STRING,

@@ -4,13 +4,15 @@ import salesInvoiced from "../../../../models/Transaction/Sales/SalesInvoice/Sal
 import salesInvoicepd from "../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceDP.js";
 import TaxNo from "../../../../models/Master/MasterGenerateTaxNo.js";
 
+import sequelize from "sequelize";
+import { Op } from "sequelize";
+
 export const goodsissueStatus = async (req, res) => {
   try {
     const response = await goodsissue.findAll({
       where: {
         Status: req.params.id,
       },
-      attributes: ["Status"],
     });
     res.status(200).json(response);
   } catch (error) {
@@ -53,24 +55,43 @@ export const printInvoice = async (req, res) => {
 };
 
 export const createSalesinvoice = async (req, res) => {
-  const { docNo, series, docDate, sODocNo, gIDocNo, pONo, customerCode, taxToCode, salesCode, top, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
-
-  const response = await TaxNo.findOne({
-    where: {
-      TaxNo: taxNo,
-    },
-  });
+  const { generateDocDate, series, docDate, sODocNo, giDocNo, poNo, customerCode, taxToCode, salesCode, top, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
 
   try {
-    if (!response) return res.status(404).json({ msg: "tax no tidak ada" });
+    const existingHeader = await salesInvoiceh.findOne({
+      attributes: ["DocNo"],
+      where: {
+        DocNo: {
+          [Op.like]: `${series}-${generateDocDate}-%`,
+        },
+      },
+      order: [[sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
+      raw: true,
+      limit: 1,
+    });
+
+    let DocNo;
+    if (!existingHeader) {
+      DocNo = `${series}-${generateDocDate}-0001`;
+    } else {
+      const Series = parseInt(existingHeader.DocNo.split("-")[2], 10) + 1;
+      DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
+    }
+
+    const response = await TaxNo.findOne({
+      where: {
+        TaxNO: taxNo,
+      },
+    });
+    if (!response.TaxNo) return res.status(404).json({ msg: "tax no tidak ada" });
 
     await salesInvoiceh.create({
-      DocNo: docNo,
+      DocNo: DocNo,
       Series: series,
       DocDate: docDate,
       SODocNo: sODocNo,
-      GIDocNo: gIDocNo,
-      PONo: pONo,
+      GIDocNo: giDocNo,
+      PONo: poNo,
       CustomerCode: customerCode,
       TaxToCode: taxToCode,
       SalesCode: salesCode,
@@ -104,10 +125,10 @@ export const createSalesinvoice = async (req, res) => {
     if (detail && Array.isArray(detail)) {
       await Promise.all(
         detail.map(async (detail) => {
-          const { docNod, numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d, discPercent3d, discValued, discNominald, nettod, costd } = detail;
+          const { numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d, discPercent3d, discValued, discNominald, nettod, costd } = detail;
           try {
             await salesInvoiced.create({
-              DocNo: docNod,
+              DocNo: DocNo,
               Number: numberd,
               MaterialCode: materialCoded,
               Info: infod,
@@ -133,6 +154,35 @@ export const createSalesinvoice = async (req, res) => {
     }
 
     res.status(200).json({ msg: "berhasil create" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+export const getSalesInvoiceh = async (req, res) => {
+  try {
+    const response = await salesInvoiceh.findAll({
+      attributes: ["DocNo"],
+    });
+    return res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+export const getAllDataSalesInvoice = async (req, res) => {
+  try {
+    const header = await salesInvoiceh.findOne({
+      where: {
+        DocNo: req.params.id,
+      },
+    });
+    const detail = await salesInvoiced.findAll({
+      where: {
+        DocNo: header.DocNo,
+      },
+    });
+
+    return res.status(200).json({ header: header, detail: detail });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
