@@ -76,6 +76,7 @@ export const createPurchaseCostH = async (req, res) => {
             PODocNo,
             supplierDlvDocNo,
             vehicleNo,
+            batchNo,
             information,
             printCounter,
             printedBy,
