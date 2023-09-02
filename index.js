@@ -49,6 +49,9 @@ import SalesInvoice from "./routes/Transaction/Sales/SalesInvoice/SalesInvoice.j
 import GoodReceiptHeader from "./routes/Transaction/Purchase/GoodReceiptHeader.js";
 import GoodReceiptDetail from "./routes/Transaction/Purchase/GoodReceiptDetail.js";
 import GenerateTaxNo from "./routes/Master/MasterGenerateTaxNoRoutes.js";
+import MasterMachine from "./routes/Master/Production/MasterMachIneRoutes.js";
+import WOrderTemplateD from "./routes/Master/Production/MasterWOrderTemplateDRoutes.js";
+import WOrderTemplateH from "./routes/Master/Production/MasterWOrderTemplateH.js";
 
 
 dotenv.config();
@@ -87,7 +90,8 @@ app.use(
 app.use(express.json());
 
 
-const routes = [SalesInvoice, UserRoute, AuthRoute, MasterCurrencyRoute, MasterdocumentseriesRoute, MasterPricelistRoute, MasterLocationRoutes, MasterUnitRoutes, MasterCustomerGroupRoutes, MasterMaterialTypeRoutes, MasterCustomerRoute, MasterGroup1, MasterGroup2, MasterGroup3, MasterCountry, masterMaterial, masterUnitConversion, MasterSalesArea1, MasterSalesArea2, MasterSalesArea3, MasterSalesman, MasterPrice, MasterSupplier, MasterDepartment, SalesOrderDetail, SalesOrderHeader, PurhaseRequestHeader, PurchaseRequestDetail, PurchaseOrderHeader, PurchaseOrderDetail, PurchaseCostHeader, PurchaseCostDetail, MasterPeriode, MasterApproval, MasterBomh, MasterBomd, MasterBomCoProduct, MasterDownTimeReason, GoodIssue, JobOrder, GoodReceiptHeader, GoodReceiptDetail, GenerateTaxNo];
+const routes = [SalesInvoice, UserRoute, AuthRoute, MasterCurrencyRoute, MasterdocumentseriesRoute, MasterPricelistRoute, MasterLocationRoutes, MasterUnitRoutes, MasterCustomerGroupRoutes, MasterMaterialTypeRoutes, MasterCustomerRoute, MasterGroup1, MasterGroup2, MasterGroup3, MasterCountry, masterMaterial, masterUnitConversion, MasterSalesArea1, MasterSalesArea2, MasterSalesArea3, MasterSalesman, MasterPrice, MasterSupplier, MasterDepartment, SalesOrderDetail, SalesOrderHeader, PurhaseRequestHeader, PurchaseRequestDetail, PurchaseOrderHeader, PurchaseOrderDetail, PurchaseCostHeader, PurchaseCostDetail, MasterPeriode, MasterApproval, MasterBomh, MasterBomd, MasterBomCoProduct, MasterDownTimeReason, GoodIssue, JobOrder, GoodReceiptHeader, GoodReceiptDetail, GenerateTaxNo,
+  MasterMachine, WOrderTemplateD, WOrderTemplateH];
 routes.forEach((route) => {
   app.use(route);
 });
