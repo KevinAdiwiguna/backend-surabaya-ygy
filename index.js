@@ -53,6 +53,7 @@ import MasterMachine from "./routes/Master/Production/MasterMachIneRoutes.js";
 import WOrderTemplateD from "./routes/Master/Production/MasterWOrderTemplateDRoutes.js";
 import WOrderTemplateH from "./routes/Master/Production/MasterWOrderTemplateH.js";
 import Account from "./routes/Master/GL/MasterAccount.js";
+import Cashflowd from "./routes/Master/GL/MasterCashflowd.js";
 
 
 dotenv.config();
@@ -92,7 +93,7 @@ app.use(express.json());
 
 
 const routes = [SalesInvoice, UserRoute, AuthRoute, MasterCurrencyRoute, MasterdocumentseriesRoute, MasterPricelistRoute, MasterLocationRoutes, MasterUnitRoutes, MasterCustomerGroupRoutes, MasterMaterialTypeRoutes, MasterCustomerRoute, MasterGroup1, MasterGroup2, MasterGroup3, MasterCountry, masterMaterial, masterUnitConversion, MasterSalesArea1, MasterSalesArea2, MasterSalesArea3, MasterSalesman, MasterPrice, MasterSupplier, MasterDepartment, SalesOrderDetail, SalesOrderHeader, PurhaseRequestHeader, PurchaseRequestDetail, PurchaseOrderHeader, PurchaseOrderDetail, PurchaseCostHeader, PurchaseCostDetail, MasterPeriode, MasterApproval, MasterBomh, MasterBomd, MasterBomCoProduct, MasterDownTimeReason, GoodIssue, JobOrder, GoodReceiptHeader, GoodReceiptDetail, GenerateTaxNo,
-  MasterMachine, WOrderTemplateD, WOrderTemplateH, Account];
+  MasterMachine, WOrderTemplateD, WOrderTemplateH, Account, Cashflowd];
 routes.forEach((route) => {
   app.use(route);
 });
