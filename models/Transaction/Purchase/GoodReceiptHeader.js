@@ -39,7 +39,7 @@ const goodreceipth = db.define('goodsreceipth', {
     },
 
     PODocNo:{
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
@@ -47,7 +47,7 @@ const goodreceipth = db.define('goodsreceipth', {
     },
 
     BatchNo: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
@@ -56,7 +56,7 @@ const goodreceipth = db.define('goodsreceipth', {
     },
 
     SupplierDlvDocNo: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.STRING,
         allowNull: false,
     },
 
@@ -69,7 +69,7 @@ const goodreceipth = db.define('goodsreceipth', {
     },
 
     Information: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.STRING,
         allowNull: false,
     },
 
@@ -82,7 +82,7 @@ const goodreceipth = db.define('goodsreceipth', {
     },
 
     PrintCounter: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
@@ -96,7 +96,7 @@ const goodreceipth = db.define('goodsreceipth', {
     },
 
     PrintedDate:{
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: false,
     },
 
@@ -106,7 +106,7 @@ const goodreceipth = db.define('goodsreceipth', {
     },
 
     ChangedBy: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
