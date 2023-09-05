@@ -2,6 +2,9 @@
 import goodsReceiptH from '../../../models/Transaction/Purchase/GoodReceiptHeader.js'
 import goodsReceiptDetails from '../../../models/Transaction/Purchase/GoodReceiptDetail.js'
 
+import sequelize from 'sequelize'
+import { Op } from 'sequelize'
+
 export const getAllgoodReceipt = async (req, res) => {
     try {
         const goodreceiptH = await goodsReceiptH.findAll()
@@ -78,10 +81,10 @@ export const createPurchaseCostH = async (req, res) => {
             vehicleNo,
             batchNo,
             information,
+            status,
             printCounter,
             printedBy,
             printedDate,
-            status,
             createdBy,
             changedBy,
             GoodReceiptd } = req.body;
@@ -139,7 +142,7 @@ export const createPurchaseCostH = async (req, res) => {
                                 qty
                             } = detail;
         
-                            await goodsReceiptDetail.create({
+                            await goodsReceiptDetails.create({
                                 DocNo: DocNo,
                                 Number: number,
                                 MaterialCode: materialCode,

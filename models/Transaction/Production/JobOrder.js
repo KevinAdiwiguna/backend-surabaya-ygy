@@ -82,33 +82,25 @@ const jobOrder = db.define(
     SODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+     
     },
 
     IODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      
     },
 
     WODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+    
     },
 
     ParentJODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+     
     },
 
     Level: {
@@ -132,17 +124,13 @@ const jobOrder = db.define(
     Department: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+     
     },
 
     ExcludeCostDistribution: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+     
     },
 
     Formula: {
