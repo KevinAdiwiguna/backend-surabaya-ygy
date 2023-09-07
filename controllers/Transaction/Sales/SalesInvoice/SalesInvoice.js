@@ -56,6 +56,15 @@ export const getSaleInvoiceD = async (req, res) => {
     if (goodsissue) {
       const gross = salesOrder.Price * goodsissue.Qty;
 
+      let netto;
+      let discNominal;
+      if (salesOrder?.DiscPercent || salesOrder?.DiscPercent2 || salesOrder?.DiscPercent3) {
+        const disc = goodsissue.Qty * salesOrder.Price - (goodsissue.Qty * salesOrder.Price * salesOrder.DiscPercent) / 100;
+        const disc2 = disc - (disc * salesOrder.DiscPercent2) / 100;
+        const disc3 = disc2 - (disc2 * salesOrder.DiscPercent3) / 100;
+        netto = disc3;
+        discNominal = (goodsissue.Qty * salesOrder.Price * salesOrder.DiscPercent) / 100 + (disc * salesOrder.DiscPercent2) / 100 + (disc2 * salesOrder.DiscPercent3) / 100;
+      }
       const combinedItem = {
         ...goodsissue,
         Price: salesOrder.Price,
@@ -63,8 +72,9 @@ export const getSaleInvoiceD = async (req, res) => {
         DiscPercent2: salesOrder.DiscPercent2,
         DiscPercent3: salesOrder.DiscPercent3,
         DiscValue: salesOrder.DiscValue,
-        DiscNominal: salesOrder.DiscNominal,
+        DiscNominal: discNominal,
         Gross: gross,
+        Netto: netto,
       };
       combinedData.push(combinedItem);
     }
@@ -72,8 +82,6 @@ export const getSaleInvoiceD = async (req, res) => {
 
   res.json(combinedData);
 };
-
-
 
 export const goodsissueStatus = async (req, res) => {
   try {
