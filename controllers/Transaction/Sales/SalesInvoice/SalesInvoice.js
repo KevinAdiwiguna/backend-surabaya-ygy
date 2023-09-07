@@ -58,6 +58,8 @@ export const getSaleInvoiceD = async (req, res) => {
         ...goodsissue,
         Price: salesOrder.Price,
         DiscPercent: salesOrder.DiscPercent,
+        DiscPercent2: salesOrder.DiscPercent2,
+        DiscPercent3: salesOrder.DiscPercent3,
         DiscValue: salesOrder.DiscValue,
         DiscNominal: salesOrder.DiscNominal,
       };
