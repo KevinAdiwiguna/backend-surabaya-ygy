@@ -54,6 +54,8 @@ export const getSaleInvoiceD = async (req, res) => {
   for (const salesOrder of orderDetail) {
     const goodsissue = goodsissuesMap.get(salesOrder.Number);
     if (goodsissue) {
+      const gross = salesOrder.Price * goodsissue.Qty;
+
       const combinedItem = {
         ...goodsissue,
         Price: salesOrder.Price,
@@ -62,6 +64,7 @@ export const getSaleInvoiceD = async (req, res) => {
         DiscPercent3: salesOrder.DiscPercent3,
         DiscValue: salesOrder.DiscValue,
         DiscNominal: salesOrder.DiscNominal,
+        Gross: gross,
       };
       combinedData.push(combinedItem);
     }
@@ -70,14 +73,7 @@ export const getSaleInvoiceD = async (req, res) => {
   res.json(combinedData);
 };
 
-//   salesorder
-//   price
-//   discPercent
-//   discPercent2
-//   discPercent3
-//   discvalue
-//   discnominal
-// })
+
 
 export const goodsissueStatus = async (req, res) => {
   try {
