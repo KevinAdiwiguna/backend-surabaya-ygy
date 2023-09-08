@@ -1,11 +1,87 @@
 import goodsissue from "../../../../models/Transaction/Sales/GoodIssue/GoodIssueh.js";
 import salesInvoiceh from "../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js";
 import salesInvoiced from "../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceD.js";
+import goodsIssued from "../../../../models/Transaction/Sales/GoodIssue/GoodIssued.js";
+import salesOrderd from "../../../../models/Transaction/Sales/SalesOrder/SalesOrderDetail.js";
 import salesInvoicepd from "../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceDP.js";
 import TaxNo from "../../../../models/Master/MasterGenerateTaxNo.js";
 
 import sequelize from "sequelize";
 import { Op } from "sequelize";
+
+export const getSaleInvoiceD = async (req, res) => {
+  const Detail = await goodsIssued.findAll({
+    where: {
+      DocNo: req.params.id,
+    },
+  });
+  const Header = await goodsissue.findAll({
+    where: {
+      DocNo: req.params.id,
+    },
+  });
+
+  const orderDetail = await salesOrderd.findAll({
+    where: {
+      DocNo: Header[0].SODocNo,
+    },
+  });
+
+  const goodsissues = [];
+
+  for (const detailItem of Detail) {
+    const goodsissue = {
+      Number: detailItem.Number,
+      Code: detailItem.MaterialCode,
+      Name: detailItem.Name,
+      Info: detailItem.Info,
+      Location: detailItem.Location,
+      BatchNo: detailItem.BatchNo,
+      Unit: detailItem.Unit,
+      Qty: detailItem.Qty,
+    };
+    goodsissues.push(goodsissue);
+  }
+
+  const goodsissuesMap = new Map();
+
+  for (const goodsissue of goodsissues) {
+    goodsissuesMap.set(goodsissue.Number, goodsissue);
+  }
+
+  const combinedData = [];
+
+  for (const salesOrder of orderDetail) {
+    const goodsissue = goodsissuesMap.get(salesOrder.Number);
+    if (goodsissue) {
+      const gross = salesOrder.Price * goodsissue.Qty;
+
+      let netto;
+      let discNominal;
+      if (salesOrder?.DiscPercent || salesOrder?.DiscPercent2 || salesOrder?.DiscPercent3) {
+        const disc = goodsissue.Qty * salesOrder.Price - (goodsissue.Qty * salesOrder.Price * salesOrder.DiscPercent) / 100;
+        const disc2 = disc - (disc * salesOrder.DiscPercent2) / 100;
+        const disc3 = disc2 - (disc2 * salesOrder.DiscPercent3) / 100;
+        netto = disc3;
+        discNominal = (goodsissue.Qty * salesOrder.Price * salesOrder.DiscPercent) / 100 + (disc * salesOrder.DiscPercent2) / 100 + (disc2 * salesOrder.DiscPercent3) / 100;
+      }
+      const combinedItem = {
+        ...goodsissue,
+        Price: salesOrder.Price,
+        DiscPercent: salesOrder.DiscPercent,
+        DiscPercent2: salesOrder.DiscPercent2,
+        DiscPercent3: salesOrder.DiscPercent3,
+        DiscValue: salesOrder.DiscValue,
+        DiscNominal: discNominal,
+        Gross: gross,
+        Netto: netto,
+      };
+      combinedData.push(combinedItem);
+    }
+  }
+
+  res.json(combinedData);
+};
 
 export const goodsissueStatus = async (req, res) => {
   try {
