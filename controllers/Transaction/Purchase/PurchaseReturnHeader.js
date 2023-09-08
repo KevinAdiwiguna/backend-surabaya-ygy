@@ -8,7 +8,7 @@ import { Op } from 'sequelize'
 export const getAllpurchaseReturnH = async (req, res) => {
     try {
         const purchasereturnH = await purchaseReturnH.findAll()
-        res.status(200).json(goodreceiptH)
+        res.status(200).json(purchasereturnH)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
