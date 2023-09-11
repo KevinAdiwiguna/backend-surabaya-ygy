@@ -30,3 +30,17 @@ export const getAllCustomerPartner = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+export const getCustomerPartnerByCustomerCode = async (req, res) => {
+  try {
+    const response = await MasterCustomerPartner.findAll({
+      where: {
+        CustomerCode: req.params.id,
+      },
+    });
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
