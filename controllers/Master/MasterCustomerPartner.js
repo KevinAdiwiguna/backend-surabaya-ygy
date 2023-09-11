@@ -12,7 +12,7 @@ export const createCustomerPartner = async (req, res) => {
     });
     if (check) return res.status(400).json({ msg: "data sudah tersedia" });
     await MasterCustomerPartner.create({
-      CustomerCode: code,
+      CustomerCode: customerCode   ,
       PartnerFunc: partnerFunc,
       PartnerCode: partnerCode ? partnerCode : code,
     });
