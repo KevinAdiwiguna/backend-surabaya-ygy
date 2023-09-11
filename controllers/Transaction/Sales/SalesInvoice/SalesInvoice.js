@@ -156,7 +156,7 @@ export const createSalesinvoice = async (req, res) => {
 
     const response = await TaxNo.findOne({
       where: {
-        TaxNO: taxNo,
+        TaxNo: taxNo,
       },
     });
     if (!response.TaxNo) return res.status(404).json({ msg: "tax no tidak ada" });

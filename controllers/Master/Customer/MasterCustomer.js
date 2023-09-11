@@ -1,4 +1,5 @@
 import mastercustomer from "../../../models/Master/Costumer/MasterCustomer.js";
+import MasterCustomerPartner from "../../../models/Master/MasterCustomerPartner.js";
 
 export const getCustomerGroup = async (req, res) => {
   try {
@@ -66,8 +67,8 @@ export const createCustomerGroup = async (req, res) => {
       Code: code,
     },
   });
-//   return res.json({cutPph, isBlackList, isDeleted});
-  if (user) return res.status(400).json({msg: "data sudah ada"});
+  //   return res.json({cutPph, isBlackList, isDeleted});
+  if (user) return res.status(400).json({ msg: "data sudah ada" });
   try {
     await mastercustomer.create({
       Code: code,
@@ -98,6 +99,14 @@ export const createCustomerGroup = async (req, res) => {
       Information: information,
       CreatedBy: createdBy,
       ChangedBy: changedBy,
+    });
+
+    const { partnerFunc, partnerCode } = req.body;
+    
+    await MasterCustomerPartner.create({
+      CustomerCode: code,
+      PartnerFunc: partnerFunc,
+      PartnerCode: partnerCode ? partnerCode : code,
     });
     res.status(201).json({ msg: "create Berhasil" });
   } catch (error) {

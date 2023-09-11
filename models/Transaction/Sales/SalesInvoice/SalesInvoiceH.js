@@ -73,6 +73,7 @@ const SalesInvoiceh = db.define(
     TOP: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
       validate: {
         notEmpty: true,
       },
@@ -143,9 +144,6 @@ const SalesInvoiceh = db.define(
     DownPayment: {
       type: DataTypes.DECIMAL,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     TaxValue: {
       type: DataTypes.DECIMAL,
@@ -192,6 +190,7 @@ const SalesInvoiceh = db.define(
     PPhValue: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      defaultValue: 0,
       validate: {
         notEmpty: true,
       },
