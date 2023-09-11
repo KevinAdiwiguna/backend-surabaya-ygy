@@ -1,4 +1,4 @@
-import MasterCustomerPartner from "../../models/Master/MasterCustomerPartner";
+import MasterCustomerPartner from "../../models/Master/MasterCustomerPartner.js";
 
 export const createCustomerPartner = async (req, res) => {
   const { customerCode, partnerFunc, partnerCode } = req.body;
