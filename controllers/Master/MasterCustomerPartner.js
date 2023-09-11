@@ -1,4 +1,17 @@
+import { where } from "sequelize";
 import MasterCustomerPartner from "../../models/Master/MasterCustomerPartner.js";
+
+export const deleteCustomerPartner = async (req, res) => {
+  try {
+    await MasterCustomerPartner.destroy({
+      where: {
+        CustomerCode: req.params.id,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
 
 export const createCustomerPartner = async (req, res) => {
   const { customerCode, partnerFunc, partnerCode } = req.body;
