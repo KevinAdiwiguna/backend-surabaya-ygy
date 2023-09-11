@@ -14,7 +14,7 @@ export const createCustomerPartner = async (req, res) => {
     await MasterCustomerPartner.create({
       CustomerCode: customerCode,
       PartnerFunc: partnerFunc,
-      PartnerCode: partnerCode ? partnerCode : customerCode,
+      PartnerCode: !partnerCode ? customerCode : partnerCode,
     });
     res.status(200).json({ msg: "create berhasil" });
   } catch (error) {
