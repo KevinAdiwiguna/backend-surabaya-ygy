@@ -33,6 +33,9 @@ const MasterCustomerPartner = db.define(
   },
   {
     freezeTableName: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,
   }
 );
 
