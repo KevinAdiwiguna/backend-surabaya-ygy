@@ -101,13 +101,7 @@ export const createCustomerGroup = async (req, res) => {
       ChangedBy: changedBy,
     });
 
-    const { partnerFunc, partnerCode } = req.body;
-    
-    await MasterCustomerPartner.create({
-      CustomerCode: code,
-      PartnerFunc: partnerFunc,
-      PartnerCode: partnerCode ? partnerCode : code,
-    });
+   
     res.status(201).json({ msg: "create Berhasil" });
   } catch (error) {
     res.status(400).json({ msg: error.message });
