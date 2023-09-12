@@ -46,25 +46,25 @@ export const createCollector = async (req, res) => {
 };
 export const deleteCollector = async (req, res) => {
   try {
-  const response = await masterCollector.findOne({
-    where: {
-      Code: req.params.id,
-    },
-  });
-  if (!response) return req.status(404).json("data tidak ada");
-  await masterCollector.destroy({
-    where: {
-      Code: req.params.id,
-    },
-  });
+    const response = await masterCollector.findOne({
+      where: {
+        Code: req.params.id,
+      },
+    });
+    if (!response) return req.status(404).json("data tidak ada");
+    await masterCollector.destroy({
+      where: {
+        Code: req.params.id,
+      },
+    });
 
-  res.status(200).json({ msg: "berhasil menghapus data" });
+    res.status(200).json({ msg: "berhasil menghapus data" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 };
 export const updateCollector = async (req, res) => {
-  const { code, phone, name, address, city, mobile, createdBy, changedBy } = req.body;
+  const { code, phone, name, address, city, mobile,  changedBy } = req.body;
   try {
     const data = await masterCollector.findOne({
       where: {
@@ -73,15 +73,14 @@ export const updateCollector = async (req, res) => {
     });
     if (!data) return res.json({ msg: "data tidak ada" });
 
+
     await masterCollector.update(
       {
-        Code: code || data.Code,
         Name: name || data.Name,
         Address: address || data.Address,
         Phone: phone || data.Phone,
         City: city || data.City,
         Mobile: mobile || data.Mobile,
-        CreatedBy: createdBy || data.CreatedBy,
         ChangedBy: changedBy || data.ChangedBy,
       },
       {
