@@ -20,19 +20,7 @@ export const createDocumentSeries = async (req, res) => {
   });
   if (seriesCheck) return res.status(400).json({ msg: "series udah ada" });
 
-  const data = await masterDocumentSeriesmt.findAll({
-    where: {
-      Document: document,
-      Series: series,
-      MaterialType: {
-        [Op.in]: details, // 'details' adalah array yang berisi nilai-nilai MaterialType yang ingin Anda cari
-      },
-    },
-  });
-
-  if (data.length > 0) {
-    return res.status(400).json({ msg: "mt sudah ada" });
-  }
+ 
 
   try {
     await documentSeriesModel.create({
