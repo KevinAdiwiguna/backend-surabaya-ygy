@@ -19,6 +19,7 @@ export const createDocumentSeries = async (req, res) => {
     },
   });
   if (seriesCheck) return res.status(400).json({ message: "series udah ada" });
+
   try {
     await documentSeriesModel.create({
       Document: document,
@@ -34,12 +35,10 @@ export const createDocumentSeries = async (req, res) => {
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detail) => {
-          const { document, series, materialType } = detail;
-
           await masterDocumentSeriesmt.create({
             Document: document,
             Series: series,
-            MaterialType: materialType,
+            MaterialType: detail,
           });
         })
       );
