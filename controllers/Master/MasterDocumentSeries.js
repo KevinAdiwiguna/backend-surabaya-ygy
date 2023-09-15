@@ -11,7 +11,7 @@ export const getAllSeries = async (req, res) => {
 };
 
 export const createDocumentSeries = async (req, res) => {
-  const { document, series, users, needQC, autoTaxNo, iso, createdBy, changedBy, materialType } = req.body;
+  const { document, series, users, needQC, autoTaxNo, iso, createdBy, changedBy, details } = req.body;
 
   const seriesCheck = await documentSeriesModel.findOne({
     where: {
@@ -30,11 +30,21 @@ export const createDocumentSeries = async (req, res) => {
       CreatedBy: createdBy,
       ChangedBy: changedBy,
     });
-    await masterDocumentSeriesmt.create({
-      Document: document,
-      Series: series,
-      MaterialType: materialType,
-    });
+
+    if (details && Array.isArray(details)) {
+      await Promise.all(
+        details.map(async (detail) => {
+          const { document, series, materialType } = detail;
+
+          await masterDocumentSeriesmt.create({
+            Document: document,
+            Series: series,
+            MaterialType: materialType,
+          });
+        })
+      );
+    }
+
     res.status(201).json({ msg: "create Berhasil" });
   } catch (error) {
     res.status(400).json({ msg: error.message });
