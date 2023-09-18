@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize";
-import db from "../config/Database.js";
+import db from "../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const Users = db.define('user', {
+const Stock = db.define('stock', {
   BatchNo: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -76,5 +76,5 @@ const Users = db.define('user', {
     
 },);
 
-export default Users;
+export default Stock;
 
