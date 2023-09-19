@@ -39,6 +39,7 @@ const ARRequestList = db.define(
       primaryKey: false,
     },
     CustomerGroup: {
+      defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -49,12 +50,14 @@ const ARRequestList = db.define(
     SalesArea1: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: "",
       validate: {
         notEmpty: true,
       },
       primaryKey: false,
     },
     SalesArea2: {
+      defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -63,6 +66,7 @@ const ARRequestList = db.define(
       primaryKey: false,
     },
     SalesArea3: {
+      defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -71,6 +75,7 @@ const ARRequestList = db.define(
       primaryKey: false,
     },
     Currency: {
+      defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -110,7 +115,7 @@ const ARRequestList = db.define(
       },
       primaryKey: false,
     },
-    status: {
+    Status: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
