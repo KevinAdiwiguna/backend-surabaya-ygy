@@ -109,16 +109,12 @@ const SalesInvoiceh = db.define(
     TaxPrefix: {
       type: DataTypes.DECIMAL,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      defaultValue: "",
     },
     TaxNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      defaultValue: "",
     },
     DiscPercent: {
       type: DataTypes.DECIMAL,
