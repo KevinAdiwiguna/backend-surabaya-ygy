@@ -19,20 +19,21 @@ export const getAllGenerateTaxNo = async (req, res) => {
 };
 
 export const createGenerateTaxNo = async (req, res) => {
-	const { taxNo, docNo } = req.body;
-	if (taxNo.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
-	if (docNo.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
+	const { start, end } = req.body;
+	if (start.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
+	if (end.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
 
-	const create = await generateTaxNo.findOne({
-		where: {
-			TaxNo: taxNo
-		}
-	})
-	if (create) return res.status(400).json({ msg: "code Sudah ada" });
+	// const create = await generateTaxNo.findOne({
+	// 	where: {
+	// 		TaxNo: taxNo
+	// 	}
+	// })
+	// if (create) return res.status(400).json({ msg: "code Sudah ada" });
+
 
 	try {
-		const startNo = parseInt(taxNo);
-		const endNo = parseInt(docNo);
+		const startNo = parseInt(start);
+		const endNo = parseInt(end);
 
 		if (isNaN(startNo) || isNaN(endNo)) {
 			return res.status(400).json({ msg: "input tidak valid" });
@@ -40,7 +41,7 @@ export const createGenerateTaxNo = async (req, res) => {
 
 		for (let i = startNo; i <= endNo; i++) {
 			await generateTaxNo.create({
-				TaxNo: i.toString()	
+				TaxNo: i.toString()
 			});
 		}
 
