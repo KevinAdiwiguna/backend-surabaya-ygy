@@ -3,8 +3,8 @@ import { getAllGenerateTaxNo, createGenerateTaxNo, deleteGenerateTaxNo } from ".
 
 const router = express.Router();
 
-router.get('/gtaxno/:id/:id2', getAllGenerateTaxNo);
-router.post('/gtaxno', createGenerateTaxNo);
-router.delete('/gtaxno', deleteGenerateTaxNo);
+router.get('/taxno/:id/:id2', getAllGenerateTaxNo);
+router.post('/taxno', createGenerateTaxNo);
+router.delete('/taxno', deleteGenerateTaxNo);
 
 export default router;

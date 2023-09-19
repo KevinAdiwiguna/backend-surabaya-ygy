@@ -2,17 +2,19 @@ import generateTaxNo from "../../models/Master/MasterGenerateTaxNo.js";
 import sequelize from 'sequelize'
 
 export const getAllGenerateTaxNo = async (req, res) => {
+	let data1 = parseInt(req.params.id, 10)
+	let data2 = parseInt(req.params.id2, 10)
 	try {
 		const response = await generateTaxNo.findAll({
 			where: {
 				taxno: {
-					[sequelize.Op.between]: [req.params.id, req.params.id2],
+					[sequelize.Op.between]: [data1, data2],
 				},
 			},
 		});
-		res.status(200).json(response);
+		res.status(200).json({ response });
 	} catch (error) {
-		res.json({ msg: error.message, statusCode: 500 });
+		res.status(500).json({ msg: error.message });
 	}
 };
 
@@ -38,8 +40,7 @@ export const createGenerateTaxNo = async (req, res) => {
 
 		for (let i = startNo; i <= endNo; i++) {
 			await generateTaxNo.create({
-				TaxNo: i.toString(),
-				DocNo: docNo
+				TaxNo: i.toString()	
 			});
 		}
 
@@ -50,6 +51,7 @@ export const createGenerateTaxNo = async (req, res) => {
 }
 
 export const deleteGenerateTaxNo = async (req, res) => {
+	console.log({ data1: req.params.id }, { data2: req.params.id2 })
 	const del = await generateTaxNo.findOne({
 		where: {
 			TaxNo: req.params.id
