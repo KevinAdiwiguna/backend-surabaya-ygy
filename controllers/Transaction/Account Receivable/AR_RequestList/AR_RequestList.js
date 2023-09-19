@@ -71,8 +71,8 @@ export const createRequestList = async (req, res) => {
 
 
 
-export const updateRequestListh = async (req, res) => {
-  const t = await sequelize.transaction();
+export const updateRequestList = async (req, res) => {
+  const t = await sequelize.Transaction();
 
   try {
     const { docNo, series, docDate, collectorCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details } = req.body;
@@ -115,7 +115,6 @@ export const updateRequestListh = async (req, res) => {
       transaction: t
     });
 
-    // Update atau tambahkan detail
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detail) => {

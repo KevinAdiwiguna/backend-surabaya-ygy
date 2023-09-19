@@ -130,6 +130,7 @@ export const printInvoice = async (req, res) => {
   }
 };
 
+
 export const createSalesinvoice = async (req, res) => {
   const { generateDocDate, series, docDate, sODocNo, giDocNo, poNo, customerCode, taxToCode, salesCode, top, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
 
@@ -234,6 +235,8 @@ export const createSalesinvoice = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+
 
 export const getSalesInvoiceh = async (req, res) => {
   try {
