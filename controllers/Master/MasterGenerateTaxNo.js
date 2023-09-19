@@ -55,7 +55,8 @@ export const deleteGenerateTaxNo = async (req, res) => {
 			TaxNo: req.params.id
 		}
 	});
-	if (!del) return res.json({ msg: "code tidak ditemukan" });
+	if (!del) return res.status(404).json({ msg: "code tidak ditemukan" });
+	if (del.DocNo) return res.status(400).json({ msg: "data masih terisi" })
 	try {
 		await generateTaxNo.destroy({
 			where: {
