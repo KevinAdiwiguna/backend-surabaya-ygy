@@ -18,6 +18,8 @@ export const getAllGenerateTaxNo = async (req, res) => {
 
 export const createGenerateTaxNo = async (req, res) => {
 	const { taxNo, docNo } = req.body;
+	if (taxNo.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
+	if (docNo.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
 
 	const create = await generateTaxNo.findOne({
 		where: {
