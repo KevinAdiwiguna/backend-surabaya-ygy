@@ -1,5 +1,5 @@
 import generateTaxNo from "../../models/Master/MasterGenerateTaxNo.js";
-
+import sequelize from 'sequelize'
 
 export const getAllGenerateTaxNo = async (req, res) => {
 	try {
