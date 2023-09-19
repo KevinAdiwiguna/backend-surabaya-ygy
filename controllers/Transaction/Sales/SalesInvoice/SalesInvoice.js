@@ -237,9 +237,7 @@ export const createSalesinvoice = async (req, res) => {
 
 export const getSalesInvoiceh = async (req, res) => {
   try {
-    const response = await salesInvoiceh.findAll({
-      attributes: ["DocNo"],
-    });
+    const response = await salesInvoiceh.findAll();
     return res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
