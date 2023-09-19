@@ -1,33 +1,33 @@
-import GoodReceiptD from '../../../models/Transaction/Purchase/GoodReceiptDetail.js'
+import ARRequestListd from '../../../models/Transaction/Account Receivable/ARRequestListDetail.js'
 
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
 
-export const getAllgoodReceiptd = async (req, res) => {
+export const getAllrequestListd = async (req, res) => {
     try {
-        const response = await GoodReceiptD.findAll();
+        const response = await ARRequestListd.findAll();
         res.status(200).json(response)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
 }
 
-export const getGoodReceiptByCode = async (req, res) => {
-    const getgoodreceiptd = await GoodReceiptD.findAll({
+export const getRequestListByCode = async (req, res) => {
+    const getrequestlistd = await ARRequestListd.findAll({
         where: {
             DocNo: req.params.id,
         }
     })
-    if (!getgoodreceiptd) return res.status(400).json({ msg: "data tidak ditemukan" })
+    if (!getrequestlistd) return res.status(400).json({ msg: "data tidak ditemukan" })
     try {
-        res.status(200).json(getgoodreceiptd)
+        res.status(200).json(getrequestlistd)
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
 }
 
-export const updategoodReceiptD = async (req, res) => {
-    const { docNo, number, cost, materialCode, info, location, unit, qty} = req.body
+export const updaterequestListD = async (req, res) => {
+    const { docNo, customerCode, ARDocNo, cost, materialCode, info, location, unit, qty} = req.body
 
     if (!req.params.id1 || !req.params.id2) {
         return res
@@ -36,14 +36,15 @@ export const updategoodReceiptD = async (req, res) => {
     }
 
     try {
-        const updpurchasecostd = await GoodReceiptD.findOne({
+        const updrequestlistd = await ARRequestListd.findOne({
             where: {
                 DocNo: req.params.id1,
-                Number: req.params.id2
+                CustomerCode: req.params.id2,
+                ARDocNo: req.params.id3
             },
         });
 
-        if (!updpurchasecostd) return res.status(400).json({ msg: "data tidak ditemukan" })
+        if (!updrequestlistd) return res.status(400).json({ msg: "data tidak ditemukan" })
 
         const updatedData = {
             Cost: cost || updpurchasecostd.Cost,
@@ -54,12 +55,13 @@ export const updategoodReceiptD = async (req, res) => {
             Qty: qty || updpurchasecostd.Qty,
         };
 
-        const [numUpdatedRows, updatedRows] = await GoodReceiptD.update(
+        const [numUpdatedRows, updatedRows] = await ARRequestListd.update(
             updatedData,
             {
                 where: {
                     DocNo: req.params.id1,
-                    Number: req.params.id2
+                    CustomerCode: req.params.id2,
+                    ARDocNo: req.params.id3
                 },
                 returning: true,
             }
@@ -76,23 +78,23 @@ export const updategoodReceiptD = async (req, res) => {
 };
 
 
-export const createGoodReceiptD = async (req, res) => {
-    const cregoodReceiptD = req.body;
+export const createRequestListD = async (req, res) => {
+    const crerequestListD = req.body;
 
     try {
         // Check if the purchase request exists first
-        const goodreceiptd = await GoodReceiptD.findOne({
+        const requestlistd = await ARRequestListd.findOne({
             where: {
                 DocNo: req.params.id
             }
         });
 
-        if (!goodreceiptd) {
+        if (!requestlistd) {
             return res.status(404).json({ msg: "Purchase request not found" });
         }
 
         const createGoodReceiptDetails = await Promise.all(
-            cregoodReceiptD.map(async (detail) => {
+            crerequestListD.map(async (detail) => {
                 const {
                     number,
                     materialCode,
@@ -102,7 +104,7 @@ export const createGoodReceiptD = async (req, res) => {
                     qty
                 } = detail;
 
-                const response = await GoodReceiptD.create({
+                const response = await ARRequestListd.create({
                     DocNo: req.params.id,
                     Number: number,
                     MaterialCode: materialCode,
@@ -127,7 +129,7 @@ export const createGoodReceiptD = async (req, res) => {
 
 
 export const deletegoodReceiptd = async (req, res) => {
-    const delgoodreceiptd = await GoodReceiptD.findOne({
+    const delgoodreceiptd = await ARRequestListd.findOne({
         where: {
             DocNo: req.params.id
         }
@@ -136,7 +138,7 @@ export const deletegoodReceiptd = async (req, res) => {
     try {
         await delgoodreceiptd.destroy({
             where: {
-                DocNo: GoodReceiptD.DocNo
+                DocNo: ARRequestListd.DocNo
             }
         })
         res.status(200).json({ msg: "data Deleted" })
