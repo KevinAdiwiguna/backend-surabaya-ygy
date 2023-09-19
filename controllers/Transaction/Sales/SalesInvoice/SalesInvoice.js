@@ -3,7 +3,7 @@ import salesInvoiceh from "../../../../models/Transaction/Sales/SalesInvoice/Sal
 import salesInvoiced from "../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceD.js";
 import goodsIssued from "../../../../models/Transaction/Sales/GoodIssue/GoodIssued.js";
 import salesOrderd from "../../../../models/Transaction/Sales/SalesOrder/SalesOrderDetail.js";
-import salesInvoicepd from "../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceDP.js";
+import GenerateTaxNo from '../../../../models/Master/MasterGenerateTaxNo.js'
 import TaxNo from "../../../../models/Master/MasterGenerateTaxNo.js";
 
 import sequelize from "sequelize";
@@ -161,6 +161,14 @@ export const createSalesinvoice = async (req, res) => {
       },
     });
     if (!response.TaxNo) return res.status(404).json({ msg: "tax no tidak ada" });
+
+    await GenerateTaxNo.update({
+      DocNo: DocNo,
+    }, {
+      where: {
+        TaxNo: taxNo
+      }
+    })
 
     await salesInvoiceh.create({
       DocNo: DocNo,
