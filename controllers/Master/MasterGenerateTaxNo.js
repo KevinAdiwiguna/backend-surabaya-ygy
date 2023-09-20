@@ -33,6 +33,11 @@ export const createGenerateTaxNo = async (req, res) => {
 	const startNo = BigInt(normalizedStart);
 	const endNo = BigInt(normalizedEnd);
 
+	// Memeriksa apakah end lebih kecil dari start
+	if (endNo < startNo) {
+		return res.status(400).json({ msg: "End harus lebih besar atau sama dengan Start" });
+	}
+
 	try {
 		const taxNumbers = [];
 		for (let i = startNo; i <= endNo; i++) {
