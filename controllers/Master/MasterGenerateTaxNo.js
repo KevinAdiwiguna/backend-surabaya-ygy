@@ -19,20 +19,24 @@ export const getAllGenerateTaxNo = async (req, res) => {
 	}
 };
 
+
 export const createGenerateTaxNo = async (req, res) => {
 	const { start, end } = req.body;
+
+	const normalizedStart = start.replace(/^0+/, '');
+	const normalizedEnd = end.replace(/^0+/, '');
 
 	if (start.length !== 13 || end.length !== 13) {
 		return res.status(400).json({ msg: "Start dan End harus memiliki panjang 13 digit" });
 	}
 
-	const startNo = BigInt(start); 
-	const endNo = BigInt(end);
+	const startNo = BigInt(normalizedStart);
+	const endNo = BigInt(normalizedEnd);
 
 	try {
 		const taxNumbers = [];
 		for (let i = startNo; i <= endNo; i++) {
-			taxNumbers.push(i.toString());
+			taxNumbers.push(i.toString().padStart(13, '0'));
 		}
 
 		const existingTaxNumbers = await generateTaxNo.findAll({
@@ -47,6 +51,10 @@ export const createGenerateTaxNo = async (req, res) => {
 			return !existingTaxNumbers.some((existing) => existing.TaxNo === num);
 		});
 
+		if (newTaxNumbers.length > 1501) {
+			return res.status(400).json({ msg: "Anda tidak boleh menghasilkan lebih dari 1500 nomor pajak sekaligus" });
+		}
+
 		const createdTaxNumbers = await generateTaxNo.bulkCreate(
 			newTaxNumbers.map((num) => ({
 				TaxNo: num,
@@ -59,6 +67,7 @@ export const createGenerateTaxNo = async (req, res) => {
 		res.status(500).json({ msg: error.message });
 	}
 };
+
 
 
 export const deleteGenerateTaxNo = async (req, res) => {
