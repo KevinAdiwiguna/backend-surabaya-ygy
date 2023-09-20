@@ -81,7 +81,7 @@ export const deleteGenerateTaxNo = async (req, res) => {
 	try {
 		await generateTaxNo.destroy({
 			where: {
-				TaxNo: del.Code
+				TaxNo: del.TaxNo
 			}
 		});
 		res.status(200).json({ msg: "data Deleted" });
