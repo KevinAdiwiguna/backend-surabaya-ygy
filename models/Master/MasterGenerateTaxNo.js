@@ -17,10 +17,7 @@ const mastergeneratetaxno = db.define(
 
     DocNo: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: true,
     },
   },
   {
