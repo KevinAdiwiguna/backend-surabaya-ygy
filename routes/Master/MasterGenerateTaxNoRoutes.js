@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get('/taxno/:id/:id2', getAllGenerateTaxNo);
 router.post('/taxno', createGenerateTaxNo);
-router.delete('/taxno', deleteGenerateTaxNo);
+router.delete('/taxno/:id', deleteGenerateTaxNo);
 
 export default router;

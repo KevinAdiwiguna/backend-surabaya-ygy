@@ -71,7 +71,6 @@ export const createGenerateTaxNo = async (req, res) => {
 
 
 export const deleteGenerateTaxNo = async (req, res) => {
-	console.log({ data1: req.params.id }, { data2: req.params.id2 })
 	const del = await generateTaxNo.findOne({
 		where: {
 			TaxNo: req.params.id
