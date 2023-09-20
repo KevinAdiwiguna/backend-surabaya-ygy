@@ -1,5 +1,6 @@
 import generateTaxNo from "../../models/Master/MasterGenerateTaxNo.js";
-import sequelize from 'sequelize'
+import sequelize, { Op } from 'sequelize'
+
 
 export const getAllGenerateTaxNo = async (req, res) => {
 	let data1 = parseInt(req.params.id, 10)
@@ -7,7 +8,7 @@ export const getAllGenerateTaxNo = async (req, res) => {
 	try {
 		const response = await generateTaxNo.findAll({
 			where: {
-				taxno: {
+				TaxNo: {
 					[sequelize.Op.between]: [data1, data2],
 				},
 			},
@@ -18,38 +19,56 @@ export const getAllGenerateTaxNo = async (req, res) => {
 	}
 };
 
+
 export const createGenerateTaxNo = async (req, res) => {
 	const { start, end } = req.body;
-	if (start.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
-	if (end.length < 13) return res.status(400).json({ msg: "Start harus 13 digit" })
 
-	// const create = await generateTaxNo.findOne({
-	// 	where: {
-	// 		TaxNo: taxNo
-	// 	}
-	// })
-	// if (create) return res.status(400).json({ msg: "code Sudah ada" });
+	const normalizedStart = start.replace(/^0+/, '');
+	const normalizedEnd = end.replace(/^0+/, '');
 
+	if (start.length !== 13 || end.length !== 13) {
+		return res.status(400).json({ msg: "Start dan End harus memiliki panjang 13 digit" });
+	}
+
+	const startNo = BigInt(normalizedStart);
+	const endNo = BigInt(normalizedEnd);
 
 	try {
-		const startNo = parseInt(start);
-		const endNo = parseInt(end);
-
-		if (isNaN(startNo) || isNaN(endNo)) {
-			return res.status(400).json({ msg: "input tidak valid" });
-		}
-
+		const taxNumbers = [];
 		for (let i = startNo; i <= endNo; i++) {
-			await generateTaxNo.create({
-				TaxNo: i.toString()
-			});
+			taxNumbers.push(i.toString().padStart(13, '0'));
 		}
 
-		res.status(201).json({ msg: "data Created" });
+		const existingTaxNumbers = await generateTaxNo.findAll({
+			where: {
+				TaxNo: {
+					[Op.in]: taxNumbers,
+				},
+			},
+		});
+
+		const newTaxNumbers = taxNumbers.filter((num) => {
+			return !existingTaxNumbers.some((existing) => existing.TaxNo === num);
+		});
+
+		if (newTaxNumbers.length > 1501) {
+			return res.status(400).json({ msg: "Anda tidak boleh menghasilkan lebih dari 1500 nomor pajak sekaligus" });
+		}
+
+		const createdTaxNumbers = await generateTaxNo.bulkCreate(
+			newTaxNumbers.map((num) => ({
+				TaxNo: num,
+				DocNo: "",
+			}))
+		);
+
+		res.status(200).json({ msg: "Generate berhasil", data: createdTaxNumbers });
 	} catch (error) {
 		res.status(500).json({ msg: error.message });
 	}
-}
+};
+
+
 
 export const deleteGenerateTaxNo = async (req, res) => {
 	console.log({ data1: req.params.id }, { data2: req.params.id2 })
