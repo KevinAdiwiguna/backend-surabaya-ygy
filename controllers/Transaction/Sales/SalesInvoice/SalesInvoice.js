@@ -226,28 +226,42 @@ export const createSalesinvoice = async (req, res) => {
       await Promise.all(
         detail.map(async (detailItem) => {
           const {
-            numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d,
-            discPercent3d, discValued, discNominald, nettod, costd
+            Number,
+            MaterialCode,
+            Info,
+            Location,
+            BatchNo,
+            Unit,
+            Qty,
+            Price,
+            Gross,
+            DiscPercent,
+            DiscPercent2,
+            DiscPercent3,
+            DiscValue,
+            DiscNominal,
+            Netto,
+            Cost
           } = detailItem;
           try {
             await salesInvoiced.create({
               DocNo: DocNo,
-              Number: numberd,
-              MaterialCode: materialCoded,
-              Info: infod,
-              Location: locationd,
-              BatchNo: batchNod,
-              Unit: unitd,
-              Qty: qtyd,
-              Price: priced,
-              Gross: grossd,
-              DiscPercent: discPercentd,
-              DiscPercent2: discPercent2d,
-              DiscPercent3: discPercent3d,
-              DiscValue: discValued,
-              DiscNominal: discNominald,
-              Netto: nettod,
-              Cost: costd,
+              Number: Number,
+              MaterialCode: MaterialCode,
+              Info: Info,
+              Location: Location,
+              BatchNo: BatchNo,
+              Unit: Unit,
+              Qty: Qty,
+              Price: Price,
+              Gross: Gross,
+              DiscPercent: DiscPercent,
+              DiscPercent2: DiscPercent2,
+              DiscPercent3: DiscPercent3,
+              DiscValue: DiscValue,
+              DiscNominal: DiscNominal,
+              Netto: Netto,
+              Cost: Cost,
             });
           } catch (error) {
             res.status(500).json({ msg: error.message });
@@ -298,13 +312,16 @@ export const createSalesinvoice = async (req, res) => {
       ExchangeRateDiff: 0,
     });
 
-    await GoodIssueh.update({
-      Status: "INVOICED"
-    }, {
-      where: {
-        DocNo: giDocNo
+    await GoodIssueh.update(
+      {
+        Status: "INVOICED",
+      },
+      {
+        where: {
+          DocNo: giDocNo,
+        },
       }
-    })
+    );
 
     res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
