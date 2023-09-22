@@ -45,6 +45,7 @@ const SalesInvoiceh = db.define(
     PONo: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 0,
       validate: {
         notEmpty: true,
       },
@@ -195,10 +196,7 @@ const SalesInvoiceh = db.define(
     },
     Information: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: true,
     },
     Status: {
       type: DataTypes.STRING,
@@ -209,6 +207,7 @@ const SalesInvoiceh = db.define(
     },
     PrintCounter: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -216,10 +215,7 @@ const SalesInvoiceh = db.define(
     },
     PrintedBy: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: true,
     },
     PrintedDate: {
       type: DataTypes.TIME,
