@@ -181,7 +181,8 @@ const jobOrder = db.define(
 
     Information: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: "",
     },
 
     CreatedBy: {

@@ -49,6 +49,7 @@ const purchaseRequestHeader = db.define(
 		Information: {
 			type: DataTypes.STRING,
 			allowNull: true,
+			defaultValue: "",
 		},
 
 		Status: {

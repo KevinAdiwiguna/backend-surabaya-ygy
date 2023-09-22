@@ -73,11 +73,9 @@ const masterworktemplated = db.define(
 		},
 		Information: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
-		}
+			allowNull: true,
+			defaultValue: "",
+		},
 	},
 	{
 		freezeTableName: true,

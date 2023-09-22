@@ -76,11 +76,8 @@ const ARBook = db.define('arbook', {
   },
   Information: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true,
+    defaultValue: "",
   },
   DC: {
     type: DataTypes.CHAR,

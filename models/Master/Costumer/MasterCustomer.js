@@ -169,9 +169,7 @@ const mastercustomer = db.define('mastercustomer', {
     Information: {
         type: DataTypes.STRING,
         allowNull: true,
-        validate: {
-            notEmpty: false,
-        },
+        defaultValue: "",
     },
     CreatedBy: {
         type: DataTypes.STRING,

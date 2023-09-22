@@ -52,10 +52,8 @@ const masterworktemplateh = db.define(
 		},
 		Information: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
+			allowNull: true,
+			defaultValue: "",
 		},
 		CreatedBy: {
 			type: DataTypes.STRING,

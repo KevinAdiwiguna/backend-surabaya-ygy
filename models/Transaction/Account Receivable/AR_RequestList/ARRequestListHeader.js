@@ -109,11 +109,8 @@ const ARRequestList = db.define(
     },
     Information: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-      primaryKey: false,
+      allowNull: true,
+      defaultValue: "",
     },
     Status: {
       type: DataTypes.STRING,

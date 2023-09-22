@@ -156,7 +156,7 @@ const salesOrderHeader = db.define('salesorderh', {
     Information: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: ""
+        defaultValue: "",
     },
 
     Status: {

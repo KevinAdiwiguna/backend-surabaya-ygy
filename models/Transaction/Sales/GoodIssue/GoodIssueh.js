@@ -69,6 +69,7 @@ const GoodIssueh = db.define(
 		Information: {
 			type: DataTypes.STRING,
 			allowNull: true,
+			defaultValue: "",
 		},
 
 		Status: {

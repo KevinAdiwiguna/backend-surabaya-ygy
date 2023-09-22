@@ -70,7 +70,8 @@ const goodreceipth = db.define('goodsreceipth', {
 
     Information: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
     },
 
     Status:{

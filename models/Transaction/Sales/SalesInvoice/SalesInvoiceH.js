@@ -197,6 +197,7 @@ const SalesInvoiceh = db.define(
     Information: {
       type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
     Status: {
       type: DataTypes.STRING,
