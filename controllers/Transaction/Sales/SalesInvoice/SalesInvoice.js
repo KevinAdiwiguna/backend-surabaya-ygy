@@ -299,7 +299,7 @@ export const createSalesinvoice = async (req, res) => {
     });
 
     await GoodIssueh.update({
-      Status: "INVOICED "
+      Status: "INVOICED"
     }, {
       where: {
         DocNo: giDocNo
