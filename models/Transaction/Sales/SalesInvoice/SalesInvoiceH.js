@@ -221,10 +221,7 @@ const SalesInvoiceh = db.define(
     },
     PrintedDate: {
       type: DataTypes.TIME,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: true,
     },
     CreatedBy: {
       type: DataTypes.STRING,
