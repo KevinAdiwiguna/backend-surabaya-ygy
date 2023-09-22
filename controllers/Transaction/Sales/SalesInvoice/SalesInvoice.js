@@ -243,29 +243,26 @@ export const createSalesinvoice = async (req, res) => {
             Netto,
             Cost
           } = detailItem;
-          try {
-            await salesInvoiced.create({
-              DocNo: DocNo,
-              Number: Number,
-              MaterialCode: MaterialCode,
-              Info: Info,
-              Location: Location,
-              BatchNo: BatchNo,
-              Unit: Unit,
-              Qty: Qty,
-              Price: Price,
-              Gross: Gross,
-              DiscPercent: DiscPercent,
-              DiscPercent2: DiscPercent2,
-              DiscPercent3: DiscPercent3,
-              DiscValue: DiscValue,
-              DiscNominal: DiscNominal,
-              Netto: Netto,
-              Cost: Cost,
-            });
-          } catch (error) {
-            res.status(500).json({ msg: error.message });
-          }
+
+          await salesInvoiced.create({
+            DocNo: DocNo,
+            Number: Number,
+            MaterialCode: MaterialCode,
+            Info: Info,
+            Location: Location,
+            BatchNo: BatchNo,
+            Unit: Unit,
+            Qty: Qty,
+            Price: Price,
+            Gross: Gross,
+            DiscPercent: DiscPercent,
+            DiscPercent2: DiscPercent2,
+            DiscPercent3: DiscPercent3,
+            DiscValue: DiscValue,
+            DiscNominal: DiscNominal,
+            Netto: Netto,
+            Cost: Cost,
+          });
         })
       );
     }
@@ -303,7 +300,7 @@ export const createSalesinvoice = async (req, res) => {
       DueDate: docDate,
       Currency: currency,
       ExchangeRate: exchangeRate,
-      Information: taxStatus === "No" ? "" : taxNo, // Jika taxStatus adalah "No," maka kosongkan
+      Information: taxNo,
       DC: "C",
       DocValue: taxValueToSet,
       DocValueLocal: taxValueInTaxCurToSet,
