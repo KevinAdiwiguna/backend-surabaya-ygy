@@ -6,6 +6,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "push": "git add . && git commit -m 'fix' && git push",
     "dev": "nodemon index",
     "test": "mocha index.js",
     "lint": "eslint .",
