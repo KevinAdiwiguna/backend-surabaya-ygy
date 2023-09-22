@@ -172,6 +172,7 @@ const SalesInvoiceh = db.define(
     CutPPh: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: 0,
       validate: {
         notEmpty: true,
       },
@@ -179,6 +180,7 @@ const SalesInvoiceh = db.define(
     PPhPercent: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      defaultValue: 0,
       validate: {
         notEmpty: true,
       },
