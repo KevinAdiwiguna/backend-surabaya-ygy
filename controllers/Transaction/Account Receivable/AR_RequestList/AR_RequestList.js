@@ -55,7 +55,7 @@ export const createRequestList = async (req, res) => {
           try {
             await ARRequestListd.create({
               DocNo: DocNo,
-              CUstomerCode: customerCode,
+              CustomerCode: customerCode,
               ARDocNo: arDocNo,
             });
           } catch (error) {
@@ -64,13 +64,13 @@ export const createRequestList = async (req, res) => {
         })
       );
     }
+    res.status(200).json({msg: "create berhasil"})
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
 }
 
 export const updateRequestList = async (req, res) => {
-  const t = await sequelize.Transaction();
 
   try {
     const { docNo, series, docDate, collectorCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details } = req.body;
@@ -82,7 +82,6 @@ export const updateRequestList = async (req, res) => {
     });
 
     if (!requestListh) {
-      await t.rollback();
       return res.status(400).json({ msg: "Data tidak ditemukan" });
     }
 
@@ -110,7 +109,6 @@ export const updateRequestList = async (req, res) => {
       where: {
         DocNo: requestListh.DocNo
       },
-      transaction: t
     });
 
     if (details && Array.isArray(details)) {
@@ -126,7 +124,6 @@ export const updateRequestList = async (req, res) => {
               where: {
                 DocNo: requestListh.DocNo
               },
-              transaction: t
             });
           } catch (error) {
             console.error(error);
@@ -135,14 +132,10 @@ export const updateRequestList = async (req, res) => {
       );
     }
 
-    await t.commit();
     res.status(200).json({ msg: "Update berhasil" });
   } catch (error) {
-    await t.rollback();
     res.status(500).json({ msg: error.message });
-  } finally {
-    t.end();
-  }
+  } 
 }
 
 export const getRequestListDetail = async (req, res) => {

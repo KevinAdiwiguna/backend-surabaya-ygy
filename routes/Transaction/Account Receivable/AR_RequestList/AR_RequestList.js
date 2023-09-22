@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.get('/arrequestlist', getRequestListDetail);
 router.post('/arrequestlist', createRequestList);
-router.patch('/arrequestlist', updateRequestList);
+router.patch('/arrequestlist/:id', updateRequestList);
 
 export default router;

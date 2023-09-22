@@ -4,7 +4,7 @@ import db from "../../../../config/Database.js";
 const { DataTypes } = Sequelize;
 
 const ARRequestList = db.define(
- "arrequestisth",
+  "arrequestlisth",
   {
     DocNo: {
       type: DataTypes.STRING,
@@ -138,7 +138,7 @@ const ARRequestList = db.define(
       primaryKey: false,
     },
     PrintedDate: {
-      type: DataTypes.DATETIME,
+      type: DataTypes.DATE,
       allowNull: true,
       primaryKey: false,
     },
@@ -152,7 +152,7 @@ const ARRequestList = db.define(
     },
     ChangedBy: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull: false,
       validate: {
         notEmpty: true
       },
