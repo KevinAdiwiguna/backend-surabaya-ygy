@@ -22,10 +22,8 @@ const ARBook = db.define('arbook', {
   },
   TransType: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    allowNull: true,
+    defaultValue: "",
     primaryKey: true,
   },
   DocNo: {
