@@ -239,8 +239,6 @@ export const createSalesinvoice = async (req, res) => {
               Netto: nettod,
               Cost: costd,
             });
-
-
           } catch (error) {
             res.status(500).json({ msg: error.message });
           }
@@ -250,12 +248,33 @@ export const createSalesinvoice = async (req, res) => {
     await ARBook.create({
       Periode: getMasterPeriode.Periode,
       CustomerCode: customerCode,
+      TransType: "",
       DocNo: DocNo,
       DocDate: docDate,
       TOP: top,
+      DueDate: docDate,
       Currency: currency,
       ExchangeRate: exchangeRate,
-      Information: information,
+      Information: taxNo,
+      DC: "C",
+      DocValue: totalGross,
+      DocValueLocal: totalGross,
+      PaymentValue: 0,
+      PaymentValueLocal: 0,
+      ExchangeRateDiff: 0
+    })
+
+    await ARBook.create({
+      Periode: getMasterPeriode.Periode,
+      CustomerCode: customerCode,
+      TransType: "",
+      DocNo: DocNo + "T",
+      DocDate: docDate,
+      TOP: top,
+      DueDate: docDate,
+      Currency: currency,
+      ExchangeRate: exchangeRate,
+      Information: taxNo,
       DC: "C",
       DocValue: taxValue,
       DocValueLocal: taxValue,
@@ -263,6 +282,7 @@ export const createSalesinvoice = async (req, res) => {
       PaymentValueLocal: 0,
       ExchangeRateDiff: 0
     })
+
 
     res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
