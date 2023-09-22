@@ -1,5 +1,6 @@
 import ARRequestListh from "../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js";
 import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListDetail.js";
+import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
 import sequelize, { Op } from 'sequelize'
 
 export const createRequestList = async (req, res) => {
@@ -141,5 +142,14 @@ export const updateRequestList = async (req, res) => {
     res.status(500).json({ msg: error.message });
   } finally {
     t.end();
+  }
+}
+
+export const getRequestListDetail = async (req, res) => {
+  try {
+    const response = await ARBook.findAll()
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
   }
 }
