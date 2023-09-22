@@ -133,8 +133,12 @@ export const printInvoice = async (req, res) => {
 
 
 export const createSalesinvoice = async (req, res) => {
-  const { generateDocDate, series, docDate, sODocNo, giDocNo, poNo, customerCode, taxToCode, salesCode, top, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
-
+  const {
+    generateDocDate, series, docDate, sODocNo, giDocNo, poNo, customerCode, taxToCode, salesCode, top, currency,
+    exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue,
+    taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy,
+    printedDate, createdBy, changedBy, detail
+  } = req.body;
   try {
     const existingHeader = await salesInvoiceh.findOne({
       attributes: ["DocNo"],
@@ -156,27 +160,29 @@ export const createSalesinvoice = async (req, res) => {
       DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
     }
 
-    const response = await GenerateTaxNo.findOne({
-      where: {
-        TaxNo: taxNo,
-      },
-    });
-    if (!response.TaxNo) return res.status(404).json({ msg: "tax no tidak ada" });
+    if (taxStatus !== "No") {
+      const response = await GenerateTaxNo.findOne({
+        where: {
+          TaxNo: taxNo,
+        },
+      });
+      if (!response.TaxNo) return res.status(404).json({ msg: "tax no tidak ada" });
 
-    await GenerateTaxNo.update({
-      DocNo: DocNo,
-    }, {
-      where: {
-        TaxNo: taxNo
-      }
-    })
+      await GenerateTaxNo.update({
+        DocNo: DocNo,
+      }, {
+        where: {
+          TaxNo: taxNo
+        }
+      });
+    }
 
     const getMasterPeriode = await MasterPeriode.findOne({
       where: {
-        IsClosed: 0
-      }
-    })
-    if (!getMasterPeriode) return res.status(400).json({ msg: "Periode is Closed" })
+        IsClosed: 0,
+      },
+    });
+    if (!getMasterPeriode) return res.status(400).json({ msg: "Periode is Closed" });
 
     await salesInvoiceh.create({
       DocNo: DocNo,
@@ -193,8 +199,8 @@ export const createSalesinvoice = async (req, res) => {
       ExchangeRate: exchangeRate,
       TaxStatus: taxStatus,
       TaxPercent: taxPercent,
-      TaxPrefix: taxPrefix,
-      TaxNo: taxNo,
+      TaxPrefix: taxStatus === "No" ? "" : taxPrefix,
+      TaxNo: taxStatus === "No" ? "" : taxNo,
       DiscPercent: discPercent,
       TotalGross: totalGross,
       TotalDisc: totalDisc,
@@ -218,7 +224,10 @@ export const createSalesinvoice = async (req, res) => {
     if (detail && Array.isArray(detail)) {
       await Promise.all(
         detail.map(async (detailItem) => {
-          const { numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d, discPercent3d, discValued, discNominald, nettod, costd } = detailItem;
+          const {
+            numberd, materialCoded, infod, locationd, batchNod, unitd, qtyd, priced, grossd, discPercentd, discPercent2d,
+            discPercent3d, discValued, discNominald, nettod, costd
+          } = detailItem;
           try {
             await salesInvoiced.create({
               DocNo: DocNo,
@@ -245,6 +254,11 @@ export const createSalesinvoice = async (req, res) => {
         })
       );
     }
+
+    // Jika taxStatus adalah "No," maka taxValue dan taxValueInTaxCur diatur sebagai 0
+    let taxValueToSet = taxStatus === "No" ? 0 : taxValue;
+    let taxValueInTaxCurToSet = taxStatus === "No" ? 0 : taxValueInTaxCur;
+
     await ARBook.create({
       Periode: getMasterPeriode.Periode,
       CustomerCode: customerCode,
@@ -255,14 +269,14 @@ export const createSalesinvoice = async (req, res) => {
       DueDate: docDate,
       Currency: currency,
       ExchangeRate: exchangeRate,
-      Information: taxNo,
+      Information: taxStatus === "No" ? "" : taxNo, // Jika taxStatus adalah "No," maka kosongkan
       DC: "C",
       DocValue: totalGross,
       DocValueLocal: totalGross,
       PaymentValue: 0,
       PaymentValueLocal: 0,
-      ExchangeRateDiff: 0
-    })
+      ExchangeRateDiff: 0,
+    });
 
     await ARBook.create({
       Periode: getMasterPeriode.Periode,
@@ -274,15 +288,14 @@ export const createSalesinvoice = async (req, res) => {
       DueDate: docDate,
       Currency: currency,
       ExchangeRate: exchangeRate,
-      Information: taxNo,
+      Information: taxStatus === "No" ? "" : taxNo, // Jika taxStatus adalah "No," maka kosongkan
       DC: "C",
-      DocValue: taxValue,
-      DocValueLocal: taxValue,
+      DocValue: taxValueToSet,
+      DocValueLocal: taxValueInTaxCurToSet,
       PaymentValue: 0,
       PaymentValueLocal: 0,
-      ExchangeRateDiff: 0
-    })
-
+      ExchangeRateDiff: 0,
+    });
 
     res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
