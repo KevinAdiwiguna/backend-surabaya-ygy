@@ -1,10 +1,9 @@
 import ARRequestListh from "../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js";
 import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListDetail.js";
-import sequelize from 'sequelize'
-
+import sequelize, { Op } from 'sequelize'
 
 export const createRequestList = async (req, res) => {
-  const { series, docDate, collectorCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, createdBy, changedBy, printedDate, details } = req.body
+  const { series, docDate, generateDocDate, collectorCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, createdBy, changedBy, printedDate, details } = req.body
   try {
     const existingHeader = await ARRequestListh.findOne({
       attributes: ["DocNo"],
@@ -68,8 +67,6 @@ export const createRequestList = async (req, res) => {
     res.status(500).json({ msg: error.message })
   }
 }
-
-
 
 export const updateRequestList = async (req, res) => {
   const t = await sequelize.Transaction();

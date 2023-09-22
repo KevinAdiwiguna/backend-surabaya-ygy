@@ -4,7 +4,8 @@ import salesInvoiced from "../../../../models/Transaction/Sales/SalesInvoice/Sal
 import goodsIssued from "../../../../models/Transaction/Sales/GoodIssue/GoodIssued.js";
 import salesOrderd from "../../../../models/Transaction/Sales/SalesOrder/SalesOrderDetail.js";
 import GenerateTaxNo from '../../../../models/Master/MasterGenerateTaxNo.js'
-import TaxNo from "../../../../models/Master/MasterGenerateTaxNo.js";
+import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
+import MasterPeriode from '../../../../models/Master/MasterPeriode.js'
 
 import sequelize from "sequelize";
 import { Op } from "sequelize";
@@ -155,7 +156,7 @@ export const createSalesinvoice = async (req, res) => {
       DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
     }
 
-    const response = await TaxNo.findOne({
+    const response = await GenerateTaxNo.findOne({
       where: {
         TaxNo: taxNo,
       },
@@ -169,6 +170,13 @@ export const createSalesinvoice = async (req, res) => {
         TaxNo: taxNo
       }
     })
+
+    const getMasterPeriode = await MasterPeriode.findOne({
+      where: {
+        IsClosed: 0
+      }
+    })
+    if (!getMasterPeriode) return res.status(400).json({ msg: "Periode is Closed" })
 
     await salesInvoiceh.create({
       DocNo: DocNo,
@@ -231,12 +239,30 @@ export const createSalesinvoice = async (req, res) => {
               Netto: nettod,
               Cost: costd,
             });
+
+
           } catch (error) {
             res.status(500).json({ msg: error.message });
           }
         })
       );
     }
+    await ARBook.create({
+      Periode: getMasterPeriode.Periode,
+      CustomerCode: customerCode,
+      DocNo: DocNo,
+      DocDate: docDate,
+      TOP: top,
+      Currency: currency,
+      ExchangeRate: exchangeRate,
+      Information: information,
+      DC: "C",
+      DocValue: taxValue,
+      DocValueLocal: taxValue,
+      PaymentValue: 0,
+      PaymentValueLocal: 0,
+      ExchangeRateDiff: 0
+    })
 
     res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
