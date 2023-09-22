@@ -9,6 +9,7 @@ import MasterPeriode from '../../../../models/Master/MasterPeriode.js'
 
 import sequelize from "sequelize";
 import { Op } from "sequelize";
+import GoodIssueh from "../../../../models/Transaction/Sales/GoodIssue/GoodIssueh.js";
 
 export const getSaleInvoiceD = async (req, res) => {
   const Detail = await goodsIssued.findAll({
@@ -296,6 +297,14 @@ export const createSalesinvoice = async (req, res) => {
       PaymentValueLocal: 0,
       ExchangeRateDiff: 0,
     });
+
+    await GoodIssueh.update({
+      Status: "INVOICED "
+    }, {
+      where: {
+        DocNo: giDocNo
+      }
+    })
 
     res.status(200).json({ msg: "berhasil create" });
   } catch (error) {

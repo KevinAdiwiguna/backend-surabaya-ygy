@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
 import db from "../../../../config/Database.js";
 
-const {DataTypes} = Sequelize;
+const { DataTypes } = Sequelize;
 
-const salesOrderHeader = db.define('salesorderh',{
-    DocNo:{
+const salesOrderHeader = db.define('salesorderh', {
+    DocNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -13,35 +13,35 @@ const salesOrderHeader = db.define('salesorderh',{
         primaryKey: true
     },
 
-    Series:{
+    Series: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    DocDate:{
+    DocDate: {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    CustomerCode:{
+    CustomerCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    ShipToCode:{
+    ShipToCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    TaxToCode:{
+    TaxToCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -49,15 +49,15 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    SalesCode:{
+    SalesCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
     },
-    
-    DeliveryDate:{
+
+    DeliveryDate: {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
@@ -65,7 +65,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    PONo:{
+    PONo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -73,7 +73,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    TOP:{
+    TOP: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -81,7 +81,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    DiscPercent:{
+    DiscPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -89,7 +89,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    TaxStatus:{
+    TaxStatus: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -97,7 +97,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    TaxPercent:{
+    TaxPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -105,7 +105,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    Currency:{
+    Currency: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -113,7 +113,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    ExchangeRate:{
+    ExchangeRate: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -121,7 +121,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    TotalGross:{
+    TotalGross: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -129,7 +129,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    TotalDisc:{
+    TotalDisc: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -137,7 +137,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    TaxValue:{
+    TaxValue: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -145,7 +145,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    TotalNetto:{
+    TotalNetto: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -153,7 +153,13 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    Information:{
+    Information: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ""
+    },
+
+    Status: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -161,15 +167,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    Status:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    IsPurchaseReturn:{
+    IsPurchaseReturn: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         validate: {
@@ -177,7 +175,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    CreatedBy:{
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -185,7 +183,7 @@ const salesOrderHeader = db.define('salesorderh',{
         },
     },
 
-    ChangedBy:{
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -194,7 +192,7 @@ const salesOrderHeader = db.define('salesorderh',{
     },
 
 
-},{
+}, {
     freezeTableName: true
 });
 
