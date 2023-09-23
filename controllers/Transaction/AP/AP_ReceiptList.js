@@ -116,11 +116,11 @@ export const updateRequestList = async (req, res) => {
           const { apDocNo } = detail;
           try {
             await APReceiptLishd.upsert({
-              DocNo: requestListh.DocNo,
+              DocNo: receiptListh.DocNo,
               APDocNo: apDocNo,
             }, {
               where: {
-                DocNo: requestListh.DocNo
+                DocNo: receiptListh.DocNo
               },
             });
           } catch (error) {
