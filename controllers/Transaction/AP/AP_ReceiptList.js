@@ -136,7 +136,7 @@ export const updateRequestList = async (req, res) => {
   } 
 }
 
-export const getReceiptListDetail = async (req, res) => {
+export const getRequestListDetail = async (req, res) => {
   try {
     const response = await APBook.findAll()
     res.status(200).json(response)

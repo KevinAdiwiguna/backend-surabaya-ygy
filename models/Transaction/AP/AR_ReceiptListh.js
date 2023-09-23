@@ -82,7 +82,7 @@ const APReceiptListh = db.define(
       primaryKey: false,
     },
     PrintedDate: {
-      type: DataTypes.DATETIME,
+      type: DataTypes.DATE,
       allowNull: true,
       primaryKey: false,
     },
