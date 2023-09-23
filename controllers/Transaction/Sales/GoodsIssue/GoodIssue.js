@@ -1,6 +1,7 @@
 import GoodIssueh from "../../../../models/Transaction/Sales/GoodIssue/GoodIssueh.js";
 import GoodIssued from "../../../../models/Transaction/Sales/GoodIssue/GoodIssued.js";
 import SalesOrdersch from "../../../../models/Transaction/Sales/SalesOrder/SalesOrdersch.js";
+import SalesOrder from '../../../../models/Transaction/Sales/SalesOrder/SalesOrderHeader.js'
 import sequelize from "sequelize";
 import { Op } from "sequelize";
 
@@ -98,7 +99,7 @@ export const getGoodsIssue = async (req, res) => {
 
     return res.json(result);
   } catch (error) {
-    return res.json(error.message);
+    return res.json({ msg: error.message });
   }
 };
 
@@ -168,11 +169,21 @@ export const createGoodsIssue = async (req, res) => {
         })
       );
     }
+
+    await SalesOrder.update({
+      Status: "INVOICED"
+    }, {
+      where: {
+        DocNo: soDocNo
+      }
+    })
+
     return res.status(200).json({ msg: "data saved", DocNo: DocNo });
   } catch (error) {
     res.status(200).json({ msg: error.message });
   }
 };
+
 export const getDetailDocNo = async (req, res) => {
   try {
     const goodsissueh = await GoodIssueh.findOne({
