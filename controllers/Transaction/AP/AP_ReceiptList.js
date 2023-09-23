@@ -1,5 +1,5 @@
 import APReceiptListh from "../../../../models/Transaction/AP/AR_ReceiptListh.js";
-import APReceiptLishd from "../../../../models/Transaction/AP/AR_ReceiptListd.js";
+import APReceiptLishd from "../../../../models/Transaction/AP/AR_ReceiptLIstd.js";
 import APBook from "../../../../models/Report/AccountPayable/APBook.js";
 import sequelize, { Op } from 'sequelize'
 
