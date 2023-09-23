@@ -31,10 +31,8 @@ const GoodIssued = db.define(
 		},
 		Info: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
+			allowNull: true,
+			defaultValue: ""
 		},
 		Location: {
 			type: DataTypes.STRING,
@@ -46,6 +44,7 @@ const GoodIssued = db.define(
 		BatchNo: {
 			type: DataTypes.STRING,
 			allowNull: true,
+			defaultValue: ""
 		},
 		Unit: {
 			type: DataTypes.STRING,

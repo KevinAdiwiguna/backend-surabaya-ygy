@@ -90,6 +90,7 @@ const GoodIssueh = db.define(
 		PrintedDate: {
 			type: DataTypes.DATE,
 			allowNull: true,
+			defaultValue: null,
 		},
 		CreatedBy: {
 			type: DataTypes.STRING,

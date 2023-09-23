@@ -31,9 +31,7 @@ const salesOrderDetail = db.define('salesorderd', {
     Info: {
         type: DataTypes.STRING,
         allowNull: true,
-        validate: {
-            notEmpty: false
-        },
+        defaultValue: ""
     },
     Unit: {
         type: DataTypes.STRING,
