@@ -137,9 +137,9 @@ export const createSalesinvoice = async (req, res) => {
   const {
     generateDocDate, series, docDate, sODocNo, giDocNo, poNo, customerCode, taxToCode, salesCode, top, currency,
     exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue,
-    taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy,
-    printedDate, createdBy, changedBy, detail
-  } = req.body;
+    taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
+
+
   try {
     const existingHeader = await salesInvoiceh.findOne({
       attributes: ["DocNo"],
@@ -160,6 +160,7 @@ export const createSalesinvoice = async (req, res) => {
       const Series = parseInt(existingHeader.DocNo.split("-")[2], 10) + 1;
       DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
     }
+
 
     if (taxStatus !== "No") {
       const response = await GenerateTaxNo.findOne({
@@ -200,8 +201,8 @@ export const createSalesinvoice = async (req, res) => {
       ExchangeRate: exchangeRate,
       TaxStatus: taxStatus,
       TaxPercent: taxPercent,
-      TaxPrefix: taxStatus === "No" ? "" : taxPrefix,
-      TaxNo: taxStatus === "No" ? "" : taxNo,
+      TaxPrefix: taxStatus == "No" ? "" : taxPrefix,
+      TaxNo: taxStatus == "No" ? "" : taxNo,
       DiscPercent: discPercent,
       TotalGross: totalGross,
       TotalDisc: totalDisc,
@@ -243,7 +244,6 @@ export const createSalesinvoice = async (req, res) => {
             Netto,
             Cost
           } = detailItem;
-
           await salesInvoiced.create({
             DocNo: DocNo,
             Number: Number,
@@ -263,52 +263,87 @@ export const createSalesinvoice = async (req, res) => {
             Netto: Netto,
             Cost: Cost,
           });
+
+          if (taxStatus !== "No") {
+            if (taxStatus == "Include") {
+              await ARBook.create({
+                Periode: getMasterPeriode.Periode,
+                CustomerCode: customerCode,
+                TransType: "",
+                DocNo: DocNo,
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "C",
+                DocValue: totalGross - totalNetto,
+                DocValueLocal: totalGross - totalNetto,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+              await ARBook.create({
+                Periode: getMasterPeriode.Periode,
+                CustomerCode: customerCode,
+                TransType: "",
+                DocNo: DocNo + "T",
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "C",
+                DocValue: taxValue,
+                DocValueLocal: taxValue,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+            } else if (taxStatus == "Exclude") {
+              await ARBook.create({
+                Periode: getMasterPeriode.Periode,
+                CustomerCode: customerCode,
+                TransType: "",
+                DocNo: DocNo,
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "C",
+                DocValue: totalNetto,
+                DocValueLocal: totalNetto,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+              await ARBook.create({
+                Periode: getMasterPeriode.Periode,
+                CustomerCode: customerCode,
+                TransType: "",
+                DocNo: DocNo + "T",
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "C",
+                DocValue: taxValue,
+                DocValueLocal: taxValue,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+            }
+          }
         })
       );
     }
-
-    // Jika taxStatus adalah "No," maka taxValue dan taxValueInTaxCur diatur sebagai 0
-    let taxValueToSet = taxStatus === "No" ? 0 : taxValue;
-    let taxValueInTaxCurToSet = taxStatus === "No" ? 0 : taxValueInTaxCur;
-
-    await ARBook.create({
-      Periode: getMasterPeriode.Periode,
-      CustomerCode: customerCode,
-      TransType: "",
-      DocNo: DocNo,
-      DocDate: docDate,
-      TOP: top,
-      DueDate: docDate,
-      Currency: currency,
-      ExchangeRate: exchangeRate,
-      Information: taxStatus === "No" ? "" : taxNo, // Jika taxStatus adalah "No," maka kosongkan
-      DC: "C",
-      DocValue: totalGross,
-      DocValueLocal: totalGross,
-      PaymentValue: 0,
-      PaymentValueLocal: 0,
-      ExchangeRateDiff: 0,
-    });
-
-    await ARBook.create({
-      Periode: getMasterPeriode.Periode,
-      CustomerCode: customerCode,
-      TransType: "",
-      DocNo: DocNo + "T",
-      DocDate: docDate,
-      TOP: top,
-      DueDate: docDate,
-      Currency: currency,
-      ExchangeRate: exchangeRate,
-      Information: taxNo,
-      DC: "C",
-      DocValue: taxValueToSet,
-      DocValueLocal: taxValueInTaxCurToSet,
-      PaymentValue: 0,
-      PaymentValueLocal: 0,
-      ExchangeRateDiff: 0,
-    });
-
     await GoodIssueh.update(
       {
         Status: "INVOICED",
@@ -320,11 +355,11 @@ export const createSalesinvoice = async (req, res) => {
       }
     );
 
-    res.status(200).json({ msg: "berhasil create" });
+
   } catch (error) {
-    res.status(500).json({ msg: error.message });
+    res.status(500).json({ msg: error.message })
   }
-};
+}
 
 
 
