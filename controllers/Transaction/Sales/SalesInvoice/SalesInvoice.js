@@ -15,7 +15,7 @@ import GoodIssueh from "../../../../models/Transaction/Sales/GoodIssue/GoodIssue
 export const getSalesInvoiceUpdate = async (req, res) => {
   const response = await salesInvoiced.findAll({
     where: {
-      DocNo: req.parmas.id
+      DocNo: req.params.id
     }
   })
   res.status(200).json(response)
