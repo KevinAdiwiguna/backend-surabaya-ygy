@@ -9,7 +9,17 @@ import MasterPeriode from '../../../../models/Master/MasterPeriode.js'
 
 import sequelize from "sequelize";
 import { Op } from "sequelize";
+
 import GoodIssueh from "../../../../models/Transaction/Sales/GoodIssue/GoodIssueh.js";
+
+export const getSalesInvoiceUpdate = async (req, res) => {
+  const response = await salesInvoiced.findAll({
+    where: {
+      DocNo: req.parmas.id
+    }
+  })
+  res.status(200).json(response)
+}
 
 export const getSaleInvoiceD = async (req, res) => {
   const Detail = await goodsIssued.findAll({
