@@ -17,12 +17,14 @@ export const getSaleInvoiceD = async (req, res) => {
       DocNo: req.params.id,
     },
   });
+  if (Detail.length <= 0) return res.status(404).json({ msg: "Data Tidak ada" })
   const Header = await goodsissue.findAll({
     where: {
       DocNo: req.params.id,
     },
   });
 
+  if (Header.length <= 0) return res.status(404).json({ msg: "Data Tidak ada" })
   const orderDetail = await salesOrderd.findAll({
     where: {
       DocNo: Header[0].SODocNo,
