@@ -42,45 +42,30 @@ const ARRequestList = db.define(
       defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
       primaryKey: false,
     },
     SalesArea1: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: "",
-      validate: {
-        notEmpty: true,
-      },
       primaryKey: false,
     },
     SalesArea2: {
       defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
       primaryKey: false,
     },
     SalesArea3: {
       defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
       primaryKey: false,
     },
     Currency: {
       defaultValue: "",
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
       primaryKey: false,
     },
     TotalCustomer: {
