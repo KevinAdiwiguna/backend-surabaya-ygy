@@ -46,9 +46,6 @@ const SalesInvoiceD = db.define(
     BatchNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
       primaryKey: true,
     },
     Unit: {
