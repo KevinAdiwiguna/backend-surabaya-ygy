@@ -1,7 +1,8 @@
 import CustomerPaymentD from "../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentD.js";
 import CustomerPaymentH from "../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentH.js";
 import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListDetail.js";
-import ARRequestListh from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
+import ARRequestListh from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js';
+import SalesInvoiceh from '../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js'
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
 import sequelize, { Op } from 'sequelize'
 
@@ -78,29 +79,51 @@ export const createCustomerPayment = async (req, res) => {
   }
 }
 
-
-
 export const getCustomerPaymentDetail = async (req, res) => {
-  const getARRequestListd = await ARRequestListd.findAll({
-    where: {
-      DocNo: req.params.id
-    },
-    attributes: ["ARDocNo", "DocNo"]
-  });
-
-  const ARBookPromises = getARRequestListd.map(async (arRequest) => {
-    const ARBookData = await ARBook.findAll({
+  try {
+    const getARRequestListd = await ARRequestListd.findAll({
       where: {
-        DocNo: arRequest.ARDocNo
+        DocNo: req.params.id
       },
-      attributes: ["CustomerCode", "DocNo", "TransType", "TOP", "DueDate", "Currency", "ExchangeRate", "Information", "DC", "DocValue", "DocValueLocal", "PaymentValue", "PaymentValueLocal", "ExchangeRateDiff"]
+      attributes: ["ARDocNo", "DocNo"]
     });
-    return ARBookData;
-  });
 
-  const ARBookDataArray = await Promise.all(ARBookPromises);
+    const connect = [];
 
-  const mergedARBookData = ARBookDataArray.flat();
+    for (const arRequest of getARRequestListd) {
+      const ARBookData = await ARBook.findAll({
+        where: {
+          DocNo: getARRequestListd[0].ARDocNo
+        },
+        attributes: [
+          "CustomerCode", "DocNo", "TransType", "TOP", "DueDate",
+          "Currency", "ExchangeRate", "Information", "DC", "DocValue",
+          "DocValueLocal", "PaymentValue", "PaymentValueLocal", "ExchangeRateDiff"
+        ]
+      });
 
-  res.json(mergedARBookData);
-}
+      for (const arBookItem of ARBookData) {
+        const getDetail = await SalesInvoiceh.findOne({
+          where: {
+            DocNo: arBookItem.DocNo
+          },
+          attributes: ["TaxNo", "TaxPrefix"]
+        });
+
+        if (getDetail !== null) {
+          const connectedData = {
+            ...arBookItem.dataValues,
+            TaxNo: getDetail.TaxNo,
+            TaxPrefix: getDetail.TaxPrefix
+          };
+          connect.push(connectedData);
+        }
+      }
+    }
+
+    return res.json(connect);
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
