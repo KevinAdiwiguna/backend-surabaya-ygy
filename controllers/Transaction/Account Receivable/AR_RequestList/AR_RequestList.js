@@ -149,7 +149,7 @@ export const getRequestListDetail = async (req, res) => {
 
 export const getRequestListPrinted = async (req, res) => {
   try {
-    const response = await ARRequestListd.findOne({
+    const response = await ARRequestListh.findAll({
       where: {
         Status: "PRINTED"
       }
