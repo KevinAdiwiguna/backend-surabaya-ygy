@@ -64,7 +64,7 @@ export const createRequestList = async (req, res) => {
         })
       );
     }
-    res.status(200).json({msg: "create berhasil"})
+    res.status(200).json({ msg: "create berhasil" })
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
@@ -135,7 +135,7 @@ export const updateRequestList = async (req, res) => {
     res.status(200).json({ msg: "Update berhasil" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
-  } 
+  }
 }
 
 export const getRequestListDetail = async (req, res) => {
@@ -144,5 +144,19 @@ export const getRequestListDetail = async (req, res) => {
     res.status(200).json(response)
   } catch (error) {
     res.status(500).json({ msg: error.message })
+  }
+}
+
+export const getRequestListPrinted = async (req, res) => {
+  try {
+    const response = await ARRequestListd.findOne({
+      where: {
+        Status: "PRINTED"
+      }
+    })
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+
   }
 }
