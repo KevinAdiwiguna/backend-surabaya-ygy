@@ -13,6 +13,14 @@ export const createCustomerPayment = async (req, res) => {
   const t = await db.transaction();
 
   try {
+      const data = await CustomerPaymentH.findOne({
+        where: {
+          ARReqListNo: arRequestListNo
+        }
+      })
+
+      if(data) return res.status(400).json({msg: "document sudah di digunakan"})
+    
     const existingHeader = await CustomerPaymentH.findOne({
       attributes: ["DocNo"],
       where: {
