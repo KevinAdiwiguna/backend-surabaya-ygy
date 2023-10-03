@@ -32,7 +32,7 @@ const CustomerPaymentH = db.define(
       defaultValue: null,
       primaryKey: false,
     },
-    ARRequestListNo: {
+    ARReqListNo: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

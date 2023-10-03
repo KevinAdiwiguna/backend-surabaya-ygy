@@ -45,7 +45,7 @@ export const createCustomerPayment = async (req, res) => {
       DocNo: DocNo,
       Series: series,
       DocDate: docDate,
-      ARRequestListNo: arRequestListNo,
+      ARReqListNo: arRequestListNo,
       TotalCustomer: totalCustomer,
       TotalDocument: totalDocument,
       TotalPayment: totalPayment,
