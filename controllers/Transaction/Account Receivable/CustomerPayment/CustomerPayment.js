@@ -4,14 +4,15 @@ import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR
 import ARRequestListh from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js';
 import SalesInvoiceh from '../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js'
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
-import sequelize, { Op } from 'sequelize'
+import Sequelize, { Op } from 'sequelize'
+import db from '../../../../config/Database.js'
 
 export const createCustomerPayment = async (req, res) => {
+  const { series, docDate, arRequestListNo, totalCustomer, totalDocument, totalPayment, information, status, createdBy, changedBy, generateDocDate, details } = req.body;
+
+  const t = await db.transaction();
+
   try {
-
-
-    const { series, docDate, arRequestListNo, totalCustomer, totalDocument, totalPayment, information, status, createdBy, changedBy, generateDocDate, details } = req.body
-
     const existingHeader = await CustomerPaymentH.findOne({
       attributes: ["DocNo"],
       where: {
@@ -19,7 +20,7 @@ export const createCustomerPayment = async (req, res) => {
           [Op.like]: `${series}-${generateDocDate}-%`,
         },
       },
-      order: [[sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
+      order: [[Sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
       raw: true,
       limit: 1,
     });
@@ -32,7 +33,7 @@ export const createCustomerPayment = async (req, res) => {
       DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
     }
 
-    await ARRequestListh.create({
+    await CustomerPaymentH.create({
       DocNo: DocNo,
       Series: series,
       DocDate: docDate,
@@ -45,12 +46,12 @@ export const createCustomerPayment = async (req, res) => {
       CreatedBy: createdBy,
       ChangedBy: changedBy,
       GenerateDocDate: generateDocDate,
-    })
+    }, { transaction: t });
 
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detail) => {
-          const { DocNo, transactionType, customerCode, arDocNo, dc, currency, payment, exchangeRate, paymentLocal, taxPrefix, taxNo, information } = detail;
+          const { transactionType, customerCode, arDocNo, dc, currency, payment, exchangeRate, paymentLocal, taxPrefix, taxNo, information } = detail;
           try {
             await CustomerPaymentD.create({
               DocNo: DocNo,
@@ -65,17 +66,23 @@ export const createCustomerPayment = async (req, res) => {
               TaxPrefix: taxPrefix,
               TaxNo: taxNo,
               Information: information,
-            });
+            }, { transaction: t });
           } catch (error) {
             console.error(error);
+            await t.rollback();
+            res.status(500).json({ msg: "Gagal membuat detail" });
           }
         })
       );
     }
-    res.status(201).json({ msg: "berhasil create" })
+
+    await t.commit();
+    res.status(201).json({ msg: "berhasil create" });
 
   } catch (error) {
-    res.status(500).json({ msg: error.message })
+    console.error(error);
+    await t.rollback();
+    res.status(500).json({ msg: error.message });
   }
 }
 
