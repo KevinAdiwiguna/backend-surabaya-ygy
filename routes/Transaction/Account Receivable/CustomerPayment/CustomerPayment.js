@@ -3,7 +3,7 @@ import { getCustomerPaymentDetail, createCustomerPayment } from '../../../../con
 const router = express.Router();
 
 router.get('/customerpaymentd/:id', getCustomerPaymentDetail);
-router.post('/arrequestlist', createCustomerPayment);
+router.post('/customerpayment', createCustomerPayment);
 // router.patch('/arrequestlist/:id', updateRequestList);
 
 export default router;
