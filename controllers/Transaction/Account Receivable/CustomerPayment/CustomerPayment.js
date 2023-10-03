@@ -1,7 +1,6 @@
 import CustomerPaymentD from "../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentD.js";
 import CustomerPaymentH from "../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentH.js";
 import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListDetail.js";
-import ARRequestListh from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js';
 import SalesInvoiceh from '../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js'
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
 import Sequelize, { Op } from 'sequelize'
@@ -13,14 +12,14 @@ export const createCustomerPayment = async (req, res) => {
   const t = await db.transaction();
 
   try {
-      const data = await CustomerPaymentH.findOne({
-        where: {
-          ARReqListNo: arRequestListNo
-        }
-      })
+    const data = await CustomerPaymentH.findOne({
+      where: {
+        ARReqListNo: arRequestListNo
+      }
+    })
 
-      if(data) return res.status(400).json({msg: "document sudah di digunakan"})
-    
+    if (data) return res.status(400).json({ msg: "document sudah di digunakan" })
+
     const existingHeader = await CustomerPaymentH.findOne({
       attributes: ["DocNo"],
       where: {
@@ -94,6 +93,8 @@ export const createCustomerPayment = async (req, res) => {
   }
 }
 
+
+
 export const getCustomerPaymentDetail = async (req, res) => {
   try {
     const getARRequestListd = await ARRequestListd.findAll({
@@ -103,42 +104,41 @@ export const getCustomerPaymentDetail = async (req, res) => {
       attributes: ["ARDocNo", "DocNo"]
     });
 
-    const connect = [];
+    const arBookItem = await ARBook.findAll({
+      where: {
+        DocNo: getARRequestListd.map(item => item.ARDocNo)
+      },
+      attributes: [
+        "CustomerCode", "DocNo", "TransType", "TOP", "DueDate",
+        "Currency", "ExchangeRate", "Information", "DC", "DocValue",
+        "DocValueLocal", "PaymentValue", "PaymentValueLocal", "ExchangeRateDiff"
+      ]
+    });
 
-    for (const arRequest of getARRequestListd) {
-      const ARBookData = await ARBook.findAll({
-        where: {
-          DocNo: getARRequestListd[0].ARDocNo
-        },
-        attributes: [
-          "CustomerCode", "DocNo", "TransType", "TOP", "DueDate",
-          "Currency", "ExchangeRate", "Information", "DC", "DocValue",
-          "DocValueLocal", "PaymentValue", "PaymentValueLocal", "ExchangeRateDiff"
-        ]
-      });
+    const getDetail = await SalesInvoiceh.findOne({
+      where: {
+        DocNo: arBookItem[0].DocNo
+      },
+      attributes: ["TaxNo", "TaxPrefix"]
+    });
 
-      for (const arBookItem of ARBookData) {
-        const getDetail = await SalesInvoiceh.findOne({
-          where: {
-            DocNo: arBookItem.DocNo
-          },
-          attributes: ["TaxNo", "TaxPrefix"]
-        });
+    // Menggabungkan data dari getARRequestListd dan arBookItem berdasarkan ARDocNo dan DocNo
+    const combinedData = getARRequestListd.map(arRequestItem => {
+      const matchingARBookItem = arBookItem.find(arBookItem => arBookItem.DocNo === arRequestItem.ARDocNo);
 
-        if (getDetail !== null) {
-          const connectedData = {
-            ...arBookItem.dataValues,
-            TaxNo: getDetail.TaxNo,
-            TaxPrefix: getDetail.TaxPrefix
-          };
-          connect.push(connectedData);
-        }
-      }
-    }
+      // Menambahkan getDetail ke objek hasil, atau menggunakan nilai default jika getDetail tidak ditemukan
+      return {
+        ...matchingARBookItem.dataValues,
+        TaxNo: getDetail ? getDetail.TaxNo : null,
+        TaxPrefix: getDetail ? getDetail.TaxPrefix : null
+      };
+    });
 
-    return res.json(connect);
+    res.json(combinedData); // Mengirimkan hasil gabungan
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
 };
+
+
 
