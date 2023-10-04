@@ -16,10 +16,7 @@ const CustomerPaymentD = db.define(
     },
     TransactionType: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
+      allowNull: true,
       primaryKey: true,
     },
     CustomerCode: {
