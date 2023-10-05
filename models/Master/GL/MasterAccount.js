@@ -38,16 +38,10 @@ const masteraccount = db.define(
 		ParentNo: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
 		},
 		IsJournal: {
 			type: DataTypes.BOOLEAN,
 			allowNull: false,
-			validate: {
-				notEmpty: true,
-			},
 		},
 		Department: {
 			type: DataTypes.STRING,
