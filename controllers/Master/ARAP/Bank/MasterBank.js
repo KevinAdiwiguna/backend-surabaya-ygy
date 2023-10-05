@@ -45,12 +45,12 @@ export const getMasterBankByCode = async (req, res) => {
 };
 
 export const updateMasterBank = async (req, res) => {
-  const { code, name, createdBy, changedBy } = req.body;
+  const { name, createdBy, changedBy } = req.body;
 
   try {
     const data = await masterBank.findOne({
       where: {
-        Code: code,
+        Code: req.params.id,
       },
     });
     if (!data) return res.status(404).json({ msg: "data tidak ada" });
@@ -63,7 +63,7 @@ export const updateMasterBank = async (req, res) => {
       },
       {
         where: {
-          Code: data.Code,
+          Code: req.params.id,
         },
       }
     );
