@@ -1,7 +1,6 @@
 import ARSettlement from "../../../../models/Transaction/Account Receivable/ARSettlement/ARSettlement.js";
-import ARRequestListH from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
-import ARRequestListD from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListDetail.js'
 import CashierReceiptH from '../../../../models/Transaction/BKM/CashierReceiptH.js';
+import CustomerPaymentH from '../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentH.js'
 
 import { Sequelize, Op } from 'sequelize';
 
@@ -59,27 +58,24 @@ export const createARSettlement = async (req, res) => {
 
 export const getARSettlementData = async (req, res) => {
     try {
-        const response = await ARRequestListH.findOne({
+        const response = await CustomerPaymentH.findOne({
             where: {
-                DocNo: req.params.id,
-                Status: "USED"
+                ARReqListNo: req.params.id,
+                Status: "OPEN"
             },
-            attributes: ["DocNo", "Series", "TotalValue"]
+            attributes: ["DocNo", "Series", "TotalPayment"]
         });
-
-        const response2 = await ARRequestListD.findAll({
-            attributes: ["ARDocNo"]
-        });
-        const cashierReceiptH = await CashierReceiptH.findOne({
+        const response2 = await CashierReceiptH.findOne({
             where: {
-                ARReqListNo: req.params.id
-            }
+                ARReqListNo: req.params.id,
+                Status: "PRINTED"
+            },
+            attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro"]
         })
-        if (!cashierReceiptH) return res.status(400).json({ msg: "data banding tidak ada" })
 
-        const response3 = { ...response.dataValues, ...response2[0].dataValues };
 
-        return res.json({ sattle: response3, banding: response3 });
+
+        return res.json({ settle: response, banding: response2 });
     } catch (error) {
         return res.status(500).json({ msg: error.message })
     }
