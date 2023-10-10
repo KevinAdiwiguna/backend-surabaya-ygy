@@ -6,17 +6,21 @@ import { Op, Sequelize } from 'sequelize';
 export const getCashierReceiptUpdate = async (req, res) => {
     const responseh = await CashierReceiptH.findOne({
         where: {
-            DocNo: req.prams.id
+            DocNo: req.params.id
         }
     })
-    const responseg = await CashierReceiptG.findOne({
+    const responseg = await CashierReceiptG.findAll({
         where: {
-            DocNo: req.prams.id
+            DocNo: req.params.id
         }
     })
-    res.status(200).json({ h: responseh, g: responseg })
+    const rseponsed = await CashierReceiptD.findAll({
+        where: {
+            DocNo: req.params.id
+        }
+    })
+    res.status(200).json({ h: responseh, g: responseg, d: rseponsed })
 }
-
 
 export const createCashierReceipt = async (req, res) => {
     const { series, generateDocDate, arReqListNo, totalDebet, totalCredit, totalGiro, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, cashierReceiptGArray, cashierReceiptDArray } = req.body;
@@ -149,3 +153,24 @@ export const createCashierReceipt = async (req, res) => {
         return res.status(500).json({ msg: 'Gagal membuat CashierReceipt', error: error.message });
     }
 }
+
+export const printCashierReceipt = async (req, res) => {
+    try {
+        const response = await CashierReceiptH.findOne({
+            where: {
+                DocNo: req.params.id
+            }
+        });
+        if (!response) {
+            return res.status(400).json({ msg: "Data tidak ditemukan" });
+        }
+        await CashierReceiptH.update(
+            { Status: "PRINTED" },
+            { where: { DocNo: req.params.id } }
+        );
+        return res.status(200).json({ msg: "Data telah dicetak" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: "Terjadi kesalahan server" });
+    }
+};

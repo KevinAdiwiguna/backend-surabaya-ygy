@@ -93,8 +93,6 @@ export const createCustomerPayment = async (req, res) => {
   }
 }
 
-
-
 export const getCustomerPaymentDetail = async (req, res) => {
   try {
     const getARRequestListd = await ARRequestListd.findAll({
@@ -122,11 +120,9 @@ export const getCustomerPaymentDetail = async (req, res) => {
       attributes: ["TaxNo", "TaxPrefix"]
     });
 
-    // Menggabungkan data dari getARRequestListd dan arBookItem berdasarkan ARDocNo dan DocNo
     const combinedData = getARRequestListd.map(arRequestItem => {
       const matchingARBookItem = arBookItem.find(arBookItem => arBookItem.DocNo === arRequestItem.ARDocNo);
 
-      // Menambahkan getDetail ke objek hasil, atau menggunakan nilai default jika getDetail tidak ditemukan
       return {
         ...matchingARBookItem.dataValues,
         TaxNo: getDetail ? getDetail.TaxNo : null,
@@ -134,7 +130,7 @@ export const getCustomerPaymentDetail = async (req, res) => {
       };
     });
 
-    res.json(combinedData); // Mengirimkan hasil gabungan
+    res.json(combinedData); 
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
