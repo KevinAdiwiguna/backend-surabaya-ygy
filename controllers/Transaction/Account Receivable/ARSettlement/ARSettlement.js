@@ -1,4 +1,8 @@
 import ARSettlement from "../../../../models/Transaction/Account Receivable/ARSettlement/ARSettlement.js";
+import ARRequestListH from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
+import ARRequestListD from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListDetail.js'
+import CashierReceiptH from '../../../../models/Transaction/BKM/CashierReceiptH.js';
+
 import { Sequelize, Op } from 'sequelize';
 
 export const createARSettlement = async (req, res) => {
@@ -52,3 +56,31 @@ export const createARSettlement = async (req, res) => {
         return res.status(500).json({ msg: error.message });
     }
 }
+
+export const getARSettlementData = async (req, res) => {
+    try {
+        const response = await ARRequestListH.findOne({
+            where: {
+                DocNo: req.params.id,
+                Status: "USED"
+            },
+            attributes: ["DocNo", "Series", "TotalValue"]
+        });
+
+        const response2 = await ARRequestListD.findAll({
+            attributes: ["ARDocNo"]
+        });
+        const cashierReceiptH = await CashierReceiptH.findOne({
+            where: {
+                ARReqListNo: req.params.id
+            }
+        })
+        if (!cashierReceiptH) return res.status(400).json({ msg: "data banding tidak ada" })
+
+        const response3 = { ...response.dataValues, ...response2[0].dataValues };
+
+        return res.json({ sattle: response3, banding: response3 });
+    } catch (error) {
+        return res.status(500).json({ msg: error.message })
+    }
+};
