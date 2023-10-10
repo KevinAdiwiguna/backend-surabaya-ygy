@@ -56,6 +56,19 @@ export const createARSettlement = async (req, res) => {
     }
 }
 
+export const getARSEttlement = async (req, res) => {
+    try {
+        const response = await ARSettlement.findOne({
+            where: {
+                DocNo: req.params.id
+            }
+        })
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({msg: error.message})
+    }
+}
+
 export const getARSettlementData = async (req, res) => {
     try {
         const response = await CustomerPaymentH.findOne({
