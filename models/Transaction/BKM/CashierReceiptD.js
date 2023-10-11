@@ -24,11 +24,6 @@ const CashierReceiptD = db.define(
         },
         Info: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
-            primaryKey: true,
         },
         DC: {
             type: DataTypes.STRING,

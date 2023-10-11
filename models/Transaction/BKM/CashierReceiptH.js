@@ -69,10 +69,6 @@ const CashierReceiptH = db.define(
 
         Information: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
         },
 
         Status: {
@@ -97,8 +93,6 @@ const CashierReceiptH = db.define(
 
         PrintedDate: {
             type: DataTypes.DATE,
-            allowNull: false,
-
         },
 
         CreatedBy: {

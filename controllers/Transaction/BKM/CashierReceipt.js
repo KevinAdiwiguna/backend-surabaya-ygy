@@ -23,7 +23,7 @@ export const getCashierReceiptUpdate = async (req, res) => {
 }
 
 export const createCashierReceipt = async (req, res) => {
-    const { series, generateDocDate, arReqListNo, totalDebet, totalCredit, totalGiro, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, cashierReceiptGArray, cashierReceiptDArray } = req.body;
+    const { series, generateDocDate, docdate, arReqListNo, totalDebet, totalCredit, totalGiro, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, cashierReceiptGArray, cashierReceiptDArray } = req.body;
 
     const existingHeader = await CashierReceiptH.findOne({
         attributes: ["DocNo"],
@@ -49,6 +49,7 @@ export const createCashierReceipt = async (req, res) => {
         const newCashierReceiptH = await CashierReceiptH.create({
             DocNo,
             Series: series,
+            DocDate: docdate,
             GenerateDocDate: generateDocDate,
             ARReqListNo: arReqListNo,
             TotalDebet: totalDebet,
