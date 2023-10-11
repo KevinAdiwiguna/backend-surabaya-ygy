@@ -28,7 +28,7 @@ export const createARSettlement = async (req, res) => {
         }
 
         const createdARSettlements = await ARSettlement.create({
-            DocNo,
+            DocNo: DocNo,
             Series: series,
             DocDate: docDate,
             ARReqListNo: arReqListNo,
@@ -56,11 +56,11 @@ export const createARSettlement = async (req, res) => {
 
         await CustomerPaymentH.update(
             { Status: "SETTLED" },
-            { where: { DocNo: response?.ARReqListNo } }
+            { where: { DocNo: response?.DocNo } }
         )
         await CashierReceiptH.update(
             { Status: "SETTLED" },
-            { where: { DocNo: response2?.ARReqListNo } }
+            { where: { DocNo: response2?.DocNo } }
         )
         await ARRequestListH.update(
             { Status: "SETTLED" },
