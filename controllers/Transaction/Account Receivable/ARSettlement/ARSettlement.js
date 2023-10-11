@@ -41,14 +41,14 @@ export const createARSettlement = async (req, res) => {
 
         const response = await CustomerPaymentH.findOne({
             where: {
-                ARReqListNo: req.params.id,
+                ARReqListNo: arReqListNo,
                 Status: "OPEN"
             },
             attributes: ["DocNo", "Series", "TotalPayment", "Status"]
         });
         const response2 = await CashierReceiptH.findOne({
             where: {
-                ARReqListNo: req.params.id,
+                ARReqListNo: arReqListNo,
                 Status: "PRINTED"
             },
             attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro", "Status"]
