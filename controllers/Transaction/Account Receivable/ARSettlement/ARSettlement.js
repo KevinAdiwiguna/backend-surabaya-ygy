@@ -99,7 +99,7 @@ export const getARSettlementData = async (req, res) => {
                 ARReqListNo: req.params.id,
                 Status: "PRINTED"
             },
-            attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro", "Status"]
+            attributes: ["DocNo", "Series", "ARReqListNo", "TotalDebet", "Status"]
         })
 
         return res.json({ settle: response, banding: response2 });
