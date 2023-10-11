@@ -4,7 +4,7 @@ import db from "../../../config/Database.js";
 const { DataTypes } = Sequelize;
 
 const jobOrder = db.define(
- "joborder",
+  "joborder",
   {
     DocNo: {
       type: DataTypes.STRING,
@@ -82,30 +82,28 @@ const jobOrder = db.define(
     SODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-     
     },
 
     IODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      
     },
 
     WODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-    
     },
 
     ParentJODocNo: {
       type: DataTypes.STRING,
       allowNull: false,
-     
+
     },
 
     Level: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0
     },
 
     Priority: {
@@ -124,13 +122,13 @@ const jobOrder = db.define(
     Department: {
       type: DataTypes.STRING,
       allowNull: false,
-     
+
     },
 
     ExcludeCostDistribution: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-     
+
     },
 
     Formula: {
