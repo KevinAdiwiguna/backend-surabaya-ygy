@@ -44,10 +44,6 @@ const ARSettlement = db.define(
         },
         Information: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
         },
         Status: {
             type: DataTypes.STRING,
