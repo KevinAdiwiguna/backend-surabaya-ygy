@@ -2,6 +2,7 @@ import ARSettlement from "../../../../models/Transaction/Account Receivable/ARSe
 import CashierReceiptH from '../../../../models/Transaction/BKM/CashierReceiptH.js';
 import CustomerPaymentH from '../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentH.js'
 import ARRequestListH from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
+
 import { Sequelize, Op } from 'sequelize';
 
 export const createARSettlement = async (req, res) => {
@@ -109,7 +110,7 @@ export const getARSettlementData = async (req, res) => {
                 ARReqListNo: req.params.id,
                 Status: "PRINTED"
             },
-            attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro", "Status"]
+            attributes: ["DocNo", "Series", "ARReqListNo", "TotalDebet", "Status"]
         })
 
         return res.json({ settle: response, banding: response2 });
