@@ -64,7 +64,7 @@ export const createARSettlement = async (req, res) => {
         )
         await ARRequestListH.update(
             { Status: "SETTLED" },
-            { where: { DocNo: req.params.id } }
+            { where: { DocNo: response2?.ARReqListNo } }
         )
 
 
