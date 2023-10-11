@@ -2,53 +2,42 @@ import ARSettlement from "../../../../models/Transaction/Account Receivable/ARSe
 import CashierReceiptH from '../../../../models/Transaction/BKM/CashierReceiptH.js';
 import CustomerPaymentH from '../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentH.js'
 import ARRequestListH from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
-
 import { Sequelize, Op } from 'sequelize';
 
 export const createARSettlement = async (req, res) => {
-    const arSettlementDataArray = req.body;
+    const { series, docDate, arReqListNo, totalValue, information, status, createdBy, changedBy, generateDocDate } = req.body;
     try {
-        const createdARSettlements = await Promise.all(arSettlementDataArray.map(async (arSettlementData) => {
-            const { series, docDate, arReqListNo, totalValue, information, Status, CreatedBy, ChangedBy, generateDocDate } = arSettlementData;
-
-            const existingHeader = await ARSettlement.findOne({
-                attributes: ["DocNo"],
-                where: {
-                    DocNo: {
-                        [Op.like]: `${series}-${generateDocDate}-%`,
-                    },
+        const existingHeader = await ARSettlement.findOne({
+            attributes: ["DocNo"],
+            where: {
+                DocNo: {
+                    [Op.like]: `${series}-${generateDocDate}-%`,
                 },
-                order: [[Sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
-                raw: true,
-                limit: 1,
-            });
+            },
+            order: [[Sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
+            raw: true,
+            limit: 1,
+        });
 
-            let DocNo;
-            if (!existingHeader) {
-                DocNo = `${series}-${generateDocDate}-0001`;
-            } else {
-                const Series = parseInt(existingHeader.DocNo.split("-")[2], 10) + 1;
-                DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
-            }
+        let DocNo;
+        if (!existingHeader) {
+            DocNo = `${series}-${generateDocDate}-0001`;
+        } else {
+            const Series = parseInt(existingHeader.DocNo.split("-")[2], 10) + 1;
+            DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
+        }
 
-            try {
-                const newARSettlement = await ARSettlement.create({
-                    DocNo,
-                    series,
-                    docDate,
-                    arReqListNo,
-                    totalValue,
-                    information,
-                    Status,
-                    CreatedBy,
-                    ChangedBy,
-                    generateDocDate
-                });
-                return newARSettlement;
-            } catch (error) {
-                throw new Error(`Gagal membuat ARSettlement: ${error.message}`);
-            }
-        }));
+        const createdARSettlements = await ARSettlement.create({
+            DocNo,
+            Series: series,
+            DocDate: docDate,
+            ARReqListNo: arReqListNo,
+            TotalValue: totalValue,
+            Information: information,
+            Status: status,
+            CreatedBy: createdBy,
+            ChangedBy: changedBy,
+        });
 
         const response = await CustomerPaymentH.findOne({
             where: {
@@ -110,7 +99,7 @@ export const getARSettlementData = async (req, res) => {
                 ARReqListNo: req.params.id,
                 Status: "PRINTED"
             },
-            attributes: ["DocNo", "Series", "ARReqListNo", "TotalDebet", "Status"]
+            attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro", "Status"]
         })
 
         return res.json({ settle: response, banding: response2 });
