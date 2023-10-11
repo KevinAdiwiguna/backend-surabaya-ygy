@@ -160,3 +160,16 @@ export const getRequestListPrinted = async (req, res) => {
 
   }
 }
+export const getRequestListUsed = async (req, res) => {
+  try {
+    const response = await ARRequestListh.findAll({
+      where: {
+        Status: "USED"
+      }
+    })
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+
+  }
+}
