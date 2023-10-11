@@ -72,18 +72,12 @@ const CashierReceiptG = db.define(
         },
         TransType: {
             type: DataTypes.DECIMAL,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
+            allowNull: true,
             primaryKey: false,
         },
         ReceivedDate: {
             type: DataTypes.DATE,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
+            allowNull: true,
         },
 
         DepositDate: {
@@ -103,10 +97,7 @@ const CashierReceiptG = db.define(
         },
         ClearExchangeRate: {
             type: DataTypes.DECIMAL,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
+            allowNull: true,
         },
         ClearValue: {
             type: DataTypes.DECIMAL,
