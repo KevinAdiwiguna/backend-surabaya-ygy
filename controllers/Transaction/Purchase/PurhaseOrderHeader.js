@@ -6,6 +6,21 @@ import sequelize from 'sequelize'
 import { Op } from 'sequelize'
 
 
+export const approvePurchaseOrder = async (req, res) => {
+    try {
+        await purchaseOrderHeader.update(
+            { Status: "APROVED" },
+            {
+                where: {
+                    DocNo: req.params.id
+                }
+            })
+        res.status(200).json({ msg: "APPROVED" })
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
 export const getAllpurchaseOrderHeader = async (req, res) => {
     try {
         const purchaseOrderH = await purchaseOrderHeader.findAll()
@@ -31,37 +46,37 @@ export const getPurchaseRequestByCode = async (req, res) => {
 
 export const printInvoice = async (req, res) => {
     const data = await purchaseOrderHeader.findOne({
-      where: {
-        DocNo: req.params.id,
-      },
+        where: {
+            DocNo: req.params.id,
+        },
     });
     if (!data) return res.status(404).json({ msg: "data tidak ada" });
-  
+
     let count;
     try {
-      if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
-        count = 1;
-      } else {
-        count = data.PrintCounter + 1;
-      }
-  
-      await purchaseOrderHeader.update(
-        {
-          Status: "PRINTED",
-          PrintCounter: count,
-        },
-        {
-          where: {
-            DocNo: req.params.id,
-          },
+        if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
+            count = 1;
+        } else {
+            count = data.PrintCounter + 1;
         }
-      );
-  
-      res.status(200).json({ msg: "printed" });
+
+        await purchaseOrderHeader.update(
+            {
+                Status: "PRINTED",
+                PrintCounter: count,
+            },
+            {
+                where: {
+                    DocNo: req.params.id,
+                },
+            }
+        );
+
+        res.status(200).json({ msg: "printed" });
     } catch (error) {
-      res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: error.message });
     }
-  };
+};
 
 
 export const updatePurchaseRequest = async (req, res) => {
@@ -181,9 +196,9 @@ export const createPurchaseRequestH = async (req, res) => {
             DocNo = `${series}-${generateDocDate}-0001`;
         }
 
-        
 
-        const createHeader = await purchaseOrderHeader.create({
+
+        await purchaseOrderHeader.create({
             DocNo: DocNo,
             Series: series,
             TransactionType: transactionType,
@@ -304,22 +319,22 @@ export const createPurchaseRequestH = async (req, res) => {
 
 export const deletePurchaseOrderHeader = async (req, res) => {
     try {
-    const delPurchaseOrderH = await purchaseOrderHeader.findOne({
-        
-        where: {
-            DocNo: req.params.id
-        }
-    })
-    if (!delPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
-    
-    await purchaseOrderHeader.update(
-        { Status: "DELETED" },
-        {
+        const delPurchaseOrderH = await purchaseOrderHeader.findOne({
+
             where: {
-                DocNo: delPurchaseOrderH.DocNo
+                DocNo: req.params.id
             }
-        }
-    );
+        })
+        if (!delPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
+
+        await purchaseOrderHeader.update(
+            { Status: "DELETED" },
+            {
+                where: {
+                    DocNo: delPurchaseOrderH.DocNo
+                }
+            }
+        );
 
         res.status(200).json({ msg: "data Deleted" })
     } catch (error) {
