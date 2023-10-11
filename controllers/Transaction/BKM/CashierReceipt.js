@@ -83,8 +83,6 @@ export const createCashierReceipt = async (req, res) => {
                     rejectDate,
                     information,
                     status,
-                    changedBy,
-                    changedDate
                 } = cashierReceiptGData;
 
                 try {
@@ -108,7 +106,6 @@ export const createCashierReceipt = async (req, res) => {
                         Information: information,
                         Status: status,
                         ChangedBy: changedBy,
-                        ChangedDate: changedDate
                     });
 
                     return newCashierReceiptG;

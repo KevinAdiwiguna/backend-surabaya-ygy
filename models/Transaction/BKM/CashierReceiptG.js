@@ -132,18 +132,11 @@ const CashierReceiptG = db.define(
                 notEmpty: true,
             },
         },
-        ChangedDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
-        },
     },
     {
         freezeTableName: true,
-        timestamps: false,
-        updatedAt: false,
+        updatedAt: true,
+        createdAt: false
     }
 );
 
