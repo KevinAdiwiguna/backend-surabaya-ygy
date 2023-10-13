@@ -138,7 +138,38 @@ export const updatePurchaseRequest = async (req, res) => {
 
 export const createPurchaseRequestH = async (req, res) => {
     const {
-        generateDocDate, series, transactionType, docDate, supplierCode, deliveryDate, top, trip, discPercent, taxStatus, taxPercent, currency, exchangeRate, joDocNo, siDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, status, information, createdBy, changedBy, PurchaseOrderd
+        generateDocDate,
+        series,
+        transactionType,
+        docDate,
+        supplierCode,
+        deliveryDate,
+        TOP,
+        trip,
+        discPercent,
+        taxStatus,
+        taxPercent,
+        currency,
+        exchangeRate,
+        JODocNo,
+        SIDocNo,
+        totalGross,
+        totalDisc,
+        taxValue,
+        totalNetto,
+        sendTo,
+        isApproved,
+        approvedBy,
+        approvedDate,
+        printCounter,
+        printedBy,
+        printedDate,
+        isSalesReturn,
+        status,
+        information,
+        createdBy,
+        changedBy,
+        PurchaseOrderd
     } = req.body;
 
 
@@ -174,15 +205,15 @@ export const createPurchaseRequestH = async (req, res) => {
             DocDate: docDate,
             SupplierCode: supplierCode,
             DeliveryDate: deliveryDate,
-            TOP: top,
+            TOP: TOP,
             DiscPercent: discPercent,
             TaxStatus: taxStatus,
             TaxPercent: taxPercent,
             Currency: currency,
             ExchangeRate: exchangeRate,
-            JODocNo: joDocNo,
+            JODocNo: JODocNo,
             Trip: trip,
-            SIDocNo: siDocNo,
+            SIDocNo: SIDocNo,
             TotalGross: totalGross,
             TotalDisc: totalDisc,
             TaxValue: taxValue,
@@ -250,15 +281,15 @@ export const createPurchaseRequestH = async (req, res) => {
             DocDate: docDate,
             SupplierCode: supplierCode,
             DeliveryDate: deliveryDate,
-            TOP: top,
+            TOP: TOP,
             DiscPercent: discPercent,
             TaxStatus: taxStatus,
             TaxPercent: taxPercent,
             Currency: currency,
             ExchangeRate: exchangeRate,
-            JODocNo: joDocNo,
+            JODocNo: JODocNo,
             Trip: trip,
-            SIDocNo: siDocNo,
+            SIDocNo: SIDocNo,
             TotalGross: totalGross,
             TotalDisc: totalDisc,
             TaxValue: taxValue,
@@ -310,5 +341,4 @@ export const deletePurchaseOrderHeader = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
-
 
