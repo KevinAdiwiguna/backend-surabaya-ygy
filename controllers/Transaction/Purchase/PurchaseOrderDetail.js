@@ -1,7 +1,6 @@
 // import purchaseOrderHeader from '../../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
-import purchaseOrderDetail from "../../../models/Transaction/Purchase/PurchaseOrderDetail.js";
+import purchaseOrderDetail from "../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderDetail.js";
 import sequelize from "sequelize";
-import {Op} from "sequelize";
 
 export const getAllpurchaseOrderDetail = async (req, res) => {
   try {
@@ -12,7 +11,7 @@ export const getAllpurchaseOrderDetail = async (req, res) => {
     });
     res.status(200).json(purchaseOrderD);
   } catch (error) {
-    res.status(500).json({msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 };
 
@@ -22,19 +21,19 @@ export const getPurchaseOrderByCode = async (req, res) => {
       DocNo: req.params.id,
     },
   });
-  if (!getPurchaseOrderD) return res.status(400).json({msg: "data tidak ditemukan"});
+  if (!getPurchaseOrderD) return res.status(400).json({ msg: "data tidak ditemukan" });
   try {
     res.status(200).json(getPurchaseOrderD);
   } catch (error) {
-    res.status(500).json({msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 };
 
 export const updatePurchaseRequest = async (req, res) => {
-  const {materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyReceived} = req.body;
+  const { materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyReceived } = req.body;
 
   if (!req.params.id1 || !req.params.id2) {
-    return res.status(400).json({msg: "Invalid parameters. Both id1 and id2 are required."});
+    return res.status(400).json({ msg: "Invalid parameters. Both id1 and id2 are required." });
   }
   try {
     const dataCheck = await purchaseOrderDetail.findOne({
@@ -43,7 +42,7 @@ export const updatePurchaseRequest = async (req, res) => {
         Number: req.params.id2,
       },
     });
-    if (!dataCheck) return res.status(400).json({msg: "data tidak ditemukan"});
+    if (!dataCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
 
     const updatedData = {
       MaterialCode: materialCode || dataCheck.MaterialCode,
@@ -81,11 +80,11 @@ export const updatePurchaseRequest = async (req, res) => {
 
 
     if (numUpdatedRows === 0) {
-      return res.status(200).json({msg: "No changes to update"});
+      return res.status(200).json({ msg: "No changes to update" });
     }
     res.status(200).json(updatedRows);
   } catch (error) {
-    res.status(500).json({msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 };
 
@@ -105,7 +104,7 @@ export const createPurchaseOrderD = async (req, res) => {
 
     const createdPurchaseOrderDetails = await Promise.all(
       purchaseOrderDcreate.map(async (detail) => {
-        const {materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyReceived} = detail;
+        const { materialCode, info, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, qtyReceived } = detail;
 
         const response = await purchaseOrderDetail.create({
           DocNo: req.params.id,
@@ -131,7 +130,7 @@ export const createPurchaseOrderD = async (req, res) => {
 
     return res.status(201).json(createdPurchaseOrderDetails);
   } catch (error) {
-    res.status(500).json({msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 };
 
@@ -141,15 +140,15 @@ export const deletePurchaseOrderDetail = async (req, res) => {
       DocNo: req.params.id,
     },
   });
-  if (!delPurchaseOrderD) return res.status(400).json({msg: "data tidak ditemukan"});
+  if (!delPurchaseOrderD) return res.status(400).json({ msg: "data tidak ditemukan" });
   try {
     await purchaseOrderDetail.destroy({
       where: {
         DocNo: delPurchaseOrderD.DocNo,
       },
     });
-    res.status(200).json({msg: "data Deleted"});
+    res.status(200).json({ msg: "data Deleted" });
   } catch (error) {
-    res.status(500).json({msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 };

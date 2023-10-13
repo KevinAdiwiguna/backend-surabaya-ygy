@@ -1,9 +1,9 @@
 import goodsReceiptH from '../../../models/Transaction/Purchase/GoodReceiptHeader.js'
 import goodsReceiptDetails from '../../../models/Transaction/Purchase/GoodReceiptDetail.js'
-import purchaseOrderH from '../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
+import purchaseOrderH from '../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderHeader.js'
 import jobOrder from '../../../models/Transaction/Production/JobOrder.js'
 import salesOrderD from '../../../models/Transaction/Sales/SalesOrder/SalesOrderDetail.js'
-import purchaseOrderd from '../../../models/Transaction/Purchase/PurchaseOrderDetail.js'
+import purchaseOrderd from '../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderDetail.js'
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
 

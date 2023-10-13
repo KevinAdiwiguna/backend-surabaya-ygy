@@ -1,6 +1,6 @@
 // import purchaseOrderHeader from '../../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
-import purchaseOrderHeader from '../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
-import purchaseOrderDetails from '../../../models/Transaction/Purchase/PurchaseOrderDetail.js'
+import purchaseOrderHeader from '../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderHeader.js'
+import purchaseOrderDetails from '../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderDetail.js'
 
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
@@ -138,38 +138,7 @@ export const updatePurchaseRequest = async (req, res) => {
 
 export const createPurchaseRequestH = async (req, res) => {
     const {
-        generateDocDate,
-        series,
-        transactionType,
-        docDate,
-        supplierCode,
-        deliveryDate,
-        TOP,
-        trip,
-        discPercent,
-        taxStatus,
-        taxPercent,
-        currency,
-        exchangeRate,
-        JODocNo,
-        SIDocNo,
-        totalGross,
-        totalDisc,
-        taxValue,
-        totalNetto,
-        sendTo,
-        isApproved,
-        approvedBy,
-        approvedDate,
-        printCounter,
-        printedBy,
-        printedDate,
-        isSalesReturn,
-        status,
-        information,
-        createdBy,
-        changedBy,
-        PurchaseOrderd
+        generateDocDate, series, transactionType, docDate, supplierCode, deliveryDate, top, trip, discPercent, taxStatus, taxPercent, currency, exchangeRate, joDocNo, siDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, status, information, createdBy, changedBy, PurchaseOrderd
     } = req.body;
 
 
@@ -205,15 +174,15 @@ export const createPurchaseRequestH = async (req, res) => {
             DocDate: docDate,
             SupplierCode: supplierCode,
             DeliveryDate: deliveryDate,
-            TOP: TOP,
+            TOP: top,
             DiscPercent: discPercent,
             TaxStatus: taxStatus,
             TaxPercent: taxPercent,
             Currency: currency,
             ExchangeRate: exchangeRate,
-            JODocNo: JODocNo,
+            JODocNo: joDocNo,
             Trip: trip,
-            SIDocNo: SIDocNo,
+            SIDocNo: siDocNo,
             TotalGross: totalGross,
             TotalDisc: totalDisc,
             TaxValue: taxValue,
@@ -281,15 +250,15 @@ export const createPurchaseRequestH = async (req, res) => {
             DocDate: docDate,
             SupplierCode: supplierCode,
             DeliveryDate: deliveryDate,
-            TOP: TOP,
+            TOP: top,
             DiscPercent: discPercent,
             TaxStatus: taxStatus,
             TaxPercent: taxPercent,
             Currency: currency,
             ExchangeRate: exchangeRate,
-            JODocNo: JODocNo,
+            JODocNo: joDocNo,
             Trip: trip,
-            SIDocNo: SIDocNo,
+            SIDocNo: siDocNo,
             TotalGross: totalGross,
             TotalDisc: totalDisc,
             TaxValue: taxValue,
