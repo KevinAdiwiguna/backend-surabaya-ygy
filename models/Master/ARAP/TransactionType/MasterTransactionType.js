@@ -25,7 +25,6 @@ const MasterTransactionType = db.define(
     AccountNo: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: "",
       primaryKey: false,
     },
     Purpose: {
