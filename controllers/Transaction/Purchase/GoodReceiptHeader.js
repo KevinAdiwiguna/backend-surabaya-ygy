@@ -175,7 +175,6 @@ export const createPurchaseCostH = async (req, res) => {
         PODocNo,
         supplierDlvDocNo,
         vehicleNo,
-        batchNo,
         information,
         status,
         printCounter,
@@ -208,6 +207,8 @@ export const createPurchaseCostH = async (req, res) => {
             DocNo = `${series}-${generateDocDate}-0001`;
         }
 
+        const batchNo = DocNo.split("-")
+
         await goodsReceiptH.create({
             DocNo: DocNo,
             Series: series,
@@ -216,7 +217,7 @@ export const createPurchaseCostH = async (req, res) => {
             PODocNo: PODocNo,
             SupplierDlvDocNo: supplierDlvDocNo,
             VehicleNo: vehicleNo,
-            BatchNo: batchNo,
+            BatchNo: `${batchNo[1]}${batchNo[2]}`,
             Information: information,
             PrintCounter: printCounter,
             PrintedBy: printedBy,
