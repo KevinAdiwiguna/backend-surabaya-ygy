@@ -98,7 +98,7 @@ const goodreceipth = db.define('goodsreceipth', {
 
     PrintedDate:{
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
 
     CreatedBy:{

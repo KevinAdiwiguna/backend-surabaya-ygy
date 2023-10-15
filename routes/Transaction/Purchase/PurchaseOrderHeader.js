@@ -4,8 +4,8 @@ import { getAllpurchaseOrderHeader, getPurchaseRequestByCode, approvePurchaseOrd
 const router = express.Router();
 
 router.get('/purchaseorderh', getAllpurchaseOrderHeader);
-router.get('/purchaseorderh/:id', getPurchaseRequestByCode);
 router.get('/purchaseorderh/PRINTED', getPurchaseOrderByPrinted);
+router.get('/purchaseorderh/:id', getPurchaseRequestByCode);
 router.get('/purchaseorderhapprove', approvePurchaseOrder);
 router.post('/purchaseorderh', createPurchaseRequestH);
 router.delete('/purchaseorderh/:id', deletePurchaseOrderHeader);
