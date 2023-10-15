@@ -3,7 +3,7 @@ import db from "../../../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const JobResultD = db.define(
+const AnjustmentInH = db.define(
     "adjustinh",
     {
         DocNo: {
@@ -74,12 +74,10 @@ const JobResultD = db.define(
             primaryKey: false,
         },
         IsApproved: {
-            type: DataTypes.BOLLEAN,
-            allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
             primaryKey: false,
+            defaultValue: false
         },
         ApprovedBy: {
             type: DataTypes.STRING,
@@ -102,6 +100,7 @@ const JobResultD = db.define(
             type: DataTypes.STRING,
             allowNull: true,
             primaryKey: false,
+            defaultValue: ""
         },
         PrintedDate: {
             type: DataTypes.DATE,
@@ -130,4 +129,4 @@ const JobResultD = db.define(
     }
 );
 
-export default JobResultD;
+export default AnjustmentInH;
