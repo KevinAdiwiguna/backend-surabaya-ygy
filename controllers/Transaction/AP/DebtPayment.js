@@ -2,7 +2,7 @@ import DebtPaymentD from "../../../models/Transaction/AP/DebtPaymentD.js";
 import DebtPaymentH from "../../../models/Transaction/AP/DebtPaymentH.js";
 import APReceiptListd from "../../../models/Transaction/AP/AR_ReceiptLIstd.js";
 import ARRequestListh from '../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js';
-import PurchaseInvoiceh from '../../../models/Transaction/Purchase/PurchaseInvoice.js'
+import PurchaseInvoiceh from '../../../models/Transaction/Purchase/PurchaseInvoice/PurchaseInvoiceHeader.js'
 import APBook from "../../../models/Report/AccountPayable/APBook.js";
 import Sequelize, { Op } from 'sequelize'
 import db from '../../../config/Database.js'
