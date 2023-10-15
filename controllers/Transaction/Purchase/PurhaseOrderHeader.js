@@ -43,6 +43,19 @@ export const getPurchaseRequestByCode = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
+export const getPurchaseOrderByPrinted = async (req, res) => {
+    const getPurchaseOrderH = await purchaseOrderHeader.findAll({
+        where: {
+            Status: 'PRINTED'
+        }
+    })
+    if (!getPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
+    try {
+        res.status(200).json(getPurchaseOrderH)
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
 
 export const printInvoice = async (req, res) => {
     const data = await purchaseOrderHeader.findOne({
