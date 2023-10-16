@@ -115,6 +115,7 @@ export const createPurchaseCostH = async (req, res) => {
                     TaxNo: taxNo,
                 },
             });
+            if (!response) return res.status(404).json({ msg: "tax no tidak ada" });
             if (!response.TaxNo) return res.status(404).json({ msg: "tax no tidak ada" });
             if (response.DocNo) return res.status(400).json({ msg: "tax sudah di gunakan" })
 
