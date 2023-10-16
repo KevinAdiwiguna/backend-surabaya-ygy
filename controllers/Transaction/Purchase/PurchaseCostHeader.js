@@ -224,7 +224,7 @@ export const createPurchaseCostH = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
+        res.status(500).json({ msg: error.message });
     }
 };
 
