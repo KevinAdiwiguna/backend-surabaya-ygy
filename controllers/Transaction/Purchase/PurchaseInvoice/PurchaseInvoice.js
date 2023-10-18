@@ -392,6 +392,21 @@ export const createPurchase = async (req, res) => {
   }
 }
 
+export const deleteInvoice = async (req, res) => {
+  try {
+    await PurchaseInvoiceH.update(
+      { Status: "INVOICED" },
+      {
+        where: {
+          DocNo: req.params.id
+        }
+      }
+    )
+    res.status(201).json({ msg: "delete" })
+  } catch (error) {
+    res.status(201).json({ msg: error.message })
+  }
 
+}
 
 
