@@ -130,7 +130,7 @@ export const printInvoice = async (req, res) => {
       count = data.PrintCounter + 1;
     }
 
-    await Purchaseh.update(
+    await PurchaseInvoiceH.update(
       {
         Status: "PRINTED",
         PrintCounter: count,
@@ -178,10 +178,6 @@ export const getAllDataGoodReceipt = async (req, res) => {
 
 
 export const createPurchase = async (req, res) => {
-  // const {
-  //   generateDocDate, series, docDate, sODocNo, grDocNo, poNo, customerCode, taxToCode, salesCode, top, currency,
-  //   exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue,
-  //   taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail } = req.body;
 
   const {
     generateDocDate, series, docDate, poDocNo, joDocNo, trip, transactionType, grDocNo, supplierCode, supplierTaxTo, supplierInvNo, top, currency, exchangeRate, totalCost, costDistribution, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, cutPPh, pphPercent, pphValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details
@@ -379,7 +375,7 @@ export const createPurchase = async (req, res) => {
         })
       );
     }
-    
+
     await GoodReceiptH.update(
       {
         Status: "INVOICED",
