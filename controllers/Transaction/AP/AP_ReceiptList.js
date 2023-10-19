@@ -68,7 +68,7 @@ export const getCreatedApRequestList = async (req, res) => {
     const response = await APReceiptListh.findAll(
       {
         where: {
-          Status: "CREATED"
+          Status: "PRINTED"
         }
       }
     )
