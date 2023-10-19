@@ -5,6 +5,7 @@ import PurchaseInvoiceH from '../../../../models/Transaction/Purchase/PurchaseIn
 import PurchaseInvoiceD from '../../../../models/Transaction/Purchase/PurchaseInvoice/PurchaseInvoiceDetail.js'
 import MasterPeriode from '../../../../models/Master/MasterPeriode.js'
 import GenerateTaxNo from '../../../../models/Master/MasterGenerateTaxNo.js'
+import APBook from '../../../../models/Report/AccountPayable/APBook.js'
 
 import sequelize from "sequelize";
 import { Op } from "sequelize";
@@ -295,83 +296,83 @@ export const createPurchase = async (req, res) => {
             Netto: netto,
             Cost: cost
           });
-          // if (taxStatus !== "No") {
-          //   if (taxStatus == "Include") {
-          //     await ARBook.create({
-          //       Periode: getMasterPeriode.Periode,
-          //       CustomerCode: customerCode,
-          //       TransType: "",
-          //       DocNo: DocNo,
-          //       DocDate: docDate,
-          //       TOP: top,
-          //       DueDate: docDate,
-          //       Currency: currency,
-          //       ExchangeRate: exchangeRate,
-          //       Information: taxStatus === "No" ? "" : taxNo,
-          //       DC: "C",
-          //       DocValue: totalGross - totalNetto,
-          //       DocValueLocal: totalGross - totalNetto,
-          //       PaymentValue: 0,
-          //       PaymentValueLocal: 0,
-          //       ExchangeRateDiff: 0,
-          //     });
-          //     await ARBook.create({
-          //       Periode: getMasterPeriode.Periode,
-          //       CustomerCode: customerCode,
-          //       TransType: "",
-          //       DocNo: DocNo + "T",
-          //       DocDate: docDate,
-          //       TOP: top,
-          //       DueDate: docDate,
-          //       Currency: currency,
-          //       ExchangeRate: exchangeRate,
-          //       Information: taxStatus === "No" ? "" : taxNo,
-          //       DC: "C",
-          //       DocValue: taxValue,
-          //       DocValueLocal: taxValue,
-          //       PaymentValue: 0,
-          //       PaymentValueLocal: 0,
-          //       ExchangeRateDiff: 0,
-          //     });
-          //   } else if (taxStatus == "Exclude") {
-          //     await ARBook.create({
-          //       Periode: getMasterPeriode.Periode,
-          //       CustomerCode: customerCode,
-          //       TransType: "",
-          //       DocNo: DocNo,
-          //       DocDate: docDate,
-          //       TOP: top,
-          //       DueDate: docDate,
-          //       Currency: currency,
-          //       ExchangeRate: exchangeRate,
-          //       Information: taxStatus === "No" ? "" : taxNo,
-          //       DC: "C",
-          //       DocValue: totalNetto,
-          //       DocValueLocal: totalNetto,
-          //       PaymentValue: 0,
-          //       PaymentValueLocal: 0,
-          //       ExchangeRateDiff: 0,
-          //     });
-          //     await ARBook.create({
-          //       Periode: getMasterPeriode.Periode,
-          //       CustomerCode: customerCode,
-          //       TransType: "",
-          //       DocNo: DocNo + "T",
-          //       DocDate: docDate,
-          //       TOP: top,
-          //       DueDate: docDate,
-          //       Currency: currency,
-          //       ExchangeRate: exchangeRate,
-          //       Information: taxStatus === "No" ? "" : taxNo,
-          //       DC: "C",
-          //       DocValue: taxValue,
-          //       DocValueLocal: taxValue,
-          //       PaymentValue: 0,
-          //       PaymentValueLocal: 0,
-          //       ExchangeRateDiff: 0,
-          //     });
-          //   }
-          // }
+          if (taxStatus !== "No") {
+            if (taxStatus == "Include") {
+              await APBook.create({
+                Periode: getMasterPeriode.Periode,
+                SupplierCode: supplierCode,
+                TransType: "",
+                DocNo: DocNo,
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "D",
+                DocValue: totalGross - totalNetto,
+                DocValueLocal: totalGross - totalNetto,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+              await APBook.create({
+                Periode: getMasterPeriode.Periode,
+                SupplierCode: supplierCode,
+                TransType: "",
+                DocNo: DocNo + "T",
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "D",
+                DocValue: taxValue,
+                DocValueLocal: taxValue,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+            } else if (taxStatus == "Exclude") {
+              await APBook.create({
+                Periode: getMasterPeriode.Periode,
+                SupplierCode: supplierCode,
+                TransType: "",
+                DocNo: DocNo,
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "D",
+                DocValue: totalNetto,
+                DocValueLocal: totalNetto,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+              await APBook.create({
+                Periode: getMasterPeriode.Periode,
+                SupplierCode: supplierCode,
+                TransType: "",
+                DocNo: DocNo + "T",
+                DocDate: docDate,
+                TOP: top,
+                DueDate: docDate,
+                Currency: currency,
+                ExchangeRate: exchangeRate,
+                Information: taxStatus === "No" ? "" : taxNo,
+                DC: "D",
+                DocValue: taxValue,
+                DocValueLocal: taxValue,
+                PaymentValue: 0,
+                PaymentValueLocal: 0,
+                ExchangeRateDiff: 0,
+              });
+            }
+          }
         })
       );
     }
