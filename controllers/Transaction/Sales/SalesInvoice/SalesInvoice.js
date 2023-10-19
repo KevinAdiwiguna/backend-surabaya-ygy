@@ -355,7 +355,27 @@ export const createSalesinvoice = async (req, res) => {
           }
         })
       );
+    } else {
+      await ARBook.create({
+        Periode: getMasterPeriode.Periode,
+        CustomerCode: customerCode,
+        TransType: "",
+        DocNo: DocNo,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: totalGross,
+        DocValueLocal: totalGross,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      });
     }
+
     await GoodIssueh.update(
       {
         Status: "INVOICED",

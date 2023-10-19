@@ -183,6 +183,8 @@ export const createPurchase = async (req, res) => {
     generateDocDate, series, docDate, poDocNo, joDocNo, trip, transactionType, grDocNo, supplierCode, supplierTaxTo, supplierInvNo, top, currency, exchangeRate, totalCost, costDistribution, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, cutPPh, pphPercent, pphValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details
   } = req.body
 
+
+
   try {
     const existingHeader = await PurchaseInvoiceH.findOne({
       attributes: ["DocNo"],
@@ -371,6 +373,25 @@ export const createPurchase = async (req, res) => {
                 ExchangeRateDiff: 0,
               });
             }
+          } else {
+            await PurchaseInvoiceD.create({
+              DocNo,
+              Number: number,
+              MaterialCode: materialCode,
+              Info: info,
+              Location: location,
+              Unit: unit,
+              Qty: qty,
+              Price: price,
+              Gross: gross,
+              DiscPercent: discPercent,
+              DiscPercent2: discPercent2,
+              DiscPercent3: discPercent3,
+              DiscValue: discValue,
+              DiscNominal: discNominal,
+              Netto: netto,
+              Cost: cost
+            });
           }
         })
       );
