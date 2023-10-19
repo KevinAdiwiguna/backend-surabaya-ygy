@@ -5,24 +5,24 @@ const { DataTypes } = Sequelize;
 
 const purchaseinvoiceh = db.define('purchaseinvoiceh', {
 
-    DocNo:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },  
-        primaryKey: true
-    },
-
-    Series:{
+    DocNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
-    },  
+        primaryKey: true
+    },
 
-    DocDate:{
+    Series: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    DocDate: {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
@@ -30,7 +30,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    PODocNo:{
+    PODocNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -41,7 +41,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     JODocNo: {
         type: DataTypes.STRING,
         allowNull: false,
-    
+
     },
 
     Trip: {
@@ -49,12 +49,12 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         allowNull: false,
     },
 
-    TransactionType:{
+    TransactionType: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    GRDocNo:{
+    GRDocNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -62,7 +62,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    BatchNo:{
+    BatchNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -77,19 +77,19 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
             notEmpty: true
         },
     },
-    
 
-    SupplierTaxTo:{
+
+    SupplierTaxTo: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    SupplierInvNo:{
+    SupplierInvNo: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    TOP:{
+    TOP: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -102,7 +102,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    ExchangeRate : {
+    ExchangeRate: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -110,12 +110,12 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TotalCost : {
+    TotalCost: {
         type: DataTypes.DECIMAL,
         allowNull: false,
     },
 
-    CostDistribution : {
+    CostDistribution: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -123,7 +123,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TaxStatus : {
+    TaxStatus: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -131,22 +131,22 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TaxPercent : {
+    TaxPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
     },
 
-    TaxPrefix : {
+    TaxPrefix: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    TaxNo : {
+    TaxNo: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    DiscPercent : {
+    DiscPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -154,7 +154,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TotalGross : {
+    TotalGross: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -162,7 +162,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TotalDisc : {
+    TotalDisc: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -170,7 +170,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    DownPayment : {
+    DownPayment: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -178,7 +178,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TaxValue : {
+    TaxValue: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -186,7 +186,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TaxValueInTaxCur : {
+    TaxValueInTaxCur: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -194,7 +194,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    TotalNetto : {
+    TotalNetto: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -202,15 +202,12 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    CutPPh : {
+    CutPPh: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        allowNull: true,
     },
 
-    PPhPercent : {
+    PPhPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -218,7 +215,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    PPhValue : {
+    PPhValue: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
@@ -226,7 +223,13 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    Information : {
+    Information: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: ""
+    },
+
+    Status: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -234,15 +237,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    Status : {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-    },
-
-    PrintCounter : {
+    PrintCounter: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -250,17 +245,17 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    PrintedBy : {
+    PrintedBy: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    PrintedDate : {
+    PrintedDate: {
         type: DataTypes.DATE,
         allowNull: false,
     },
 
-    CreatedBy : {
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -268,7 +263,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
         },
     },
 
-    ChangedBy : {
+    ChangedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
