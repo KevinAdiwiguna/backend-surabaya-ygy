@@ -4,29 +4,31 @@ import db from "../../../config/Database.js";
 const { DataTypes } = Sequelize;
 
 const APReceiptListd = db.define(
- "apreceiptlistd",
+  "apreceiptlistd",
   {
-   DocNo: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
+    DocNo: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+      primaryKey: true,
     },
-    primaryKey: true,
-   },
-   APDocNo: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
+    APDocNo: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+      primaryKey: true,
     },
-    primaryKey: true,
-   },
-  
-   
+
+
   },
   {
     freezeTableName: true,
+    createdAt: false,
+    updatedAt: false
   }
 );
 
