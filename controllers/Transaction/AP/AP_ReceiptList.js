@@ -4,7 +4,7 @@ import APBook from "../../../models/Report/AccountPayable/APBook.js";
 import sequelize, { Op } from 'sequelize'
 
 export const createRequestList = async (req, res) => {
-  const { series, docDate, generateDocDate, supplierCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, createdBy, changedBy, printedDate, details } = req.body
+  const { series, docDate, generateDocDate, supplierCode, customerGroup, totalDocument, totalValue, information, status, printCounter, printedBy, createdBy, changedBy, printedDate, details } = req.body
   try {
     const existingHeader = await APReceiptListh.findOne({
       attributes: ["DocNo"],
@@ -31,12 +31,6 @@ export const createRequestList = async (req, res) => {
       Series: series,
       DocDate: docDate,
       SupplierCode: supplierCode,
-      CustomerGroup: customerGroup,
-      SalesArea1: salesArea1,
-      SalesArea2: salesArea2,
-      SalesArea3: salesArea3,
-      Currency: currency,
-      TotalCustomer: totalCustomer,
       TotalDocument: totalDocument,
       TotalValue: totalValue,
       Information: information,
@@ -63,7 +57,7 @@ export const createRequestList = async (req, res) => {
         })
       );
     }
-    res.status(200).json({msg: "create berhasil"})
+    res.status(200).json({ msg: "create berhasil" })
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
@@ -133,7 +127,7 @@ export const updateRequestList = async (req, res) => {
     res.status(200).json({ msg: "Update berhasil" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
-  } 
+  }
 }
 
 export const getRequestListDetail = async (req, res) => {
