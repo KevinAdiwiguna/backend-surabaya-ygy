@@ -179,7 +179,6 @@ export const getAllDataGoodReceipt = async (req, res) => {
 
 
 export const createPurchase = async (req, res) => {
-
   const {
     generateDocDate, series, docDate, poDocNo, joDocNo, trip, transactionType, grDocNo, supplierCode, supplierTaxTo, supplierInvNo, top, currency, exchangeRate, totalCost, costDistribution, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, cutPPh, pphPercent, pphValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details
   } = req.body
@@ -387,6 +386,8 @@ export const createPurchase = async (req, res) => {
         },
       }
     );
+
+    res.status(201).json({ msg: "Create" })
 
   } catch (error) {
     res.status(500).json({ msg: error.message })
