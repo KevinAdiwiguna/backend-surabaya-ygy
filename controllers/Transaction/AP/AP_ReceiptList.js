@@ -63,6 +63,21 @@ export const createRequestList = async (req, res) => {
   }
 }
 
+export const getCreatedApRequestList = async (req, res) => {
+  try {
+    const response = await APReceiptListh.findAll(
+      {
+        where: {
+          Status: "CREATED"
+        }
+      }
+    )
+
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
+}
 export const updateRequestList = async (req, res) => {
 
   try {
