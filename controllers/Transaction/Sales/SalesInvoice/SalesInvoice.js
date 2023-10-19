@@ -290,8 +290,8 @@ export const createSalesinvoice = async (req, res) => {
                 ExchangeRate: exchangeRate,
                 Information: taxStatus === "No" ? "" : taxNo,
                 DC: "C",
-                DocValue: totalGross - totalNetto,
-                DocValueLocal: totalGross - totalNetto,
+                DocValue: totalNetto - taxValue,
+                DocValueLocal: totalNetto - taxValue,
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
@@ -350,8 +350,27 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
-              });  
+              });
             }
+          } else {
+            await ARBook.create({
+              Periode: getMasterPeriode.Periode,
+              CustomerCode: customerCode,
+              TransType: "",
+              DocNo: DocNo,
+              DocDate: docDate,
+              TOP: top,
+              DueDate: docDate,
+              Currency: currency,
+              ExchangeRate: exchangeRate,
+              Information: taxStatus === "No" ? "" : taxNo,
+              DC: "C",
+              DocValue: totalNetto,
+              DocValueLocal: totalNetto,
+              PaymentValue: 0,
+              PaymentValueLocal: 0,
+              ExchangeRateDiff: 0,
+            });
           }
         })
       );
