@@ -138,7 +138,11 @@ export const updateRequestList = async (req, res) => {
 
 export const getRequestListDetail = async (req, res) => {
   try {
-    const response = await APBook.findAll()
+    const response = await APBook.findAll({
+      where: {
+        SupplierCode: req.params.id
+      }
+    })
     res.status(200).json(response)
   } catch (error) {
     res.status(500).json({ msg: error.message })
