@@ -184,7 +184,7 @@ export const createPurchase = async (req, res) => {
   } = req.body
 
 
-   
+
   try {
     const existingHeader = await PurchaseInvoiceH.findOne({
       attributes: ["DocNo"],
@@ -373,8 +373,6 @@ export const createPurchase = async (req, res) => {
                 ExchangeRateDiff: 0,
               });
             }
-<<<<<<< HEAD
-=======
           } else {
             await APBook.create({
               Periode: getMasterPeriode.Periode,
@@ -394,7 +392,6 @@ export const createPurchase = async (req, res) => {
               PaymentValueLocal: 0,
               ExchangeRateDiff: 0,
             });
->>>>>>> c42d13e7557ebaaa40707629221878fefe32b135
           }
         })
       );
