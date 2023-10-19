@@ -374,23 +374,23 @@ export const createPurchase = async (req, res) => {
               });
             }
           } else {
-            await PurchaseInvoiceD.create({
-              DocNo,
-              Number: number,
-              MaterialCode: materialCode,
-              Info: info,
-              Location: location,
-              Unit: unit,
-              Qty: qty,
-              Price: price,
-              Gross: gross,
-              DiscPercent: discPercent,
-              DiscPercent2: discPercent2,
-              DiscPercent3: discPercent3,
-              DiscValue: discValue,
-              DiscNominal: discNominal,
-              Netto: netto,
-              Cost: cost
+            await APBook.create({
+              Periode: getMasterPeriode.Periode,
+              SupplierCode: supplierCode,
+              TransType: "",
+              DocNo: DocNo,
+              DocDate: docDate,
+              TOP: top,
+              DueDate: docDate,
+              Currency: currency,
+              ExchangeRate: exchangeRate,
+              Information: taxStatus === "No" ? "" : taxNo,
+              DC: "D",
+              DocValue: totalGross - totalNetto,
+              DocValueLocal: totalGross - totalNetto,
+              PaymentValue: 0,
+              PaymentValueLocal: 0,
+              ExchangeRateDiff: 0,
             });
           }
         })
