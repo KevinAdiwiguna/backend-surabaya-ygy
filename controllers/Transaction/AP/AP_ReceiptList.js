@@ -44,8 +44,8 @@ export const createRequestList = async (req, res) => {
 
     if (details && Array.isArray(details)) {
       await Promise.all(
-        details.map(async (detail) => {
-          const { apDocNo } = detail;
+        details.map(async (details) => {
+          const { apDocNo } = details;
           try {
             await APReceiptLishd.create({
               DocNo: DocNo,
