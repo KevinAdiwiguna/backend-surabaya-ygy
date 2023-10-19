@@ -52,9 +52,6 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     TransactionType:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     GRDocNo:{
@@ -116,9 +113,6 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     TotalCost : {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     CostDistribution : {
@@ -140,25 +134,16 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     TaxPercent : {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     TaxPrefix : {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     TaxNo : {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     DiscPercent : {
@@ -268,17 +253,11 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     PrintedBy : {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     PrintedDate : {
         type: DataTypes.DATE,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
     },
 
     CreatedBy : {
