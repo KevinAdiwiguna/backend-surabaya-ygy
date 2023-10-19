@@ -184,7 +184,7 @@ export const createPurchase = async (req, res) => {
   } = req.body
 
 
-
+   
   try {
     const existingHeader = await PurchaseInvoiceH.findOne({
       attributes: ["DocNo"],

@@ -350,7 +350,7 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
-              });
+              });  
             }
           }
         })
