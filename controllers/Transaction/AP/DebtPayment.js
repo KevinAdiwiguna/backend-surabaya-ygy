@@ -103,10 +103,10 @@ export const getDebtPaymentDetail = async (req, res) => {
 
     const apBookItem = await APBook.findAll({
       where: {
-        DocNo: APReceiptListd.map(item => item.APDocNo)
+        DocNo: getAPReceiptListd.map(item => item.APDocNo)
       },
       attributes: [
-        "CustomerCode", "DocNo", "TransType", "TOP", "DueDate",
+        "SupplierCode", "DocNo", "TransType", "TOP", "DueDate",
         "Currency", "ExchangeRate", "Information", "DC", "DocValue",
         "DocValueLocal", "PaymentValue", "PaymentValueLocal", "ExchangeRateDiff"
       ]
@@ -121,7 +121,7 @@ export const getDebtPaymentDetail = async (req, res) => {
 
     // Menggabungkan data dari getARRequestListd dan arBookItem berdasarkan ARDocNo dan DocNo
     const combinedData = getAPReceiptListd.map(apRequestItem => {
-      const matchingARBookItem = apBookItem.find(apBookItem => apBookItem.DocNo === apRequestItem.ARDocNo);
+      const matchingARBookItem = apBookItem.find(apBookItem => apBookItem.DocNo === apRequestItem.APDocNo);
 
       // Menambahkan getDetail ke objek hasil, atau menggunakan nilai default jika getDetail tidak ditemukan
       return {
