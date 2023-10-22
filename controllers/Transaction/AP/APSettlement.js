@@ -5,7 +5,7 @@ import APReceiptListH from '../../../models/Transaction/AP/AR_ReceiptListh.js'
 import { Sequelize, Op } from 'sequelize';
 
 export const createAPSettlement = async (req, res) => {
-    const { series, docDate, apReqListNo, supplierCode, totalValue, information, status, createdBy, changedBy, generateDocDate } = req.body;
+    const { series, docDate, apRecListNo, supplierCode, totalValue, information, status, createdBy, changedBy, generateDocDate } = req.body;
     try {
         const existingHeader = await APSettlement.findOne({
             attributes: ["DocNo"],
@@ -31,7 +31,7 @@ export const createAPSettlement = async (req, res) => {
             DocNo: DocNo,
             Series: series,
             DocDate: docDate,
-            APReqListNo: apReqListNo,
+            APRecListNo: apRecListNo,
             SupplierCode: supplierCode,
             TotalValue: totalValue,
             Information: information,
@@ -42,14 +42,14 @@ export const createAPSettlement = async (req, res) => {
 
         const response = await DebtPaymentH.findOne({
             where: {
-                APReqListNo: apReqListNo,
+                APRecListNo: apRecListNo,
                 Status: "OPEN"
             },
             attributes: ["DocNo", "Series", "TotalPayment", "Status"]
         });
         const response2 = await CashierPaymentH.findOne({
             where: {
-                APReqListNo: apReqListNo,
+                APRecListNo: apRecListNo,
                 Status: "PRINTED"
             },
             attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro", "Status"]
@@ -90,14 +90,14 @@ export const getAPSettlementData = async (req, res) => {
     try {
         const response = await DebtPaymentH.findOne({
             where: {
-                APReqListNo: req.params.id,
+                APRecListNo: req.params.id,
                 Status: "OPEN"
             },
             attributes: ["DocNo", "Series", "TotalPayment", "Status"]
         });
         const response2 = await CashierPaymentH.findOne({
             where: {
-                APReqListNo: req.params.id,
+                APRecListNo: req.params.id,
                 Status: "PRINTED"
             },
             attributes: ["DocNo", "Series", "ARReqListNo", "TotalDebet", "Status"]
@@ -120,15 +120,15 @@ export const deleteAPSettlement = async (req, res) => {
 
         await DebtPaymentH.update(
             { Status: "OPEN" },
-            { where: { APReqListNo: response?.APReqListNo } }
+            { where: { APRecListNo: response?.APRecListNo } }
         )
         await CashierPaymentH.update(
             { Status: "PRINTED" },
-            { where: { APReqListNo: response?.APReqListNo } }
+            { where: { APRecListNo: response?.APRecListNo } }
         )
         await APReceiptListH.update(
             { Status: "USED" },
-            { where: { DocNo: response?.APReqListNo } }
+            { where: { DocNo: response?.APRecListNo } }
         )
         await APSettlement.update(
             { Status: "DELETED" },

@@ -28,7 +28,7 @@ const APSettlement = db.define(
                 notEmpty: true,
             },
         },
-        APReqListNo: {
+        APRecListNo: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
