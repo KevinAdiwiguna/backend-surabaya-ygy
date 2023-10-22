@@ -52,7 +52,7 @@ export const createAPSettlement = async (req, res) => {
                 APRecListNo: apRecListNo,
                 Status: "PRINTED"
             },
-            attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro", "Status"]
+            attributes: ["DocNo", "Series", "APRecListNo", "TotalGiro", "Status"]
         })
 
         await DebtPaymentH.update(
@@ -100,7 +100,7 @@ export const getAPSettlementData = async (req, res) => {
                 APRecListNo: req.params.id,
                 Status: "PRINTED"
             },
-            attributes: ["DocNo", "Series", "ARReqListNo", "TotalDebet", "Status"]
+            attributes: ["DocNo", "Series", "APRecListNo", "TotalDebet", "Status"]
         })
 
         return res.json({ settle: response, banding: response2 });
