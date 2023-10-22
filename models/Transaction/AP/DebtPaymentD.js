@@ -4,7 +4,7 @@ import db from "../../../config/Database.js";
 const { DataTypes } = Sequelize;
 
 const DebtPaymentD = db.define(
-  "debtpaymenth",
+  "debtpaymentd",
   {
     DocNo: {
       type: DataTypes.STRING,
@@ -95,6 +95,8 @@ const DebtPaymentD = db.define(
   },
   {
     freezeTableName: true,
+    createdAt: false,
+    updatedAt: false
   }
 );
 
