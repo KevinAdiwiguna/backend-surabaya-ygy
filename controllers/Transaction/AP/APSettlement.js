@@ -65,7 +65,7 @@ export const createAPSettlement = async (req, res) => {
         )
         await APReceiptListH.update(
             { Status: "SETTLED" },
-            { where: { DocNo: response2?.ARReqListNo } }
+            { where: { DocNo: response2?.APRecListNo } }
         )
 
 
