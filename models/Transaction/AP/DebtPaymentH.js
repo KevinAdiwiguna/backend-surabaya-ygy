@@ -71,9 +71,6 @@ const DebtPaymentH = db.define(
     Information: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
       defaultValue: null,
       primaryKey: false,
     },
