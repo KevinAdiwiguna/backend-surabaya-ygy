@@ -1,6 +1,7 @@
 import DebtPaymentD from "../../../models/Transaction/AP/DebtPaymentD.js";
 import DebtPaymentH from "../../../models/Transaction/AP/DebtPaymentH.js";
 import APReceiptListd from "../../../models/Transaction/AP/AR_ReceiptLIstd.js";
+import APReceiptListh from "../../../models/Transaction/AP/AR_ReceiptListh.js";
 import PurchaseInvoiceh from '../../../models/Transaction/Purchase/PurchaseInvoice/PurchaseInvoiceHeader.js'
 import APBook from "../../../models/Report/AccountPayable/APBook.js";
 import Sequelize, { Op } from 'sequelize'
@@ -12,6 +13,16 @@ export const createDebtPayment = async (req, res) => {
   const t = await db.transaction();
 
   try {
+
+    await APReceiptListh.update(
+      { Status: "USED" },
+      {
+        where: {
+          DocNo: apRecListNo
+        }
+      }
+    )
+
     const data = await DebtPaymentH.findOne({
       where: {
         APRecListNo: apRecListNo
