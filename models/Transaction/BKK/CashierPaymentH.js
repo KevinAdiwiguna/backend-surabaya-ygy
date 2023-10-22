@@ -31,7 +31,7 @@ const CashierPaymentH = db.define(
             },
         },
 
-        APReqListNo: {
+        APRecListNo: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {

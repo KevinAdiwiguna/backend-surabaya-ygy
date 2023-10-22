@@ -23,7 +23,7 @@ export const getCashierPaymentUpdate = async (req, res) => {
 }
 
 export const createCashierPayment = async (req, res) => {
-    const { series, generateDocDate, docDate, apReqListNo, supplierCode, totalDebet, totalCredit, totalGiro, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, cashierPaymentGArray, cashierPaymentDArray } = req.body;
+    const { series, generateDocDate, docDate, apRecListNo, supplierCode, totalDebet, totalCredit, totalGiro, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, cashierPaymentGArray, cashierPaymentDArray } = req.body;
 
     const existingHeader = await CashierPaymentH.findOne({
         attributes: ["DocNo"],
@@ -51,7 +51,7 @@ export const createCashierPayment = async (req, res) => {
             Series: series,
             DocDate: docDate,
             GenerateDocDate: generateDocDate,
-            APReqListNo: apReqListNo,
+            APRecListNo: apRecListNo,
             SupplierCode: supplierCode,
             TotalDebet: totalDebet,
             TotalCredit: totalCredit,
