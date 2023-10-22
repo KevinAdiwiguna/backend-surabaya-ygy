@@ -84,19 +84,11 @@ const CustomerPaymentD = db.define(
     },
     TaxPrefix: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
       defaultValue: null,
       primaryKey: false,
     },
     TaxNo: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
       defaultValue: null,
       primaryKey: false,
     },
