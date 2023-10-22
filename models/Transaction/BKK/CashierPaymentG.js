@@ -22,6 +22,9 @@ const CashierPaymentG = db.define(
             },
             primaryKey: true,
         },
+        DueDate: {
+            type: DataTypes.DATE,
+        },
         GiroNo: {
             type: DataTypes.STRING,
             allowNull: false,
