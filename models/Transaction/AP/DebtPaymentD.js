@@ -17,9 +17,6 @@ const DebtPaymentD = db.define(
     TransactionType: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
       defaultValue: null,
       primaryKey: true,
     },
@@ -80,27 +77,18 @@ const DebtPaymentD = db.define(
     TaxPrefix: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
       defaultValue: null,
       primaryKey: false,
     },
     TaxNo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
       defaultValue: null,
       primaryKey: false,
     },
     Information: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: false,
-      },
       defaultValue: null,
       primaryKey: false,
     },
