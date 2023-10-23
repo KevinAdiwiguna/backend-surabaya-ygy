@@ -32,9 +32,6 @@ const SalesInvoiceD = db.define(
     Info: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
     },
     Location: {
       type: DataTypes.STRING,

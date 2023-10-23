@@ -405,6 +405,7 @@ export const createSalesinvoice = async (req, res) => {
         },
       }
     );
+    return res.status(200).json({ msg: "berhasil create" });
 
 
   } catch (error) {

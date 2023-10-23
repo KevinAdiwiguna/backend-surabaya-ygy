@@ -86,11 +86,13 @@ const masterprice = db.define('masterprice',{
 	PercentDisc: {
 		type: DataTypes.DECIMAL,
 		allowNull: true,
+		defaultValue: 0
 	},
 
 	ValueDisc: {
 		type: DataTypes.DECIMAL,
 		allowNull: true,
+		defaultValue: 0
 	},
 
 	CreatedBy: {

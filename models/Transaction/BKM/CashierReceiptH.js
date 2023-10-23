@@ -69,6 +69,7 @@ const CashierReceiptH = db.define(
 
         Information: {
             type: DataTypes.STRING,
+            defaultValue: ""
         },
 
         Status: {
@@ -108,9 +109,6 @@ const CashierReceiptH = db.define(
     },
     {
         freezeTableName: true,
-        timestamps: false,
-        createdAt: false,
-        updatedAt: false,
     }
 );
 

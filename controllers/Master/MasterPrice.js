@@ -47,8 +47,8 @@ export const createPrice = async (req, res) => {
       MinQty: minQty,
       MaxQty: maxQty,
       Price: price,
-      PercentDisc: percentDisc,
-      ValueDisc: valueDisc,
+      PercentDisc: percentDisc ? percentDisc : 0,
+      ValueDisc: valueDisc ? valueDisc : 0,
       CreatedBy: createdBy,
       ChangedBy: changedBy,
     });

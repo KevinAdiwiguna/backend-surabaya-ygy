@@ -61,7 +61,7 @@ export const createCashierReceipt = async (req, res) => {
             PrintedBy: printedBy,
             PrintedDate: printedDate,
             CreatedBy: createdBy,
-            ChangedBy: changedBy
+            ChangedBy: changedBy,
         });
 
         if (cashierReceiptGArray && cashierReceiptGArray.length > 0) {
@@ -106,6 +106,7 @@ export const createCashierReceipt = async (req, res) => {
                         Information: information,
                         Status: status,
                         ChangedBy: changedBy,
+
                     });
 
                     return newCashierReceiptG;
@@ -135,7 +136,8 @@ export const createCashierReceipt = async (req, res) => {
                         Currency: currency,
                         ExchangeRate: exchangeRate,
                         Value: value,
-                        ValueLocal: valueLocal
+                        ValueLocal: valueLocal,
+
                     });
 
                     return newCashierReceiptD;
@@ -147,7 +149,7 @@ export const createCashierReceipt = async (req, res) => {
 
         return res.status(201).json({ msg: 'CashierReceipt berhasil dibuat', data: newCashierReceiptH });
     } catch (error) {
-        return res.status(500).json({ msg: 'Gagal membuat CashierReceipt', error: error.message });
+        return res.status(500).json({ msg: error.message });
     }
 }
 
