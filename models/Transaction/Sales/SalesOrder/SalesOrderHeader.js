@@ -67,10 +67,8 @@ const salesOrderHeader = db.define('salesorderh', {
 
     PONo: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        allowNull: true,
+        defaultValue: ""
     },
 
     TOP: {
