@@ -5,6 +5,16 @@ import SalesOrder from '../../../../models/Transaction/Sales/SalesOrder/SalesOrd
 import sequelize from "sequelize";
 import { Op } from "sequelize";
 
+export const getAllGoodsIssue = async (req, res) => {
+  try {
+    const response = await GoodIssueh.findAll({})
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+
 export const printGoodsissue = async (req, res) => {
   const { printedBy } = req.body
   const data = await GoodIssueh.findOne({
