@@ -14,7 +14,6 @@ export const getAllGoodsIssue = async (req, res) => {
   }
 }
 
-
 export const printGoodsissue = async (req, res) => {
   const { printedBy } = req.body
   const data = await GoodIssueh.findOne({
@@ -116,10 +115,62 @@ export const getGoodsIssue = async (req, res) => {
   }
 };
 
+const test2 = async (req) => {
+  try {
+    const salesordersch = await SalesOrdersch.findAll({
+      where: {
+        DocNo: req,
+      },
+      attributes: ["Qty", "Number"],
+    });
+
+    const goodsissueh = await GoodIssueh.findAll({
+      where: {
+        SODocNo: req,
+      },
+      attributes: ["DocNo"],
+    });
+
+    const docNosArray = goodsissueh.map((g) => g.DocNo);
+
+    const goodsissued = await GoodIssued.findAll({
+      where: {
+        DocNo: {
+          [Op.in]: docNosArray,
+        },
+      },
+    });
+
+    const qtyTotalByNumber = {};
+
+    goodsissued.forEach((item) => {
+      if (qtyTotalByNumber[item.Number]) {
+        qtyTotalByNumber[item.Number] += parseFloat(item.Qty);
+      } else {
+        qtyTotalByNumber[item.Number] = parseFloat(item.Qty);
+      }
+    });
+
+    const result = salesordersch.map((item) => {
+      const number = item.Number.toString();
+      const qtyFromGoodsIssued = qtyTotalByNumber[number] || 0;
+
+      const qtyDifference = parseFloat(item.Qty) - qtyFromGoodsIssued;
+
+      return { [number]: qtyDifference };
+    });
+
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+
+}
 export const createGoodsIssue = async (req, res) => {
   const { series, soDocNo, customerCode, shiptoCode, poNo, vehicleNo, parkingListNo, information, status, printCounter, printedBy, printedDate, changedBy, createdBy, DocDate, goodissued, generateDocDate } = req.body;
 
   try {
+    const getData = await test2(soDocNo)
     const existingHeader = await GoodIssueh.findOne({
       attributes: ["DocNo"],
       where: {
@@ -159,6 +210,35 @@ export const createGoodsIssue = async (req, res) => {
       ChangedBy: changedBy,
     });
 
+
+    const dataLength = getData.length;
+    const resultArray = getData.reduce((accumulator, item) => {
+      return accumulator.concat(Object.values(item));
+    }, []);
+
+    let resultku = [];
+    for (let setcode = 0; setcode < dataLength; setcode++) {
+      const test1231 = resultArray[setcode] - goodissued[setcode].qty <= 0;
+      resultku.push(test1231);
+    }
+    if (resultku.every(item => item === true)) {
+      await SalesOrder.update({
+        Status: "INVOICED"
+      }, {
+        where: {
+          DocNo: soDocNo
+        }
+      });
+    } else {
+      await SalesOrder.update({
+        Status: "INCOMPLITE"
+      }, {
+        where: {
+          DocNo: soDocNo
+        }
+      });
+    }
+
     if (goodissued && Array.isArray(goodissued)) {
       await Promise.all(
         goodissued.map(async (detail) => {
@@ -182,14 +262,6 @@ export const createGoodsIssue = async (req, res) => {
         })
       );
     }
-
-    await SalesOrder.update({
-      Status: "INVOICED"
-    }, {
-      where: {
-        DocNo: soDocNo
-      }
-    })
 
     return res.status(200).json({ msg: "data saved", DocNo: DocNo });
   } catch (error) {
@@ -241,6 +313,7 @@ export const updateHeader = async (req, res) => {
       },
     });
     if (!response) return res.status(400).json({ msg: "Data tidak ditemukan" });
+    if (response.Status === "PRINTED") return res.status(404).json({ msg: "cannot update beacuse data is printed" })
 
     const updatedHeader = await GoodIssueh.update(
       {
