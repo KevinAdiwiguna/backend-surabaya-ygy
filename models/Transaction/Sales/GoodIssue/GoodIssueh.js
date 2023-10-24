@@ -55,10 +55,12 @@ const GoodIssueh = db.define(
 		PONo: {
 			type: DataTypes.STRING,
 			allowNull: true,
+			defaultValue: ""
 		},
 		VehicleNo: {
 			type: DataTypes.STRING,
 			allowNull: true,
+			defaultValue: ""
 		},
 
 		PackingListNo: {
