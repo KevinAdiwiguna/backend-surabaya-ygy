@@ -3,8 +3,9 @@ import { getGoodsIssue, createGoodsIssue, printGoodsissue, getGoodIssueDocNo, ge
 
 const router = express.Router();
 
+router.patch("/printgoodsissue/:id", printGoodsissue);
+
 router.get("/goodsissue/:id", getGoodsIssue);
-router.get("/printgoodsissue/:id", printGoodsissue);
 router.get("/goodsissuedocno/:id", getGoodIssueDocNo);
 router.post("/goodsissue", createGoodsIssue);
 router.get("/goodsissuedetail/:id", getDetailDocNo);

@@ -6,12 +6,13 @@ import sequelize from "sequelize";
 import { Op } from "sequelize";
 
 export const printGoodsissue = async (req, res) => {
+  const { printedDate, printedBy } = req.body
   const data = await GoodIssueh.findOne({
     where: {
       DocNo: req.params.id,
     },
   });
-  if (!data) return res.status(404).json({ msg: "data tidak ada" });
+  if (!data) return res.status(404).json({ msg: "DocNo tidak di temukan" });
 
   let count;
   try {
@@ -25,6 +26,8 @@ export const printGoodsissue = async (req, res) => {
       {
         Status: "PRINTED",
         PrintCounter: count,
+        PrintedDate: printedDate,
+        PrintedBy: printedBy
       },
       {
         where: {
@@ -33,7 +36,7 @@ export const printGoodsissue = async (req, res) => {
       }
     );
 
-    res.status(200).json({ msg: "printed" });
+    res.status(200).json({ msg: "success print" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
