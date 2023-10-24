@@ -6,7 +6,7 @@ import sequelize from "sequelize";
 import { Op } from "sequelize";
 
 export const printGoodsissue = async (req, res) => {
-  const { printedDate, printedBy } = req.body
+  const { printedBy } = req.body
   const data = await GoodIssueh.findOne({
     where: {
       DocNo: req.params.id,
@@ -26,7 +26,7 @@ export const printGoodsissue = async (req, res) => {
       {
         Status: "PRINTED",
         PrintCounter: count,
-        PrintedDate: printedDate,
+        PrintedDate: new Date(),
         PrintedBy: printedBy
       },
       {
