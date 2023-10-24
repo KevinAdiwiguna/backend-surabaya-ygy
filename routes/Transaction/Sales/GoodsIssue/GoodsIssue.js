@@ -1,5 +1,5 @@
 import express from "express";
-import { getGoodsIssue, createGoodsIssue,getAllGoodsIssue, printGoodsissue, getGoodIssueDocNo, getDetailDocNo, getAllDocNo, deleteHeader, updateDetail, updateHeader, getTotalQty } from "../../../../controllers/Transaction/Sales/GoodsIssue/GoodIssue.js";
+import { getGoodsIssue, createGoodsIssue, getAllGoodsIssue, printGoodsissue, getGoodIssueDocNo, getDetailDocNo, getAllDocNo, deleteHeader, updateDetail, updateHeader, getTotalQty } from "../../../../controllers/Transaction/Sales/GoodsIssue/GoodIssue.js";
 
 const router = express.Router();
 
