@@ -223,7 +223,7 @@ export const createGoodsIssue = async (req, res) => {
     }
     if (resultku.every(item => item === true)) {
       await SalesOrder.update({
-        Status: "INVOICED"
+        Status: "COMPLETED"
       }, {
         where: {
           DocNo: soDocNo
