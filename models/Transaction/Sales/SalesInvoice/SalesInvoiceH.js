@@ -44,11 +44,8 @@ const SalesInvoiceh = db.define(
     },
     PONo: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 0,
-      validate: {
-        notEmpty: true,
-      },
+      allowNull: true,
+      defaultValue: "",
     },
     CustomerCode: {
       type: DataTypes.STRING,
