@@ -6,11 +6,10 @@ import salesOrderd from "../../../../models/Transaction/Sales/SalesOrder/SalesOr
 import GenerateTaxNo from '../../../../models/Master/MasterGenerateTaxNo.js'
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
 import MasterPeriode from '../../../../models/Master/MasterPeriode.js'
-
 import sequelize from "sequelize";
 import { Op } from "sequelize";
-
 import GoodIssueh from "../../../../models/Transaction/Sales/GoodIssue/GoodIssueh.js";
+import db from "../../../../config/Database.js";
 
 export const getSalesInvoiceUpdate = async (req, res) => {
   const response = await salesInvoiced.findAll({
@@ -151,6 +150,8 @@ export const createSalesinvoice = async (req, res) => {
     taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail
   } = req.body;
 
+  const t = await db.transaction();
+
   try {
     const existingHeader = await salesInvoiceh.findOne({
       attributes: ["DocNo"],
@@ -162,6 +163,7 @@ export const createSalesinvoice = async (req, res) => {
       order: [[sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
       raw: true,
       limit: 1,
+      transaction: t, 
     });
 
     let DocNo;
@@ -177,18 +179,21 @@ export const createSalesinvoice = async (req, res) => {
         where: {
           TaxNo: taxNo,
         },
+        transaction: t,
       });
 
-      if (!response || !response.TaxNo) {
-        throw new Error("Tax number not found");
+      if (!response.TaxNo) {
+        await t.rollback(); 
+        return res.status(404).json({ msg: "tax no tidak ada" });
       }
 
       await GenerateTaxNo.update({
         DocNo: DocNo,
       }, {
         where: {
-          TaxNo: taxNo,
-        }
+          TaxNo: taxNo
+        },
+        transaction: t,
       });
     }
 
@@ -196,10 +201,12 @@ export const createSalesinvoice = async (req, res) => {
       where: {
         IsClosed: 0,
       },
+      transaction: t,
     });
 
     if (!getMasterPeriode) {
-      throw new Error("Periode is Closed");
+      await t.rollback(); 
+      return res.status(400).json({ msg: "Periode is Closed" });
     }
 
     await salesInvoiceh.create({
@@ -217,8 +224,8 @@ export const createSalesinvoice = async (req, res) => {
       ExchangeRate: exchangeRate,
       TaxStatus: taxStatus,
       TaxPercent: taxPercent,
-      TaxPrefix: taxStatus === "No" ? "" : taxPrefix,
-      TaxNo: taxStatus === "No" ? "" : taxNo,
+      TaxPrefix: taxStatus == "No" ? "" : taxPrefix,
+      TaxNo: taxStatus == "No" ? "" : taxNo,
       DiscPercent: discPercent,
       TotalGross: totalGross,
       TotalDisc: totalDisc,
@@ -237,6 +244,8 @@ export const createSalesinvoice = async (req, res) => {
       PrintedDate: printedDate,
       CreatedBy: createdBy,
       ChangedBy: changedBy,
+    }, {
+      transaction: t, 
     });
 
     if (detail && Array.isArray(detail)) {
@@ -260,6 +269,7 @@ export const createSalesinvoice = async (req, res) => {
             Netto,
             Cost
           } = detailItem;
+
           await salesInvoiced.create({
             DocNo: DocNo,
             Number: Number,
@@ -278,10 +288,12 @@ export const createSalesinvoice = async (req, res) => {
             DiscNominal: DiscNominal,
             Netto: Netto,
             Cost: Cost,
+          }, {
+            transaction: t, 
           });
 
           if (taxStatus !== "No") {
-            if (taxStatus === "Include") {
+            if (taxStatus == "Include") {
               await ARBook.create({
                 Periode: getMasterPeriode.Periode,
                 CustomerCode: customerCode,
@@ -299,7 +311,10 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t, 
               });
+
               await ARBook.create({
                 Periode: getMasterPeriode.Periode,
                 CustomerCode: customerCode,
@@ -317,8 +332,10 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t,
               });
-            } else if (taxStatus === "Exclude") {
+            } else if (taxStatus == "Exclude") {
               await ARBook.create({
                 Periode: getMasterPeriode.Periode,
                 CustomerCode: customerCode,
@@ -336,7 +353,10 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t, 
               });
+
               await ARBook.create({
                 Periode: getMasterPeriode.Periode,
                 CustomerCode: customerCode,
@@ -354,6 +374,8 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t, 
               });
             }
           } else {
@@ -374,6 +396,8 @@ export const createSalesinvoice = async (req, res) => {
               PaymentValue: 0,
               PaymentValueLocal: 0,
               ExchangeRateDiff: 0,
+            }, {
+              transaction: t, 
             });
           }
         })
@@ -396,6 +420,8 @@ export const createSalesinvoice = async (req, res) => {
         PaymentValue: 0,
         PaymentValueLocal: 0,
         ExchangeRateDiff: 0,
+      }, {
+        transaction: t, 
       });
     }
 
@@ -407,16 +433,16 @@ export const createSalesinvoice = async (req, res) => {
         where: {
           DocNo: giDocNo,
         },
+        transaction: t, 
       });
 
+    await t.commit(); 
     return res.status(200).json({ msg: "berhasil create" });
-
   } catch (error) {
-    console.error(error);
+    await t.rollback();
     res.status(500).json({ msg: error.message });
   }
-}
-
+};
 
 
 export const getSalesInvoiceh = async (req, res) => {
