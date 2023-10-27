@@ -1,7 +1,9 @@
 import ARSettlement from "../../../../models/Transaction/Account Receivable/ARSettlement/ARSettlement.js";
 import CashierReceiptH from '../../../../models/Transaction/BKM/CashierReceiptH.js';
 import CustomerPaymentH from '../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentH.js'
+import CustomerPaymnetD from '../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentD.js'
 import ARRequestListH from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
+import SalesInvoiceH from '../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js'
 import { Sequelize, Op } from 'sequelize';
 
 export const createARSettlement = async (req, res) => {
@@ -54,6 +56,16 @@ export const createARSettlement = async (req, res) => {
             attributes: ["DocNo", "Series", "ARReqListNo", "TotalGiro", "Status"]
         })
 
+        const getCustomerPaymentD = await CustomerPaymnetD.findAll({
+            where: {
+                DocNo: response?.DocNo
+            }
+        })
+
+        const arDocNos = getCustomerPaymentD.map(item => item.ARDocNo).join('<>');
+        const result = arDocNos.split('<>').filter(docNo => !docNo.endsWith('T'));
+
+
         await CustomerPaymentH.update(
             { Status: "SETTLED" },
             { where: { DocNo: response?.DocNo } }
@@ -65,6 +77,10 @@ export const createARSettlement = async (req, res) => {
         await ARRequestListH.update(
             { Status: "SETTLED" },
             { where: { DocNo: response2?.ARReqListNo } }
+        )
+        await SalesInvoiceH.update(
+            { Status: "PAID" },
+            { where: { DocNo: result } }
         )
 
 
