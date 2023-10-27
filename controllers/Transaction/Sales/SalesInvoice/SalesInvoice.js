@@ -163,7 +163,7 @@ export const createSalesinvoice = async (req, res) => {
       order: [[sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
       raw: true,
       limit: 1,
-      transaction: t, 
+      transaction: t,
     });
 
     let DocNo;
@@ -183,7 +183,7 @@ export const createSalesinvoice = async (req, res) => {
       });
 
       if (!response.TaxNo) {
-        await t.rollback(); 
+        await t.rollback();
         return res.status(404).json({ msg: "tax no tidak ada" });
       }
 
@@ -205,7 +205,7 @@ export const createSalesinvoice = async (req, res) => {
     });
 
     if (!getMasterPeriode) {
-      await t.rollback(); 
+      await t.rollback();
       return res.status(400).json({ msg: "Periode is Closed" });
     }
 
@@ -241,11 +241,10 @@ export const createSalesinvoice = async (req, res) => {
       Status: status,
       PrintCounter: printCounter,
       PrintedBy: printedBy,
-      PrintedDate: printedDate,
       CreatedBy: createdBy,
       ChangedBy: changedBy,
     }, {
-      transaction: t, 
+      transaction: t,
     });
 
     if (detail && Array.isArray(detail)) {
@@ -289,7 +288,7 @@ export const createSalesinvoice = async (req, res) => {
             Netto: Netto,
             Cost: Cost,
           }, {
-            transaction: t, 
+            transaction: t,
           });
 
           if (taxStatus !== "No") {
@@ -312,7 +311,7 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
               }, {
-                transaction: t, 
+                transaction: t,
               });
 
               await ARBook.create({
@@ -354,7 +353,7 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
               }, {
-                transaction: t, 
+                transaction: t,
               });
 
               await ARBook.create({
@@ -375,7 +374,7 @@ export const createSalesinvoice = async (req, res) => {
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
               }, {
-                transaction: t, 
+                transaction: t,
               });
             }
           } else {
@@ -397,7 +396,7 @@ export const createSalesinvoice = async (req, res) => {
               PaymentValueLocal: 0,
               ExchangeRateDiff: 0,
             }, {
-              transaction: t, 
+              transaction: t,
             });
           }
         })
@@ -421,7 +420,7 @@ export const createSalesinvoice = async (req, res) => {
         PaymentValueLocal: 0,
         ExchangeRateDiff: 0,
       }, {
-        transaction: t, 
+        transaction: t,
       });
     }
 
@@ -433,14 +432,14 @@ export const createSalesinvoice = async (req, res) => {
         where: {
           DocNo: giDocNo,
         },
-        transaction: t, 
+        transaction: t,
       });
 
-    await t.commit(); 
+    await t.commit();
     return res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
     await t.rollback();
-    res.status(500).json({ msg: error.message });
+    res.status(500).json({ msg: error });
   }
 };
 
