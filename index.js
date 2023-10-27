@@ -99,6 +99,7 @@ app.use(
     saveUninitialized: true,
     store: store,
     cookie: {
+      sameSite: "none",
       secure: "auto",
     },
   })
@@ -107,7 +108,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000", "http://192.168.1.75:3000", ['http://192.168.1.74:3000']],
+    origin: ["http://localhost:3000", "http://192.168.1.76:3000", 'http://192.168.1.68:3000'],
   })
 );
 

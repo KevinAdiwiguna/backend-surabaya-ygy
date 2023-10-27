@@ -147,7 +147,7 @@ export const createSalesinvoice = async (req, res) => {
   const {
     generateDocDate, series, docDate, sODocNo, giDocNo, poNo, customerCode, taxToCode, salesCode, top, currency,
     exchangeRate, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue,
-    taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, detail
+    taxValueInTaxCur, totalNetto, totalCost, cutPPh, pPhPercent, pPhValue, information, status, printCounter, printedBy, createdBy, changedBy, detail
   } = req.body;
 
   const t = await db.transaction();
@@ -299,7 +299,7 @@ export const createSalesinvoice = async (req, res) => {
                 TransType: "",
                 DocNo: DocNo,
                 DocDate: docDate,
-                TOP: top,
+                TOP: !top ? 0 : top,
                 DueDate: docDate,
                 Currency: currency,
                 ExchangeRate: exchangeRate,
