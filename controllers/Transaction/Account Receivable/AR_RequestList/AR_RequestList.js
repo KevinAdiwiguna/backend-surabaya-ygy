@@ -3,6 +3,34 @@ import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
 import sequelize, { Op } from 'sequelize'
 
+export const getAllRequestList = async (req,res) => {
+  try {
+    const response = await ARRequestListh.findAll({})
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({msg: error})
+  }
+}
+
+export const getDetailDocNo = async (req, res) => {
+  try {
+    const header = await ARRequestListh.findOne({
+      where: {
+        DocNo: req.params.id,
+      },
+    });
+    const detail = await ARRequestListd.findAll({
+      where: {
+        DocNo: req.params.id,
+      },
+    });
+
+    res.status(200).json({ header: header, detail: detail });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 export const createRequestList = async (req, res) => {
   const { series, docDate, generateDocDate, collectorCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, createdBy, changedBy, printedDate, details } = req.body
   try {
@@ -111,11 +139,13 @@ export const updateRequestList = async (req, res) => {
       },
     });
 
+
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detail) => {
           const { customerCode, arDocNo } = detail;
           try {
+            
             await ARRequestListd.upsert({
               DocNo: requestListh.DocNo,
               CUstomerCode: customerCode,
