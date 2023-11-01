@@ -3,12 +3,12 @@ import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
 import sequelize, { Op } from 'sequelize'
 
-export const getAllRequestList = async (req,res) => {
+export const getAllRequestList = async (req, res) => {
   try {
     const response = await ARRequestListh.findAll({})
     res.status(200).json(response)
   } catch (error) {
-    res.status(500).json({msg: error})
+    res.status(500).json({ msg: error })
   }
 }
 
@@ -140,27 +140,35 @@ export const updateRequestList = async (req, res) => {
     });
 
 
-    if (details && Array.isArray(details)) {
-      await Promise.all(
-        details.map(async (detail) => {
-          const { customerCode, arDocNo } = detail;
-          try {
-            
-            await ARRequestListd.upsert({
-              DocNo: requestListh.DocNo,
-              CUstomerCode: customerCode,
-              ARDocNo: arDocNo,
-            }, {
-              where: {
-                DocNo: requestListh.DocNo
-              },
-            });
-          } catch (error) {
-            console.error(error);
-          }
-        })
-      );
-    }
+    await ARRequestListd.drop({
+      where: {
+        DocNo: requestListh.DocNo
+      }
+    })
+
+    await ARRequestListd.bulkCreate(details)
+
+    // if (details && Array.isArray(details)) {
+    //   await Promise.all(
+    //     details.map(async (detail) => {
+    //       const { customerCode, arDocNo } = detail;
+    //       try {
+
+    //         await ARRequestListd.upsert({
+    //           DocNo: requestListh.DocNo,
+    //           CUstomerCode: customerCode,
+    //           ARDocNo: arDocNo,
+    //         }, {
+    //           where: {
+    //             DocNo: requestListh.DocNo
+    //           },
+    //         });
+    //       } catch (error) {
+    //         console.error(error);
+    //       }
+    //     })
+    //   );
+    // }
 
     res.status(200).json({ msg: "Update berhasil" });
   } catch (error) {

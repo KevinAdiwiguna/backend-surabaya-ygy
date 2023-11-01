@@ -1,5 +1,6 @@
 import APSettlement from "../../../models/Transaction/AP/APSettlement.js";
 import CashierPaymentH from '../../../models/Transaction/BKK/CashierPaymentH.js';
+import CashierPaymentD from '../../../models/Transaction/BKK/CashierPaymentD.js'
 import DebtPaymentH from '../../../models/Transaction/AP/DebtPaymentH.js'
 import APReceiptListH from '../../../models/Transaction/AP/AR_ReceiptListh.js'
 import { Sequelize, Op } from 'sequelize';
@@ -27,18 +28,18 @@ export const createAPSettlement = async (req, res) => {
             DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
         }
 
-        const createdAPSettlements = await APSettlement.create({
-            DocNo: DocNo,
-            Series: series,
-            DocDate: docDate,
-            APRecListNo: apRecListNo,
-            SupplierCode: supplierCode,
-            TotalValue: totalValue,
-            Information: information,
-            Status: status,
-            CreatedBy: createdBy,
-            ChangedBy: changedBy,
-        });
+        // const createdAPSettlements = await APSettlement.create({
+        //     DocNo: DocNo,
+        //     Series: series,
+        //     DocDate: docDate,
+        //     APRecListNo: apRecListNo,
+        //     SupplierCode: supplierCode,
+        //     TotalValue: totalValue,
+        //     Information: information,
+        //     Status: status,
+        //     CreatedBy: createdBy,
+        //     ChangedBy: changedBy,
+        // });
 
         const response = await DebtPaymentH.findOne({
             where: {
@@ -55,21 +56,28 @@ export const createAPSettlement = async (req, res) => {
             attributes: ["DocNo", "Series", "APRecListNo", "TotalGiro", "Status"]
         })
 
-        await DebtPaymentH.update(
-            { Status: "SETTLED" },
-            { where: { DocNo: response?.DocNo } }
-        )
-        await CashierPaymentH.update(
-            { Status: "SETTLED" },
-            { where: { DocNo: response2?.DocNo } }
-        )
-        await APReceiptListH.update(
-            { Status: "SETTLED" },
-            { where: { DocNo: response2?.APRecListNo } }
-        )
+        const getCustomerPaymentD = await CashierPaymentD.findAll({
+            where: {
+                DocNo: response?.DocNo
+            }
+        })
+
+        // await DebtPaymentH.update(
+        //     { Status: "SETTLED" },
+        //     { where: { DocNo: response?.DocNo } }
+        // )
+        // await CashierPaymentH.update(
+        //     { Status: "SETTLED" },
+        //     { where: { DocNo: response2?.DocNo } }
+        // )
+        // await APReceiptListH.update(
+        //     { Status: "SETTLED" },
+        //     { where: { DocNo: response2?.APRecListNo } }
+        // )
 
 
-        return res.status(201).json({ msg: 'APSettlement berhasil dibuat', data: createdAPSettlements });
+        // return res.status(201).json(CashierPaymentD);
+        // return res.status(201).json({ msg: 'APSettlement berhasil dibuat', data: createdAPSettlements });
     } catch (error) {
         return res.status(500).json({ msg: error.message });
     }
