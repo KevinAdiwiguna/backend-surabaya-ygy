@@ -102,8 +102,6 @@ export const createRequestList = async (req, res) => {
 export const updateRequestList = async (req, res) => {
   try {
     const {
-      docNo,
-      series,
       docDate,
       collectorCode,
       customerGroup,
@@ -136,8 +134,6 @@ export const updateRequestList = async (req, res) => {
 
     await ARRequestListh.update(
       {
-        DocNo: docNo || requestListh.DocNo,
-        Series: series || requestListh.Series,
         DocDate: docDate || requestListh.DocDate,
         CollectorCode: collectorCode || requestListh.CollectorCode,
         CustomerGroup: customerGroup || requestListh.CustomerGroup,

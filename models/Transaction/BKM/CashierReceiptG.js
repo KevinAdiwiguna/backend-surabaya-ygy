@@ -139,9 +139,7 @@ const CashierReceiptG = db.define(
     },
     {
         freezeTableName: true,
-        timestamps: false,
         createdAt: false,
-        updatedAt: false
     }
 );
 

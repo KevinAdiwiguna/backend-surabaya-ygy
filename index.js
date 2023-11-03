@@ -99,8 +99,8 @@ app.use(
     saveUninitialized: true,
     store: store,
     cookie: {
-      sameSite: "none",
-      secure: "auto",
+      sameSite: 'strict',
+      // secure: true,
     },
   })
 );
