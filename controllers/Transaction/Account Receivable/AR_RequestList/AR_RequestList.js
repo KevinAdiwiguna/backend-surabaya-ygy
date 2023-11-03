@@ -98,83 +98,91 @@ export const createRequestList = async (req, res) => {
   }
 }
 
-export const updateRequestList = async (req, res) => {
 
+export const updateRequestList = async (req, res) => {
   try {
-    const { docNo, series, docDate, collectorCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details } = req.body;
+    const {
+      docNo,
+      series,
+      docDate,
+      collectorCode,
+      customerGroup,
+      salesArea1,
+      salesArea2,
+      salesArea3,
+      currency,
+      totalCustomer,
+      totalDocument,
+      totalValue,
+      information,
+      status,
+      printCounter,
+      printedBy,
+      printedDate,
+      createdBy,
+      changedBy,
+      details,
+    } = req.body;
 
     const requestListh = await ARRequestListh.findOne({
       where: {
-        DocNo: req.params.id
-      }
-    });
-
-    if (!requestListh) {
-      return res.status(400).json({ msg: "Data tidak ditemukan" });
-    }
-
-    await ARRequestListh.update({
-      DocNo: docNo || requestListh.DocNo,
-      Series: series || requestListh.Series,
-      DocDate: docDate || requestListh.DocDate,
-      CollectorCode: collectorCode || requestListh.CollectorCode,
-      CustomerGroup: customerGroup || requestListh.CustomerGroup,
-      SalesArea1: salesArea1 || requestListh.SalesArea1,
-      SalesArea2: salesArea2 || requestListh.SalesArea2,
-      SalesArea3: salesArea3 || requestListh.SalesArea3,
-      Currency: currency || requestListh.Currency,
-      TotalCustomer: totalCustomer || requestListh.TotalCustomer,
-      TotalDocument: totalDocument || requestListh.TotalDocument,
-      TotalValue: totalValue || requestListh.TotalValue,
-      PrintCounter: printCounter || requestListh.PrintCounter,
-      PrintedBy: printedBy || requestListh.PrintedBy,
-      PrintedDate: printedDate || requestListh.PrintedDate,
-      Information: information || requestListh.Information,
-      Status: status || requestListh.Status,
-      CreatedBy: createdBy || requestListh.CreatedBy,
-      ChangedBy: changedBy || requestListh.ChangedBy
-    }, {
-      where: {
-        DocNo: requestListh.DocNo
+        DocNo: req.params.id,
       },
     });
 
+    if (!requestListh) {
+      return res.status(400).json({ msg: 'Data tidak ditemukan' });
+    }
 
-    await ARRequestListd.drop({
-      where: {
-        DocNo: requestListh.DocNo
+    await ARRequestListh.update(
+      {
+        DocNo: docNo || requestListh.DocNo,
+        Series: series || requestListh.Series,
+        DocDate: docDate || requestListh.DocDate,
+        CollectorCode: collectorCode || requestListh.CollectorCode,
+        CustomerGroup: customerGroup || requestListh.CustomerGroup,
+        SalesArea1: salesArea1 || requestListh.SalesArea1,
+        SalesArea2: salesArea2 || requestListh.SalesArea2,
+        SalesArea3: salesArea3 || requestListh.SalesArea3,
+        Currency: currency || requestListh.Currency,
+        TotalCustomer: totalCustomer || requestListh.TotalCustomer,
+        TotalDocument: totalDocument || requestListh.TotalDocument,
+        TotalValue: totalValue || requestListh.TotalValue,
+        PrintCounter: printCounter || requestListh.PrintCounter,
+        PrintedBy: printedBy || requestListh.PrintedBy,
+        PrintedDate: printedDate || requestListh.PrintedDate,
+        Information: information || requestListh.Information,
+        Status: status || requestListh.Status,
+        CreatedBy: createdBy || requestListh.CreatedBy,
+        ChangedBy: changedBy || requestListh.ChangedBy,
+      },
+      {
+        where: {
+          DocNo: requestListh.DocNo,
+        },
       }
-    })
+    );
 
-    await ARRequestListd.bulkCreate(details)
+    await ARRequestListd.destroy({
+      where: {
+        DocNo: requestListh.DocNo,
+      },
+    });
 
-    // if (details && Array.isArray(details)) {
-    //   await Promise.all(
-    //     details.map(async (detail) => {
-    //       const { customerCode, arDocNo } = detail;
-    //       try {
+    await ARRequestListd.bulkCreate([
+      {
+        DocNo: requestListh.DocNo,
+        CustomerCode: details.CustomerCode,
+        ARDocNo: details.ARDocNo,
+      },
+    ]);
 
-    //         await ARRequestListd.upsert({
-    //           DocNo: requestListh.DocNo,
-    //           CUstomerCode: customerCode,
-    //           ARDocNo: arDocNo,
-    //         }, {
-    //           where: {
-    //             DocNo: requestListh.DocNo
-    //           },
-    //         });
-    //       } catch (error) {
-    //         console.error(error);
-    //       }
-    //     })
-    //   );
-    // }
-
-    res.status(200).json({ msg: "Update berhasil" });
+    res.status(200).json({ msg: 'Update berhasil' });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
-}
+};
+
 
 export const getRequestListDetail = async (req, res) => {
   try {
