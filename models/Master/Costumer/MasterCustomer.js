@@ -155,16 +155,12 @@ const mastercustomer = db.define('mastercustomer', {
     IsBlacklisted: {
         type: DataTypes.BLOB('tiny'),
         allowNull: true,
-        validate: {
-            notEmpty: false
-        },
+        defaultValue: false
     },
     IsDeleted: {
         type: DataTypes.BLOB('tiny'),
         allowNull: true,
-        validate: {
-            notEmpty: false
-        },
+        defaultValue: false
     },
     Information: {
         type: DataTypes.STRING,
