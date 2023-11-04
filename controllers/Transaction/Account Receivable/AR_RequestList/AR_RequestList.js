@@ -98,11 +98,9 @@ export const createRequestList = async (req, res) => {
   }
 }
 
-
 export const updateRequestList = async (req, res) => {
   try {
     const {
-      docDate,
       collectorCode,
       customerGroup,
       salesArea1,
@@ -164,14 +162,13 @@ export const updateRequestList = async (req, res) => {
       },
     });
 
-    await ARRequestListd.bulkCreate([
-      {
+    for (let a = 0; a < details.length; a++) {
+      await ARRequestListd.create({
         DocNo: requestListh.DocNo,
-        CustomerCode: details.CustomerCode,
-        ARDocNo: details.ARDocNo,
-      },
-    ]);
-
+        CustomerCode: details[a].CustomerCode,
+        ARDocNo: details[a].ARDocNo,
+      });
+    }
     res.status(200).json({ msg: 'Update berhasil' });
   } catch (error) {
     res.status(500).json({ msg: error.message });
