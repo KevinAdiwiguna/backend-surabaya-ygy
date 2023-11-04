@@ -101,7 +101,7 @@ export const createCustomerGroup = async (req, res) => {
       ChangedBy: changedBy,
     });
 
-   
+
     res.status(201).json({ msg: "create Berhasil" });
   } catch (error) {
     res.status(400).json({ msg: error.message });

@@ -148,17 +148,17 @@ const mastercustomer = db.define('mastercustomer', {
         defaultValue: ''
     },
     CutPPh: {
-        type: DataTypes.BLOB('tiny'),
+        type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: 0
     },
     IsBlacklisted: {
-        type: DataTypes.BLOB('tiny'),
+        type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: 0
     },
     IsDeleted: {
-        type: DataTypes.BLOB('tiny'),
+        type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: 0
     },
