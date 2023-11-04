@@ -150,17 +150,17 @@ const mastercustomer = db.define('mastercustomer', {
     CutPPh: {
         type: DataTypes.BLOB('tiny'),
         allowNull: true,
-        defaultValue: false
+        defaultValue: 0
     },
     IsBlacklisted: {
         type: DataTypes.BLOB('tiny'),
         allowNull: true,
-        defaultValue: false
+        defaultValue: 0
     },
     IsDeleted: {
         type: DataTypes.BLOB('tiny'),
         allowNull: true,
-        defaultValue: false
+        defaultValue: 0
     },
     Information: {
         type: DataTypes.STRING,
