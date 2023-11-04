@@ -140,10 +140,12 @@ const mastercustomer = db.define('mastercustomer', {
     TransactionType: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: ''
     },
     TransactionType2: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: ''
     },
     CutPPh: {
         type: DataTypes.BLOB('tiny'),
