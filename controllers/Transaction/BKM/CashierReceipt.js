@@ -23,29 +23,48 @@ export const getCashierReceiptUpdate = async (req, res) => {
 }
 
 export const createCashierReceipt = async (req, res) => {
-    const { series, generateDocDate, docDate, arReqListNo, totalDebet, totalCredit, totalGiro, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, cashierReceiptGArray, cashierReceiptDArray } = req.body;
-
-    const existingHeader = await CashierReceiptH.findOne({
-        attributes: ["DocNo"],
-        where: {
-            DocNo: {
-                [Op.like]: `${series}-${generateDocDate}-%`,
-            },
-        },
-        order: [[Sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
-        raw: true,
-        limit: 1,
-    });
-
-    let DocNo;
-    if (!existingHeader) {
-        DocNo = `${series}-${generateDocDate}-0001`;
-    } else {
-        const Series = parseInt(existingHeader.DocNo.split("-")[2], 10) + 1;
-        DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
-    }
+    const {
+        series,
+        generateDocDate,
+        docDate,
+        arReqListNo,
+        totalDebet,
+        totalCredit,
+        totalGiro,
+        information,
+        status,
+        printCounter,
+        printedBy,
+        printedDate,
+        createdBy,
+        changedBy,
+        cashierReceiptGArray,
+        cashierReceiptDArray
+    } = req.body;
 
     try {
+        // Generate a new DocNo
+        const existingHeader = await CashierReceiptH.findOne({
+            attributes: ["DocNo"],
+            where: {
+                DocNo: {
+                    [Op.like]: `${series}-${generateDocDate}-%`,
+                },
+            },
+            order: [[Sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
+            raw: true,
+            limit: 1,
+        });
+
+        let DocNo;
+        if (!existingHeader) {
+            DocNo = `${series}-${generateDocDate}-0001`;
+        } else {
+            const Series = parseInt(existingHeader.DocNo.split("-")[2], 10) + 1;
+            DocNo = `${series}-${generateDocDate}-${Series.toString().padStart(4, "0")}`;
+        }
+
+        // Create a new CashierReceiptH entry
         const newCashierReceiptH = await CashierReceiptH.create({
             DocNo,
             Series: series,
@@ -64,6 +83,7 @@ export const createCashierReceipt = async (req, res) => {
             ChangedBy: changedBy,
         });
 
+        // Create CashierReceiptG entries if cashierReceiptGArray exists
         if (cashierReceiptGArray && cashierReceiptGArray.length > 0) {
             await Promise.all(cashierReceiptGArray.map(async (cashierReceiptGData) => {
                 const {
@@ -81,40 +101,33 @@ export const createCashierReceipt = async (req, res) => {
                     clearExchangeRate,
                     clearValue,
                     rejectDate,
-                    information,
-                    status,
                 } = cashierReceiptGData;
 
-                try {
-                    const newCashierReceiptG = await CashierReceiptG.create({
-                        DocNo: DocNo,
-                        Bank: bank,
-                        GiroNo: giroNo,
-                        CustomerCode: customerCode,
-                        Currency: currency,
-                        ExchangeRate: exchangeRate,
-                        GiroValue: giroValue,
-                        GiroValueLocal: giroValueLocal,
-                        TransType: transType,
-                        ReceivedDate: docDate,
-                        DepositDate: depositDate,
-                        DueDate: dueDate,
-                        ClearingDate: clearingDate,
-                        ClearExchangeRate: clearExchangeRate,
-                        ClearValue: clearValue,
-                        RejectDate: rejectDate,
-                        Information: information,
-                        Status: status,
-                        ChangedBy: changedBy,
-
-                    });
-
-                    return newCashierReceiptG;
-                } catch (error) {
-                    throw new Error(`Gagal membuat CashierReceiptG: ${error.message}`);
-                }
+                await CashierReceiptG.create({
+                    DocNo: DocNo,
+                    Bank: bank,
+                    GiroNo: giroNo,
+                    CustomerCode: customerCode,
+                    Currency: currency,
+                    ExchangeRate: exchangeRate,
+                    GiroValue: giroValue,
+                    GiroValueLocal: giroValueLocal,
+                    TransType: transType,
+                    ReceivedDate: docDate,
+                    DepositDate: depositDate,
+                    DueDate: dueDate,
+                    ClearingDate: clearingDate,
+                    ClearExchangeRate: clearExchangeRate,
+                    ClearValue: clearValue,
+                    RejectDate: rejectDate,
+                    Information: information,
+                    Status: status,
+                    ChangedBy: changedBy,
+                });
             }));
         }
+
+        // Create CashierReceiptD entries if cashierReceiptDArray exists
         if (cashierReceiptDArray && cashierReceiptDArray.length > 0) {
             await Promise.all(cashierReceiptDArray.map(async (cashierReceiptDData) => {
                 const {
@@ -127,24 +140,17 @@ export const createCashierReceipt = async (req, res) => {
                     valueLocal
                 } = cashierReceiptDData;
 
-                try {
-                    const newCashierReceiptD = await CashierReceiptD.create({
-                        DocNo: DocNo,
-                        TransType: transType,
-                        Info: info,
-                        DC: dc,
-                        Currency: currency,
-                        ExchangeRate: exchangeRate,
-                        Value: value,
-                        ValueLocal: valueLocal,
-
-                    });
-
-                    return newCashierReceiptD;
-                } catch (error) {
-                    throw new Error(`Gagal membuat CashierReceiptG: ${error.message}`);
-                }
-            }));
+                await CashierReceiptD.create({
+                    DocNo: DocNo,
+                    TransType: transType,
+                    Info: info,
+                    DC: dc,
+                    Currency: currency,
+                    ExchangeRate: exchangeRate,
+                    Value: value,
+                    ValueLocal: valueLocal,
+                });
+            }))
         }
 
         return res.status(201).json({ msg: 'CashierReceipt berhasil dibuat', data: newCashierReceiptH });
@@ -152,6 +158,8 @@ export const createCashierReceipt = async (req, res) => {
         return res.status(500).json({ msg: error.message });
     }
 }
+
+
 
 export const printCashierReceipt = async (req, res) => {
     try {
@@ -173,3 +181,43 @@ export const printCashierReceipt = async (req, res) => {
         return res.status(500).json({ msg: "Terjadi kesalahan server" });
     }
 };
+
+
+export const updateCashierReceipt = async (req, res) => {
+    const { arReqListNo, totalDebet, totalCredit, totalGiro, information, status, changedBy, cashierG, cashierD } = req.body
+    try {
+        await CashierReceiptH.update({
+            ARReqListNo: arReqListNo,
+            TotalDebet: totalDebet,
+            TotalCredit: totalCredit,
+            TotalGiro: totalGiro,
+            Information: information,
+            Status: status,
+            ChangedBy: changedBy
+        }, {
+            where: {
+                DocNo: req.params.id
+            }
+        })
+
+        await CashierReceiptG.destroy({
+            where: {
+                DocNo: req.params.id
+            }
+        })
+
+        await CashierReceiptG.bulkCreate(cashierG)
+        await CashierReceiptD.destroy({
+            where: {
+                DocNo: req.params.id
+            }
+        })
+
+        await CashierReceiptD.bulkCreate(cashierD)
+
+        res.status(200).json({ msg: "berhasil update data" })
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
