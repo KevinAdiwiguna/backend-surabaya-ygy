@@ -74,6 +74,17 @@ export const createCustomerPayment = async (req, res) => {
               TaxNo: taxNo,
               Information: information,
             }, { transaction: t });
+
+
+            await ARBook.update({
+              PaymentValue: payment,
+              PaymentValueLocal: paymentLocal,
+            }, {
+              where: {
+                DocNo: arDocNo
+              }
+            })
+
           } catch (error) {
             console.error(error);
             await t.rollback();
@@ -130,7 +141,7 @@ export const getCustomerPaymentDetail = async (req, res) => {
       };
     });
 
-    res.json(combinedData); 
+    res.json(combinedData);
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
