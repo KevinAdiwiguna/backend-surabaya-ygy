@@ -211,3 +211,40 @@ export const getRequestListUsed = async (req, res) => {
 
   }
 }
+
+
+export const printRequestList = async (req, res) => {
+  const { printedBy } = req.body
+  let count;
+  try {
+    const data = await ARRequestListh.findOne({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+
+    if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
+      count = 1;
+    } else {
+      count = data.PrintCounter + 1;
+    }
+
+    await ARRequestListh.update(
+      {
+        Status: "PRINTED",
+        PrintCounter: count,
+        PrintedDate: new Date(),
+        PrintedBy: printedBy
+      },
+      {
+        where: {
+          DocNo: req.params.id,
+        },
+      }
+    );
+    res.status(200).json({ msg: "success print" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+
+  }
+}
