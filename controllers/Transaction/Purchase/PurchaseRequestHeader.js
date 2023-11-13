@@ -29,8 +29,9 @@ export const getPurchaseRequestByCode = async (req, res) => {
 
 export const updatePurchaseRequest = async (req, res) => {
     try {
+        const { details } = req.body
 
-        const { series, docNo, docDate, information, department, trip, JODocNo, status, createdBy, changedBy } = req.body
+
 
         const purchaseRequesth = await PurchaseRequesth.findOne({
             where: {
@@ -40,8 +41,34 @@ export const updatePurchaseRequest = async (req, res) => {
         if (!purchaseRequesth) return res.status(400).json({ msg: "data tidak ditemukan" })
 
 
-        const updateHeader = await PurchaseRequesth.update({
+        if (details && Array.isArray(details)) {
+            await Promise.all(
+                details.map(async (detail) => {
+                    const {
+                        materialCode,
+                        info,
+                        unit,
+                        qty,
+                        qtyPO,
+                        requiredDate,
+                    } = detail;
 
+                    await purchase.create({
+                        DocNo: DocNo,
+                        MaterialCode: materialCode,
+                        Info: info,
+                        Unit: unit,
+                        Qty: qty,
+                        QtyPO: qtyPO,
+                        RequiredDate: requiredDate
+                    });
+                })
+            );
+        }
+
+
+
+        const updateHeader = await PurchaseRequesth.update({
             DocNo: docNo || purchaseRequesth.DocNo,
             Series: series || purchaseRequesth.Series,
             DocDate: docDate || purchaseRequesth.DocDate,
@@ -165,13 +192,13 @@ export const createPurchaseRequestH = async (req, res) => {
 
 export const deletePurchaseRequesth = async (req, res) => {
     try {
-    const purchaseRequesth = await PurchaseRequesth.findOne({
-        where: {
-            DocNo: req.params.id
-        }
-    });
-    if (!purchaseRequesth) return res.status(400).json({ msg: "data tidak ditemukan" })
-    
+        const purchaseRequesth = await PurchaseRequesth.findOne({
+            where: {
+                DocNo: req.params.id
+            }
+        });
+        if (!purchaseRequesth) return res.status(400).json({ msg: "data tidak ditemukan" })
+
         await PurchaseRequesth.update(
             { Status: "DELETED" },
             {

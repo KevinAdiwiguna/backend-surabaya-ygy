@@ -20,7 +20,7 @@ export const createDocumentSeries = async (req, res) => {
   });
   if (seriesCheck) return res.status(400).json({ msg: "series udah ada" });
 
- 
+
 
   try {
     await documentSeriesModel.create({

@@ -189,7 +189,10 @@ export const getRequestListPrinted = async (req, res) => {
   try {
     const response = await ARRequestListh.findAll({
       where: {
-        Status: "PRINTED"
+        [Op.and]: [
+          { status: 'PRINTED' },
+          { status: 'USED' }
+        ]
       }
     })
     res.status(200).json(response)
