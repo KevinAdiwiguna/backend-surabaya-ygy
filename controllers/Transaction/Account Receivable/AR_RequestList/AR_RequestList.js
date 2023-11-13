@@ -215,7 +215,6 @@ export const getRequestListUsed = async (req, res) => {
   }
 }
 
-
 export const printRequestList = async (req, res) => {
   const { printedBy } = req.body
   let count;
@@ -225,6 +224,7 @@ export const printRequestList = async (req, res) => {
         DocNo: req.params.id
       }
     })
+    if (data.Status == "PRINTED") return res.status(400).json({ msg: "gabisa di update, soalnya statusnya udah used" })
 
     if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
       count = 1;
