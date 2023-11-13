@@ -6,6 +6,15 @@ import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
 import Sequelize, { Op } from 'sequelize'
 import db from '../../../../config/Database.js'
 
+export const getAllCustomerPayment = async (req, res) => {
+  try {
+    const response = await CustomerPaymentH.findAll({})
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error })
+  }
+}
+
 export const createCustomerPayment = async (req, res) => {
   const { series, docDate, arRequestListNo, totalCustomer, totalDocument, totalPayment, information, status, createdBy, changedBy, generateDocDate, details } = req.body;
 
