@@ -29,9 +29,7 @@ export const getPurchaseRequestByCode = async (req, res) => {
 
 export const updatePurchaseRequest = async (req, res) => {
     try {
-        const { details } = req.body
-
-
+        const { series, docDate, joDocNo, trip, department, information, changedBy, details } = req.body
 
         const purchaseRequesth = await PurchaseRequesth.findOne({
             where: {
@@ -49,35 +47,44 @@ export const updatePurchaseRequest = async (req, res) => {
                         info,
                         unit,
                         qty,
-                        qtyPO,
-                        requiredDate,
+                        price,
+                        gross,
+                        discPercent,
+                        discPercent2,
+                        discPercent3,
+                        discValue,
+                        discNominal,
+                        netto,
+                        qtyReceived,
                     } = detail;
 
-                    await purchase.create({
-                        DocNo: DocNo,
+                    await PurchaseRequestds.create({
                         MaterialCode: materialCode,
                         Info: info,
                         Unit: unit,
                         Qty: qty,
-                        QtyPO: qtyPO,
-                        RequiredDate: requiredDate
+                        Price: price,
+                        Gross: gross,
+                        DiscPercent: discPercent,
+                        DiscPercent2: discPercent2,
+                        DiscPercent3: discPercent3,
+                        DiscValue: discValue,
+                        DiscNominal: discNominal,
+                        Netto: netto,
+                        QtyReceived: qtyReceived,
                     });
                 })
             );
         }
 
-
-
-        const updateHeader = await PurchaseRequesth.update({
-            DocNo: docNo || purchaseRequesth.DocNo,
+        await PurchaseRequesth.update({
+            DocNo: req.params.id || purchaseRequesth.DocNo,
             Series: series || purchaseRequesth.Series,
             DocDate: docDate || purchaseRequesth.DocDate,
-            JODocNo: JODocNo || purchaseRequesth.JODocNo,
+            JODocNo: joDocNo || purchaseRequesth.JODocNo,
             Trip: trip || purchaseRequesth.Trip,
             Department: department || purchaseRequesth.Department,
             Information: information || purchaseRequesth.Information,
-            Status: status || purchaseRequesth.Status,
-            CreatedBy: createdBy || purchaseRequesth.CreatedBy,
             ChangedBy: changedBy || purchaseRequesth.ChangedBy
         }, {
             where: {
@@ -88,7 +95,6 @@ export const updatePurchaseRequest = async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
-
 }
 
 
@@ -130,7 +136,7 @@ export const createPurchaseRequestH = async (req, res) => {
             DocNo = `${series}-${generateDocDate}-0001`;
         }
 
-        const createHeader = await PurchaseRequesth.create({
+        await PurchaseRequesth.create({
             DocNo: DocNo,
             Series: series,
             DocDate: docDate,
