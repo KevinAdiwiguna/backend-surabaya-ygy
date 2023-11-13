@@ -43,35 +43,19 @@ export const updatePurchaseRequest = async (req, res) => {
             await Promise.all(
                 details.map(async (detail) => {
                     const {
-                        materialCode,
                         info,
                         unit,
                         qty,
-                        price,
-                        gross,
-                        discPercent,
-                        discPercent2,
-                        discPercent3,
-                        discValue,
-                        discNominal,
-                        netto,
-                        qtyReceived,
+                        qtyPO,
+                        requiredDate,
                     } = detail;
 
                     await PurchaseRequestds.create({
-                        MaterialCode: materialCode,
                         Info: info,
                         Unit: unit,
                         Qty: qty,
-                        Price: price,
-                        Gross: gross,
-                        DiscPercent: discPercent,
-                        DiscPercent2: discPercent2,
-                        DiscPercent3: discPercent3,
-                        DiscValue: discValue,
-                        DiscNominal: discNominal,
-                        Netto: netto,
-                        QtyReceived: qtyReceived,
+                        QtyPO: qtyPO,
+                        RequiredDate: requiredDate,
                     });
                 })
             );

@@ -93,6 +93,7 @@ export const printInvoice = async (req, res) => {
 
 
 export const updatePurchaseRequest = async (req, res) => {
+    try {
     const { docNo, series, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
 
     const updPurchaseOrderH = await purchaseOrderHeader.findOne({
@@ -102,7 +103,46 @@ export const updatePurchaseRequest = async (req, res) => {
     })
     if (!updPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
 
-    try {
+    if (details && Array.isArray(details)) {
+            await Promise.all(
+                details.map(async (detail) => {
+                    const {
+                        materialCode,
+                        info,
+                        unit,
+                        qty,
+                        price,
+                        gross,
+                        discPercent,
+                        discPercent2,
+                        discPercent3,
+                        discValue,
+                        discNominal,
+                        netto,
+                        qtyReceived,
+                     } = detail;
+
+            await purchaseOrderDetails.create({
+                    materialCode: materialCode,
+                    info: info,
+                    unit: unit,
+                    qty: qty,
+                    price: price,
+                    gross: gross,
+                    discPercent: discPercent,
+                    discPercent2: discPercent2,
+                    discPercent3: discPercent3,
+                    discValue: discValue,
+                    discNominal: discNominal,
+                    netto: netto,
+                    qtyReceived: qtyReceived
+                });
+            })
+        );
+    }
+
+
+
         await purchaseOrderHeader.update({
 
             DocNo: docNo || updPurchaseOrderH.DocNo,
