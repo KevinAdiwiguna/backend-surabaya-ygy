@@ -37,6 +37,7 @@ export const updatePurchaseRequest = async (req, res) => {
             }
         })
         if (!purchaseRequesth) return res.status(400).json({ msg: "data tidak ditemukan" })
+        if(purchaseRequesth.Status == 'PRINTED') return res.status(400).json({msg: 'cannot update when status is printed'})
 
 
         if (details && Array.isArray(details)) {
