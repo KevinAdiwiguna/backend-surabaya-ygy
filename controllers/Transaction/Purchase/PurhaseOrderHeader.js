@@ -57,6 +57,8 @@ export const getPurchaseOrderByPrinted = async (req, res) => {
     }
 }
 
+
+
 export const printInvoice = async (req, res) => {
     const data = await purchaseOrderHeader.findOne({
         where: {
@@ -94,7 +96,7 @@ export const printInvoice = async (req, res) => {
 
 export const updatePurchaseRequest = async (req, res) => {
     try {
-    const { docNo, series, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
+    const { docNo,details, series, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
 
     const updPurchaseOrderH = await purchaseOrderHeader.findOne({
         where: {
@@ -102,6 +104,7 @@ export const updatePurchaseRequest = async (req, res) => {
         }
     })
     if (!updPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
+    if(updPurchaseOrderH.Status == "PRINTED") return res.json(400).json({msg: "cannot update in status printed"})
 
     if (details && Array.isArray(details)) {
             await Promise.all(
@@ -142,9 +145,7 @@ export const updatePurchaseRequest = async (req, res) => {
     }
 
 
-
         await purchaseOrderHeader.update({
-
             DocNo: docNo || updPurchaseOrderH.DocNo,
             Series: series || updPurchaseOrderH.Series,
             TransactionType: transactionType || updPurchaseOrderH.TransactionType,
@@ -224,7 +225,6 @@ export const createPurchaseRequestH = async (req, res) => {
         changedBy,
         PurchaseOrderd
     } = req.body;
-
 
     try {
         const existingHeader = await purchaseOrderHeader.findOne({
