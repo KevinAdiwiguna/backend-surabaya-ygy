@@ -123,11 +123,11 @@ export const createCashierReceipt = async (req, res) => {
                     Information: information,
                     Status: status,
                     ChangedBy: changedBy,
+                    ChangedDate: new Date()
                 });
             }));
         }
 
-        // Create CashierReceiptD entries if cashierReceiptDArray exists
         if (cashierReceiptDArray && cashierReceiptDArray.length > 0) {
             await Promise.all(cashierReceiptDArray.map(async (cashierReceiptDData) => {
                 const {

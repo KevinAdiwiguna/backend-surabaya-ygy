@@ -99,7 +99,6 @@ const CashierReceiptH = db.define(
         CreatedBy: {
             type: DataTypes.STRING,
             allowNull: false,
-
         },
 
         ChangedBy: {
