@@ -25,9 +25,7 @@ const CashierReceiptG = db.define(
         GiroNo: {
             type: DataTypes.STRING,
             allowNull: false,
-            validate: {
-                notEmpty: true,
-            },
+            defaultValue: "",
             primaryKey: true,
         },
         CustomerCode: {
