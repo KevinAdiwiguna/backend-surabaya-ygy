@@ -195,7 +195,7 @@ export const updateCustomerPayment = async (req, res) => {
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detail) => {
-          const { ExchangeRate, Payment, PaymentLocal, Information } = detail;
+          const { ExchangeRate, Payment, PaymentLocal, Information,DocNo } = detail;
     
           await CustomerPaymentD.update(
             {
@@ -206,7 +206,7 @@ export const updateCustomerPayment = async (req, res) => {
             },
             {
               where: {
-                ARDocNo: exisingHeader.ARDocNo
+                ARDocNo: DocNo
               }
             }
           );
