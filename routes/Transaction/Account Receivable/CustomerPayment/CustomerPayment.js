@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/customerpaymentd/:id', getCustomerPaymentDetail);
 router.get('/allcustomerpaymenth', getAllCustomerPayment);
 router.post('/customerpayment', createCustomerPayment);
-router.patch('/customerpayment/:id', getCustomerPaymentDetailByDocNo);
+router.get('/customerpayment/:id', getCustomerPaymentDetailByDocNo);
 
 
 export default router;
