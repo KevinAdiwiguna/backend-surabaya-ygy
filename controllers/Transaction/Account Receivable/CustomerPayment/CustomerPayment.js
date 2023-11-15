@@ -170,7 +170,7 @@ export const getCustomerPaymentDetailByDocNo = async (req, res) => {
 }
 
 export const updateCustomerPayment = async (req, res) => {
-  const { information, details } = req.body()
+  const { information, details } = req.body
   try {
     const exisingHeader = await CustomerPaymentH.findOne({
       where: {
