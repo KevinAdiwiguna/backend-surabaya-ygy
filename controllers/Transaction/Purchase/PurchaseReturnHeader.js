@@ -29,7 +29,8 @@ export const getpurchaseReturnByCode = async (req, res) => {
 }
 
 export const updatePurchaseReturnH = async (req, res) => {
-    const { docNo, series, docDate, SODocNo, GIDocNo, supplierCode, supplierTaxTo , supplierDocNo, taxNo, taxDate, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, discPercent, totalGross, totalDisc, taxValue, taxValueInTaxCur, totalNetto, totalCost, information, status, printCounter, printedBy, printedDate, createdBy, changedBy } = req.body
+    try {
+    const { docNo, details, series, docDate, SODocNo, GIDocNo, supplierCode, supplierTaxTo , supplierDocNo, taxNo, taxDate, currency, exchangeRate, taxStatus, taxPercent, taxPrefix, discPercent, totalGross, totalDisc, taxValue, taxValueInTaxCur, totalNetto, totalCost, information, status, printCounter, printedBy, printedDate, createdBy, changedBy } = req.body
 
     const updPurchaseReturnH = await purchaseReturnH.findOne({
         where: {
@@ -37,8 +38,50 @@ export const updatePurchaseReturnH = async (req, res) => {
         }
     })
     if (!updPurchaseReturnH) return res.status(400).json({ msg: "data tidak ditemukan" })
+     if(updPurchaseReturnH.Status == 'PRINTED') return res.status(400).json({msg: 'cannot update when status is printed'})
 
-    try {
+     if (details && Array.isArray(details)) {
+        await Promise.all(
+            details.map(async (detail) => {
+                const {
+                    materialCode, 
+                    info, 
+                    location, 
+                    batchNo, 
+                    unit, 
+                    qty, 
+                    price, 
+                    gross, 
+                    discPercent, 
+                    discPercent2, 
+                    discPercent3, 
+                    discValue, 
+                    discNominal, 
+                    netto, 
+                    cost
+                } = detail;
+
+                await purchaseReturnDetails.create({
+                    materialCode: materialCode, 
+                    info: info, 
+                    location: location, 
+                    batchNo: batchNo, 
+                    unit: unit, 
+                    qty: qty, 
+                    price: price, 
+                    gross: gross, 
+                    discPercent: discPercent, 
+                    discPercent2: discPercent2, 
+                    discPercent3: discPercent3, 
+                    discValue: discValue, 
+                    discNominal: discNominal, 
+                    netto: netto, 
+                    cost: cost
+                });
+            })
+        );
+    }
+
         await purchaseReturnH.update({
 
             DocNo: docNo || updPurchaseReturnH.DocNo,
