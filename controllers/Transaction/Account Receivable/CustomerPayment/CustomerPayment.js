@@ -171,7 +171,6 @@ export const getCustomerPaymentDetailByDocNo = async (req, res) => {
 
 export const updateCustomerPayment = async (req, res) => {
   const { information, details } = req.body
-
   const t = await db.transaction();
 
   try {
@@ -207,7 +206,7 @@ export const updateCustomerPayment = async (req, res) => {
             },
             {
               where: {
-                DocNo: req.params.id
+                ARDocNo: req.params.id
               }
             }
           );
