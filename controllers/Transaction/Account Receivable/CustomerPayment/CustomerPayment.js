@@ -190,23 +190,27 @@ export const updateCustomerPayment = async (req, res) => {
       }
     })
 
-
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detail) => {
           const { ExchangeRate, Payment, PaymentLocal, Information } = detail;
-
-          await CustomerPaymentD.create({
-            ExchangeRate: ExchangeRate,
-            Payment: Payment,
-            PaymentLocal: PaymentLocal,
-            Information: Information
-          });
+    
+          await CustomerPaymentD.update(
+            {
+              ExchangeRate: ExchangeRate,
+              Payment: Payment,
+              PaymentLocal: PaymentLocal,
+              Information: Information
+            },
+            {
+              where: {
+                DocNo: req.params.id
+              }
+            }
+          );
         })
       );
     }
-
-
 
     return res.status(201).json({ msg: "data updated" })
   } catch (error) {
