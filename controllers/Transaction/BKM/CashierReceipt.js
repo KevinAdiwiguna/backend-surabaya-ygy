@@ -123,7 +123,6 @@ export const createCashierReceipt = async (req, res) => {
                     Information: information,
                     Status: status,
                     ChangedBy: changedBy,
-                    ChangedDate: new Date()
                 });
             }));
         }

@@ -132,7 +132,7 @@ const CashierReceiptG = db.define(
                 notEmpty: true,
             },
         },
-        changedDate: {
+        ChangedDate: {
             type: DataTypes.DATE,
             defaultValue: new Date()
         }
@@ -140,6 +140,7 @@ const CashierReceiptG = db.define(
     {
         freezeTableName: true,
         createdAt: false,
+        updatedAt: false
     }
 );
 
