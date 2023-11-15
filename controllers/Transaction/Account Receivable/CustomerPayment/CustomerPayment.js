@@ -156,5 +156,18 @@ export const getCustomerPaymentDetail = async (req, res) => {
   }
 };
 
+export const getCustomerPaymentDetailByDocNo = async (req, res) => {
+  try {
+    const response = await CustomerPaymentD.findAll({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+    return res.status(200).json(response)
+  } catch (error) {
+    return res.status(500).json({msg: error.message})
+  }
+
+}
 
 
