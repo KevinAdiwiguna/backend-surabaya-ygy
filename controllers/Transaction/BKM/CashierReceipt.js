@@ -1,5 +1,5 @@
 import CashierReceiptH from '../../../models/Transaction/BKM/CashierReceiptH.js';
-import CashierReceiptG from '..q/../../models/Transaction/BKM/CashierReceiptG.js';
+import CashierReceiptG from '../../../models/Transaction/BKM/CashierReceiptG.js';
 import CashierReceiptD from '../../../models/Transaction/BKM/CashierReceiptD.js';
 import { Op, Sequelize } from 'sequelize';
 
