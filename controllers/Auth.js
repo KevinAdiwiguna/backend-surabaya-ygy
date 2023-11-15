@@ -13,11 +13,10 @@ export const Login = async (req, res) => {
         // const match = await bcrypt.compare(user.Password, req.body.password);
         // if (!match) return res.status(400).json({ msg: "password salah" })
 
-        if(user.password !== req.body.password) return res.status(400).json({msg: "password salah"})
 
-        // if (user.Password !== req.body.password) {
-        //     return res.status(400).json({ msg: "Password salah" });
-        // }
+        if (user.Password !== req.body.password) {
+            return res.status(400).json({ msg: "Password salah" });
+        }
         // if (!match) return res.status(400).json({ msg: "Password salah" });
         req.session.userId = user.User;
         const myUser = user.User;
