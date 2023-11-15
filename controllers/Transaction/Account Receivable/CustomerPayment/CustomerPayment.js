@@ -1,9 +1,10 @@
 import CustomerPaymentD from "../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentD.js";
 import CustomerPaymentH from "../../../../models/Transaction/Account Receivable/CustomerPayment/CustomerPaymentH.js";
 import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListDetail.js";
+import ARRequestListh from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
 import SalesInvoiceh from '../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js'
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
-import Sequelize, { Op } from 'sequelize'
+import Sequelize, { Op, where } from 'sequelize'
 import db from '../../../../config/Database.js'
 
 export const getAllCustomerPayment = async (req, res) => {
@@ -29,7 +30,15 @@ export const createCustomerPayment = async (req, res) => {
 
     if (data) return res.status(400).json({ msg: "document sudah di digunakan" })
 
-    const existingHeader = await CustomerPaymentH.findOne({
+    await ARRequestListh.update({
+      Status: "USED"
+    }, {
+      where: {
+      DocNo: data.ARReqListNo
+      }
+  })
+
+  const existingHeader = await CustomerPaymentH.findOne({
       attributes: ["DocNo"],
       where: {
         DocNo: {
@@ -191,6 +200,8 @@ export const updateCustomerPayment = async (req, res) => {
         DocNo: req.params.id
       }
     })
+
+ 
 
     if (details && Array.isArray(details)) {
       await Promise.all(
