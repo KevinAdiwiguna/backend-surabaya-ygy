@@ -4,7 +4,7 @@ import ARRequestListd from "../../../../models/Transaction/Account Receivable/AR
 import ARRequestListh from '../../../../models/Transaction/Account Receivable/AR_RequestList/ARRequestListHeader.js'
 import SalesInvoiceh from '../../../../models/Transaction/Sales/SalesInvoice/SalesInvoiceH.js'
 import ARBook from "../../../../models/Report/AccountReceivable/ARBook.js";
-import Sequelize, { Op, where } from 'sequelize'
+import Sequelize, { Op } from 'sequelize'
 import db from '../../../../config/Database.js'
 
 export const getAllCustomerPayment = async (req, res) => {

@@ -198,9 +198,24 @@ export const getRequestListPrinted = async (req, res) => {
     res.status(200).json(response)
   } catch (error) {
     res.status(500).json({ msg: error.message })
-
   }
 }
+export const getRequestPrinterdAndUsed = async (req, res) => {
+  try {
+    const response = await ARRequestListh.findAll({
+      where: {
+        [Op.or]: [
+          { status: 'PRINTED' },
+          { status: 'USED' }
+        ]
+      }
+    })
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
+}
+
 export const getRequestListUsed = async (req, res) => {
   try {
     const response = await ARRequestListh.findAll({
