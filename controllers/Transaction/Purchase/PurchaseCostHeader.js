@@ -31,7 +31,8 @@ export const getPurchaseCostByCode = async (req, res) => {
 }
 
 export const updatePurchaseCostH = async (req, res) => {
-    const { docNo, series, docDate, transactionType, supplierCode, supplierTaxTo, supplierInvNo, TOP, taxStatus, taxPercent, taxPrefix, taxNo, currency, exchangeRate, totalCost, taxValue, taxValueInTaxCur, totalNetto, information, invoiceDocNo, status, createdBy, changedBy } = req.body
+    try {
+    const { docNo, details, series, docDate, transactionType, supplierCode, supplierTaxTo, supplierInvNo, TOP, taxStatus, taxPercent, taxPrefix, taxNo, currency, exchangeRate, totalCost, taxValue, taxValueInTaxCur, totalNetto, information, invoiceDocNo, status, createdBy, changedBy } = req.body
 
     const updPurchaseCostH = await purchaseCostHeader.findOne({
         where: {
@@ -40,7 +41,23 @@ export const updatePurchaseCostH = async (req, res) => {
     })
     if (!updPurchaseCostH) return res.status(400).json({ msg: "data tidak ditemukan" })
 
-    try {
+    if (details && Array.isArray(details)) {
+        await Promise.all(
+            details.map(async (detail) => {
+                const {
+                    description,
+                    cost
+                } = detail;
+
+                await purchaseCostDetail.create({
+                    Description: description,
+                    Cost: cost
+                });
+            })
+        );
+    }
+
+    
         await purchaseCostHeader.update({
 
             DocNo: docNo || updPurchaseCostH.DocNo,

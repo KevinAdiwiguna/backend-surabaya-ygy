@@ -130,8 +130,10 @@ export const getgoodReceiptByCode = async (req, res) => {
 };
 
 export const updateGoodReceiptH = async (req, res) => {
+    try {
     const {
         docNo,
+        details,
         series,
         docDate,
         supplierCode,
@@ -155,7 +157,31 @@ export const updateGoodReceiptH = async (req, res) => {
     });
     if (!updGoodReceiptH)
         return res.status(400).json({ msg: "data tidak ditemukan" });
-    try {
+
+        if (details && Array.isArray(details)) {
+            await Promise.all(
+                details.map(async (detail) => {
+                    const{
+                        number,
+                        materialCode,
+                        info,
+                        location,
+                        unit,
+                        qty
+                    } = detail;
+
+                    await goodsReceiptDetails.create({
+                        Number: number,
+                        MaterialCode: materialCode,
+                        Info: info,
+                        Location: location,
+                        Unit: unit,
+                        Qty: qty 
+                    });
+                })
+            );
+        }
+
         await goodsReceiptH.update(
             {
                 DocNo: docNo || updGoodReceiptH.DocNo,
