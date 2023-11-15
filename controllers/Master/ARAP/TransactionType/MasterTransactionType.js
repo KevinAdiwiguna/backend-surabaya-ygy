@@ -1,4 +1,3 @@
-import { where } from "sequelize";
 import transactionType from "../../../../models/Master/ARAP/TransactionType/MasterTransactionType.js";
 
 export const getAllTransactionType = async (req, res) => {

@@ -21,7 +21,6 @@ export const getCashierReceiptUpdate = async (req, res) => {
     })
     res.status(200).json({ h: responseh, g: responseg, d: rseponsed })
 }
-
 export const createCashierReceipt = async (req, res) => {
     const {
         series,
@@ -157,7 +156,6 @@ export const createCashierReceipt = async (req, res) => {
         return res.status(500).json({ msg: error.message });
     }
 }
-
 export const printCashierReceipt = async (req, res) => {
     try {
         const response = await CashierReceiptH.findOne({
@@ -178,12 +176,10 @@ export const printCashierReceipt = async (req, res) => {
         return res.status(500).json({ msg: "Terjadi kesalahan server" });
     }
 };
-
 export const updateCashierReceipt = async (req, res) => {
-    const { arReqListNo, totalDebet, totalCredit, totalGiro, information, status, changedBy, cashierG, cashierD } = req.body
+    const { totalDebet, totalCredit, totalGiro, information, status, changedBy, cashierG, cashierD } = req.body
     try {
         await CashierReceiptH.update({
-            ARReqListNo: arReqListNo,
             TotalDebet: totalDebet,
             TotalCredit: totalCredit,
             TotalGiro: totalGiro,
