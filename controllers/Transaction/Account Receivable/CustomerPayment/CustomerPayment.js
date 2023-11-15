@@ -165,12 +165,12 @@ export const getCustomerPaymentDetailByDocNo = async (req, res) => {
     })
     return res.status(200).json(response)
   } catch (error) {
-    return res.status(500).json({msg: error.message})
+    return res.status(500).json({ msg: error.message })
   }
 }
 
 export const updateCustomerPayment = async (req, res) => {
-  const {information,details} = req.body()
+  const { information, details } = req.body()
   try {
     const exisingHeader = await CustomerPaymentH.findOne({
       where: {
@@ -178,12 +178,12 @@ export const updateCustomerPayment = async (req, res) => {
       }
     })
 
-    if(!exisingHeader) return res.status(404).json({msg: "data tidak ada"})
-    if(exisingHeader.Status == 'PRINTED') return res.status(400).json({msg: "data printed tidak bisa di update"})
+    if (!exisingHeader) return res.status(404).json({ msg: "data tidak ada" })
+    if (exisingHeader.Status == 'PRINTED') return res.status(400).json({ msg: "data printed tidak bisa di update" })
 
 
     await CustomerPaymentH.update({
-      Information :information
+      Information: information
     }, {
       where: {
         DocNo: req.params.id
@@ -193,23 +193,24 @@ export const updateCustomerPayment = async (req, res) => {
 
     if (details && Array.isArray(details)) {
       await Promise.all(
-          details.map(async (detail) => {
-              const { Information,ExchangeRate,Payment } = detail;
+        details.map(async (detail) => {
+          const { ExchangeRate, Payment, PaymentLocal, Information } = detail;
 
-              await CustomerPaymentD.create({
-                Information: Information,
-                ExchangeRate: ExchangeRate,
-                Payment: Payment
-              });
-          })
+          await CustomerPaymentD.create({
+            ExchangeRate: ExchangeRate,
+            Payment: Payment,
+            PaymentLocal: PaymentLocal,
+            Information: Information
+          });
+        })
       );
-  }
+    }
 
 
 
-    return res.status(201).json({msg: "data updated"})  
+    return res.status(201).json({ msg: "data updated" })
   } catch (error) {
-    return res.status(200).json({msg: error.message})
+    return res.status(200).json({ msg: error.message })
   }
 }
 
