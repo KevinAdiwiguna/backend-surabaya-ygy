@@ -206,7 +206,7 @@ export const updateCustomerPayment = async (req, res) => {
             },
             {
               where: {
-                ARDocNo: req.params.id
+                ARDocNo: exisingHeader.ARDocNo
               }
             }
           );
