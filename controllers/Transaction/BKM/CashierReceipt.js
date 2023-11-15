@@ -1,5 +1,5 @@
 import CashierReceiptH from '../../../models/Transaction/BKM/CashierReceiptH.js';
-import CashierReceiptG from '../../../models/Transaction/BKM/CashierReceiptG.js';
+import CashierReceiptG from '..q/../../models/Transaction/BKM/CashierReceiptG.js';
 import CashierReceiptD from '../../../models/Transaction/BKM/CashierReceiptD.js';
 import { Op, Sequelize } from 'sequelize';
 
@@ -158,8 +158,6 @@ export const createCashierReceipt = async (req, res) => {
     }
 }
 
-
-
 export const printCashierReceipt = async (req, res) => {
     try {
         const response = await CashierReceiptH.findOne({
@@ -180,7 +178,6 @@ export const printCashierReceipt = async (req, res) => {
         return res.status(500).json({ msg: "Terjadi kesalahan server" });
     }
 };
-
 
 export const updateCashierReceipt = async (req, res) => {
     const { arReqListNo, totalDebet, totalCredit, totalGiro, information, status, changedBy, cashierG, cashierD } = req.body
@@ -219,4 +216,11 @@ export const updateCashierReceipt = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
-
+export const getAllCashierReceiptH = async (req, res) => {
+    try {
+        const response = await CashierReceiptH.findAll() 
+        return res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({msg: error.message})
+    }
+}
