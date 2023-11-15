@@ -10,8 +10,10 @@ export const Login = async (req, res) => {
     });
     if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
     try {
-        const match = await bcrypt.compare(user.Password, req.body.password);
-        if (!match) return res.status(400).json({ msg: "password salah" })
+        // const match = await bcrypt.compare(user.Password, req.body.password);
+        // if (!match) return res.status(400).json({ msg: "password salah" })
+
+        if(user.password !== req.body.password) return res.status(400).json({msg: "password salah"})
 
         // if (user.Password !== req.body.password) {
         //     return res.status(400).json({ msg: "Password salah" });
