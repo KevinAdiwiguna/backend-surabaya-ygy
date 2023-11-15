@@ -167,7 +167,49 @@ export const getCustomerPaymentDetailByDocNo = async (req, res) => {
   } catch (error) {
     return res.status(500).json({msg: error.message})
   }
-
 }
 
+export const updateCustomerPayment = async (req, res) => {
+  const {information,details} = req.body()
+  try {
+    const exisingHeader = await CustomerPaymentH.findOne({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+
+    if(!exisingHeader) return res.status(404).json({msg: "data tidak ada"})
+    if(exisingHeader.Status == 'PRINTED') return res.status(400).json({msg: "data printed tidak bisa di update"})
+
+
+    await CustomerPaymentH.update({
+      Information :information
+    }, {
+      where: {
+        DocNo: req.params.id
+      }
+    })
+
+
+    if (details && Array.isArray(details)) {
+      await Promise.all(
+          details.map(async (detail) => {
+              const { Information,ExchangeRate,Payment } = detail;
+
+              await CustomerPaymentD.create({
+                Information: Information,
+                ExchangeRate: ExchangeRate,
+                Payment: Payment
+              });
+          })
+      );
+  }
+
+
+
+    return res.status(201).json({msg: "data updated"})  
+  } catch (error) {
+    return res.status(200).json({msg: error.message})
+  }
+}
 
