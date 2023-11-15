@@ -108,6 +108,7 @@ export const updatePurchaseRequest = async (req, res) => {
 
     if (details && Array.isArray(details)) {
             await Promise.all(
+
                 details.map(async (detail) => {
                     const {
                         materialCode,
@@ -115,15 +116,12 @@ export const updatePurchaseRequest = async (req, res) => {
                         unit,
                         qty,
                         price,
-                        gross,
                         discPercent,
                         discPercent2,
                         discPercent3,
                         discValue,
-                        discNominal,
-                        netto,
                         qtyReceived,
-                     } = detail;
+                    } = detail;
 
             await purchaseOrderDetails.create({
                     materialCode: materialCode,
@@ -131,13 +129,10 @@ export const updatePurchaseRequest = async (req, res) => {
                     unit: unit,
                     qty: qty,
                     price: price,
-                    gross: gross,
                     discPercent: discPercent,
                     discPercent2: discPercent2,
                     discPercent3: discPercent3,
                     discValue: discValue,
-                    discNominal: discNominal,
-                    netto: netto,
                     qtyReceived: qtyReceived
                 });
             })
@@ -146,8 +141,6 @@ export const updatePurchaseRequest = async (req, res) => {
 
 
         await purchaseOrderHeader.update({
-            DocNo: docNo || updPurchaseOrderH.DocNo,
-            Series: series || updPurchaseOrderH.Series,
             TransactionType: transactionType || updPurchaseOrderH.TransactionType,
             DocDate: docDate || updPurchaseOrderH.DocDate,
             SupplierCode: supplierCode || updPurchaseOrderH.SupplierCode,

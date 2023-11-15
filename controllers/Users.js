@@ -61,14 +61,14 @@ export const createAdmin = async (req, res) => {
     })
     if (userCheck) return res.status(400).json({ msg: "User sudah ada" })
 
-    const saltRounds = 10;
-    const hashPassword = await bcrypt.hash(password, saltRounds);
+    // const saltRounds = 10;
+    // const hashPassword = await bcrypt.hash(password, saltRounds);
 
     try {
         await User.create({
             User: user,
             Name: name,
-            Password: hashPassword,
+            Password: password,
             Role: role
         });
         res.status(201).json({ msg: "Register Berhasil" });
