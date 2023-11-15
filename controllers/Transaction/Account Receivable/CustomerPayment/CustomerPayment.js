@@ -171,12 +171,15 @@ export const getCustomerPaymentDetailByDocNo = async (req, res) => {
 
 export const updateCustomerPayment = async (req, res) => {
   const { information, details } = req.body
+
+  const t = await db.transaction();
+
   try {
     const exisingHeader = await CustomerPaymentH.findOne({
       where: {
         DocNo: req.params.id
       }
-    })
+    },  { transaction: t })
 
     if (!exisingHeader) return res.status(404).json({ msg: "data tidak ada" })
     if (exisingHeader.Status == 'PRINTED') return res.status(400).json({ msg: "data printed tidak bisa di update" })
@@ -208,7 +211,7 @@ export const updateCustomerPayment = async (req, res) => {
               }
             }
           );
-        })
+        },  { transaction: t })
       );
     }
 
