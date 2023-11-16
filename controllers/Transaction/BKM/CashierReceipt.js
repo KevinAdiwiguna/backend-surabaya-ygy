@@ -179,7 +179,7 @@ export const printCashierReceipt = async (req, res) => {
 export const updateCashierReceipt = async (req, res) => {
     const checkIsPrinted = await CashierReceiptH.findOne({
         where: {
-            DocNo: req.parmas.id
+            DocNo: req.params.id
         }
     })
 
