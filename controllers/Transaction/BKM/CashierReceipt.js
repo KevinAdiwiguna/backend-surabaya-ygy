@@ -177,15 +177,19 @@ export const printCashierReceipt = async (req, res) => {
     }
 };
 export const updateCashierReceipt = async (req, res) => {
-    const { totalDebet, totalCredit, totalGiro, information, status, changedBy, cashierG, cashierD } = req.body
+    const {
+        TotalDebet,
+        TotalGiro,
+        Information,
+        Status,
+        ChangedBy, cashierG, cashierD } = req.body
     try {
         await CashierReceiptH.update({
-            TotalDebet: totalDebet,
-            TotalCredit: totalCredit,
-            TotalGiro: totalGiro,
-            Information: information,
-            Status: status,
-            ChangedBy: changedBy
+            TotalDebet: TotalDebet,
+            TotalGiro: TotalGiro,
+            Information: Information,
+            Status: Status,
+            ChangedBy: ChangedBy
         }, {
             where: {
                 DocNo: req.params.id
@@ -214,9 +218,9 @@ export const updateCashierReceipt = async (req, res) => {
 }
 export const getAllCashierReceiptH = async (req, res) => {
     try {
-        const response = await CashierReceiptH.findAll() 
+        const response = await CashierReceiptH.findAll()
         return res.status(200).json(response)
     } catch (error) {
-        res.status(500).json({msg: error.message})
+        res.status(500).json({ msg: error.message })
     }
 }
