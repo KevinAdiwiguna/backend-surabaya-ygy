@@ -49,7 +49,7 @@ import SalesInvoice from "./routes/Transaction/Sales/SalesInvoice/SalesInvoice.j
 import GoodReceiptHeader from "./routes/Transaction/Purchase/GoodReceiptHeader.js";
 import GoodReceiptDetail from "./routes/Transaction/Purchase/GoodReceiptDetail.js";
 import GenerateTaxNo from "./routes/Master/MasterGenerateTaxNoRoutes.js";
-import MasterMachine from "./routes/Master/Production/MasterMachIneRoutes.js";
+import MasterMachine from "./routes/Master/Production/MasterMachineRoutes.js";
 import WOrderTemplateD from "./routes/Master/Production/MasterWOrderTemplateDRoutes.js";
 import WOrderTemplateH from "./routes/Master/Production/MasterWOrderTemplateH.js";
 import TransactionType from "./routes/Master/ARAP/TransactionType/TransactionType.js";

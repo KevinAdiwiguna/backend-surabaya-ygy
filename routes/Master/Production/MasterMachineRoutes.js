@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-import { getAllMachIne, createMachIne, deleteMachIne, updateMachIne, getMachIneByCode } from "../../../controllers/Master/Production/MasterMachIne.js";
+import { getAllMachIne, createMachIne, deleteMachIne, updateMachIne, getMachIneByCode } from "../../../controllers/Master/Production/MasterMachine.js";
 
 import { verifyUser } from "../../../middleware/AuthUser.js";
 
