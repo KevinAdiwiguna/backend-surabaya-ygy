@@ -177,6 +177,15 @@ export const printCashierReceipt = async (req, res) => {
     }
 };
 export const updateCashierReceipt = async (req, res) => {
+    const checkIsPrinted = await CashierReceiptH.findOne({
+        where: {
+            DocNo: req.parmas.id
+        }
+    })
+
+    if(checkIsPrinted.stauts === 'PRINTED') return res.status(400).json({msg: "tidak bisa update printed"})
+
+    
     const {
         TotalDebet,
         TotalGiro,
