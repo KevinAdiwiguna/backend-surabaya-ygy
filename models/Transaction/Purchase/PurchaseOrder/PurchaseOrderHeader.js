@@ -170,7 +170,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
 
     ApprovedDate: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
 
     PrintCounter: {
