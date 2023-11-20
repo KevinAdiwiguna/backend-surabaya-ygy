@@ -187,7 +187,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
     PrintedDate: {
         type: DataTypes.DATE,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: null
     },
 
     IsSalesReturn: {
