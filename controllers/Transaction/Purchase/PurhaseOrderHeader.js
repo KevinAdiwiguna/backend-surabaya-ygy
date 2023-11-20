@@ -269,7 +269,7 @@ export const createPurchaseRequestH = async (req, res) => {
             ApprovedBy: approvedBy,
             // ApprovedDate: approvedDate,
             PrintCounter: printCounter,
-            PrintedBy: printedBy,
+            // PrintedBy: printedBy,
             // PrintedDate: printedDate,
             IsSalesReturn: isSalesReturn,
             Information: information,

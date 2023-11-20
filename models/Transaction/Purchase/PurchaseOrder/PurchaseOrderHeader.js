@@ -180,12 +180,14 @@ const purchaseOrderH = db.define('purchaseorderh', {
 
     PrintedBy: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: ''
     },
 
     PrintedDate: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: ''
     },
 
     IsSalesReturn: {
