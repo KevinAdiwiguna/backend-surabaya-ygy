@@ -214,9 +214,6 @@ const purchaseOrderH = db.define('purchaseorderh', {
 
 }, {
     freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
 });
 
 export default purchaseOrderH;

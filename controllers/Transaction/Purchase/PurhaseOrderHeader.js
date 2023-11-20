@@ -96,17 +96,17 @@ export const printInvoice = async (req, res) => {
 
 export const updatePurchaseRequest = async (req, res) => {
     try {
-    const { docNo,details, series, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
+        const { docNo, details, series, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
 
-    const updPurchaseOrderH = await purchaseOrderHeader.findOne({
-        where: {
-            DocNo: req.params.id
-        }
-    })
-    if (!updPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
-    if(updPurchaseOrderH.Status == "PRINTED") return res.json(400).json({msg: "cannot update in status printed"})
+        const updPurchaseOrderH = await purchaseOrderHeader.findOne({
+            where: {
+                DocNo: req.params.id
+            }
+        })
+        if (!updPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
+        if (updPurchaseOrderH.Status == "PRINTED") return res.json(400).json({ msg: "cannot update in status printed" })
 
-    if (details && Array.isArray(details)) {
+        if (details && Array.isArray(details)) {
             await Promise.all(
 
                 details.map(async (detail) => {
@@ -123,21 +123,21 @@ export const updatePurchaseRequest = async (req, res) => {
                         qtyReceived,
                     } = detail;
 
-            await purchaseOrderDetails.create({
-                    materialCode: materialCode,
-                    info: info,
-                    unit: unit,
-                    qty: qty,
-                    price: price,
-                    discPercent: discPercent,
-                    discPercent2: discPercent2,
-                    discPercent3: discPercent3,
-                    discValue: discValue,
-                    qtyReceived: qtyReceived
-                });
-            })
-        );
-    }
+                    await purchaseOrderDetails.create({
+                        materialCode: materialCode,
+                        info: info,
+                        unit: unit,
+                        qty: qty,
+                        price: price,
+                        discPercent: discPercent,
+                        discPercent2: discPercent2,
+                        discPercent3: discPercent3,
+                        discValue: discValue,
+                        qtyReceived: qtyReceived
+                    });
+                })
+            );
+        }
 
 
         await purchaseOrderHeader.update({
@@ -359,7 +359,7 @@ export const createPurchaseRequestH = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: 'Failed to create Sales Order Header', error: error.message });
+        res.status(500).json({ msg: 'Failed to create Purchase Order Header', error: error.message });
     }
 };
 
