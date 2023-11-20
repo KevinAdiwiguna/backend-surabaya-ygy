@@ -34,7 +34,7 @@ export const createCustomerPayment = async (req, res) => {
       Status: "USED"
     }, {
       where: {
-      DocNo: data.ARReqListNo
+      DocNo: arRequestListNo
       }
   })
 

@@ -54,7 +54,7 @@ export const deleteWOrderTemplateh = async (req, res) => {
     }
 }
 
-export const getWOrderTemplatehByCode = async (req, res) => {
+export const 	getWOrderTemplatehByCode = async (req, res) => {
 	try{
 		const response = await WOrderTemplateH.findOne({
 			where: {

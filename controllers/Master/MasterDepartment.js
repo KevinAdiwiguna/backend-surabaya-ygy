@@ -5,7 +5,7 @@ export const getAllDepartment = async (req, res) => {
         const response = await masterDepartment.findAll();
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ msg: error.message});
+        res.status(500).json({ msg: error.message });
     }
 }
 
@@ -26,7 +26,7 @@ export const createDepartment = async (req, res) => {
         });
         res.status(201).json({ msg: "create Berhasil" });
     } catch (error) {
-        res.status(400).json({ msg: error.message});
+        res.status(400).json({ msg: error.message });
     }
 }
 
@@ -73,10 +73,10 @@ export const updateDepartment = async (req, res) => {
     });
     if (!codeCheck) return res.status(400).json({ msg: "data tidak ditemukan" });
     try {
-        await masterDepartment.update({ 
+        await masterDepartment.update({
             Name: name,
             CreatedBy: createdBy,
-            ChangedBy: changedBy 
+            ChangedBy: changedBy
         }, {
             where: {
                 Code: codeCheck.Code
