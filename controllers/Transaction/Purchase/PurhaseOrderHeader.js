@@ -267,7 +267,7 @@ export const createPurchaseRequestH = async (req, res) => {
             SendTo: sendTo,
             IsApproved: isApproved,
             ApprovedBy: approvedBy,
-            ApprovedDate: approvedDate,
+            // ApprovedDate: approvedDate,
             PrintCounter: printCounter,
             PrintedBy: printedBy,
             PrintedDate: printedDate,
