@@ -2,36 +2,36 @@ import masterBomh from "../../../../models/Master/Production/BOM/MasterBomhModel
 // import { Op } from "sequelize";
 
 export const getAllBomh = async (req, res) => {
-    try {
-        const response = await masterBomh.findAll();
-        res.status(200).json(response);
-    } catch (error) {
-        res.status(500).json({ msg: error.message });
-    }
+	try {
+		const response = await masterBomh.findAll();
+		res.status(200).json(response);
+	} catch (error) {
+		res.status(500).json({ msg: error.message });
+	}
 }
 
 export const createBomh = async (req, res) => {
-    const { formula, materialCode, unit, qty, isAverageCOGM, createdBy, changedBy } = req.body;
-    const user = await masterBomh.findOne({
-        where: {
-            Formula: formula
-        }
-    });
-    if (user) return res.status(400).json({ msg: "data sudah ada" });
-    try {
-        await masterBomh.create({
-            Formula: formula, 
-			MaterialCode: materialCode, 
-			Unit: unit, 
-			Qty: qty, 
-			IsAverageCOGM: isAverageCOGM, 
-			CreatedBy: createdBy, 
+	const { formula, materialCode, unit, qty, isAverageCOGM, createdBy, changedBy } = req.body;
+	const user = await masterBomh.findOne({
+		where: {
+			Formula: formula
+		}
+	});
+	if (user) return res.status(400).json({ msg: "data sudah ada" });
+	try {
+		await masterBomh.create({
+			Formula: formula,
+			MaterialCode: materialCode,
+			Unit: unit,
+			Qty: qty,
+			IsAverageCOGM: isAverageCOGM,
+			CreatedBy: createdBy,
 			ChangedBy: changedBy
-        });
-        res.status(201).json({ msg: "create Berhasil" });
-    } catch (error) {
-        res.status(400).json({ msg: error.message});
-    }
+		});
+		res.status(201).json({ msg: "create Berhasil" });
+	} catch (error) {
+		res.status(400).json({ msg: error.message });
+	}
 }
 
 export const deleteBomh = async (req, res) => {
@@ -40,7 +40,7 @@ export const deleteBomh = async (req, res) => {
 			Formula: req.params.id
 		}
 	});
-	if (!del) return res.status(400).json({ msg: 'data Tidak ditemukan'});
+	if (!del) return res.status(400).json({ msg: 'data Tidak ditemukan' });
 	try {
 		await masterBomh.destroy({
 			where: {
@@ -61,20 +61,20 @@ export const getBomhByCode = async (req, res) => {
 			}
 		});
 		res.status(200).json(response);
-	} catch (error){
-		res.status(400).json({ msg: error.message});
+	} catch (error) {
+		res.status(400).json({ msg: error.message });
 	}
 }
 
 export const updateBomh = async (req, res) => {
-	const { materialCode, unit, qty, isAverageCOGM, createdBy, changedBy} = req.body;
+	const { materialCode, unit, qty, isAverageCOGM, createdBy, changedBy } = req.body;
 	const update = await masterBomh.findOne({
 		where: {
 			Formula: req.params.id
 		}
 	});
-	if (!update) return res.status(400).json({ msg: 'data Tidak ditemukan'});
-	try{
+	if (!update) return res.status(400).json({ msg: 'data Tidak ditemukan' });
+	try {
 		await masterBomh.update({
 			MaterialCode: materialCode,
 			Unit: unit,
@@ -87,9 +87,9 @@ export const updateBomh = async (req, res) => {
 				Formula: update.Formula
 			}
 		});
-		res.status(200).json({ msg: 'data Updated'})
-	} catch (error){
-		res.status(400).json({ msg: error.message})
+		res.status(200).json({ msg: 'data Updated' })
+	} catch (error) {
+		res.status(400).json({ msg: error.message })
 	}
 }
 

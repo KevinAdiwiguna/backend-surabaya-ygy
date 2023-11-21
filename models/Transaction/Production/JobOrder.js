@@ -86,12 +86,12 @@ const jobOrder = db.define(
 
     IODocNo: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
 
     WODocNo: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
 
     ParentJODocNo: {
@@ -201,9 +201,6 @@ const jobOrder = db.define(
   },
   {
     freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false,
   }
 );
 

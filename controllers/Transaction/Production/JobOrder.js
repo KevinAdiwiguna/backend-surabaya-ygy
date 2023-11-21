@@ -12,6 +12,16 @@ export const getAllJobOrder = async (req, res) => {
     }
 }
 
+export const getJobOrderByDocNo = async (req, res) => {
+    const response = await JobOrder.findOne({
+        where: {
+            DocNo: req.params.id
+        }
+    })
+    return res.status(200).json(response)
+}
+
+
 // DONE
 export const getJobOrderByCode = async (req, res) => {
     const getJobOrder = await JobOrder.findOne({
@@ -29,7 +39,7 @@ export const getJobOrderByCode = async (req, res) => {
 
 // DONE
 export const updateJobOrder = async (req, res) => {
-    const { docNo, series, docDate, plannedStartDate, plannedFinishDate, actualStartDate, actualStartTime, actualFinishDate, actualFinishTime, requiredDate, SODocNo, IODocNo, WODocNo, parentJODocNo, level, priority, location, department, excludeCostDistribution, formula, materialCode, unit, qtyTarget, qtyOutput, checkQtyOutput, totalCost, status, information, createdBy, changedBy } = req.body
+    const { plannedFinishDate, requiredDate, SODocNo, IODocNo, parentJODocNo, level, priority, location, department, excludeCostDistribution, formula, materialCode, unit, qtyTarget, qtyOutput, checkQtyOutput, totalCost, status, information, createdBy, changedBy } = req.body
 
     const updJobOrder = await JobOrder.findOne({
         where: {
@@ -40,20 +50,10 @@ export const updateJobOrder = async (req, res) => {
 
     try {
         await JobOrder.update({
-
-            DocNo: docNo || updJobOrder.DocNo,
-            Series: series || updJobOrder.Series,
-            DocDate: docDate || updJobOrder.DocDate,
-            PlannedStartDate: plannedStartDate || updJobOrder.PlannedStartDate,
             PlannedFinishDate: plannedFinishDate || updJobOrder.PlannedFinishDate,
-            ActualStartDate: actualStartDate || updJobOrder.ActualStartDate,
-            ActualStartTime: actualStartTime || updJobOrder.ActualStartTime,
-            ActualFinishDate: actualFinishDate || updJobOrder.ActualFinishDate,
-            ActualFinishTime: actualFinishTime || updJobOrder.ActualFinishTime,
             RequiredDate: requiredDate || updJobOrder.RequiredDate,
             SODocNo: SODocNo || updJobOrder.SODocNo,
             IODocNo: IODocNo || updJobOrder.IODocNo,
-            WODocNo: WODocNo || updJobOrder.WODocNo,
             ParentJODocNo: parentJODocNo || updJobOrder.ParentJODocNo,
             Level: level || updJobOrder.Level,
             Priority: priority || updJobOrder.Priority,
@@ -69,7 +69,6 @@ export const updateJobOrder = async (req, res) => {
             TotalCost: totalCost || updJobOrder.TotalCost,
             Information: information || updJobOrder.Information,
             Status: status || updJobOrder.Status,
-            CreatedBy: createdBy || updJobOrder.CreatedBy,
             ChangedBy: changedBy || updJobOrder.ChangedBy
 
 
