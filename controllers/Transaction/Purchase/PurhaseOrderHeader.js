@@ -8,8 +8,6 @@ import { Op } from 'sequelize'
 
 
 export const approvePurchaseOrder = async (req, res) => {
-
-
     try {
         const getMasterApproval = await masterApproval.findOne({
             where: {
@@ -17,7 +15,8 @@ export const approvePurchaseOrder = async (req, res) => {
             }
         })
         if (!getMasterApproval) return res.status(403).json({ msg: 'harap membuat approval dulu di master approval' })
-
+        if (getMasterApproval.MinValue < req.params.id3) return res.status(400).json({ msg: "value tidak kurang lebih dari MinValue" })
+        if (getMasterApproval.MaxValue > req.params.id4) return res.status(400).json({ msg: "value tidak boleh lebih dari MaxValue" })
 
         await purchaseOrderHeader.update(
             { Status: "APROVED" },
@@ -31,7 +30,6 @@ export const approvePurchaseOrder = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
-
 export const getAllpurchaseOrderHeader = async (req, res) => {
     try {
         const purchaseOrderH = await purchaseOrderHeader.findAll()
