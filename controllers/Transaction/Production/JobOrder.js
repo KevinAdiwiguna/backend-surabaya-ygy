@@ -39,7 +39,7 @@ export const getJobOrderByCode = async (req, res) => {
 
 // DONE
 export const updateJobOrder = async (req, res) => {
-    const { plannedFinishDate, requiredDate, SODocNo, IODocNo, parentJODocNo, level, priority, location, department, excludeCostDistribution, formula, materialCode, unit, qtyTarget, qtyOutput, checkQtyOutput, totalCost, status, information, createdBy, changedBy } = req.body
+    const { plannedFinishDate, requiredDate, SODocNo, IODocNo, parentJODocNo, level, priority, location, department, excludeCostDistribution, formula, materialCode, unit, qtyTarget, qtyOutput, checkQtyOutput, totalCost,  information, changedBy } = req.body
 
     const updJobOrder = await JobOrder.findOne({
         where: {
@@ -68,7 +68,6 @@ export const updateJobOrder = async (req, res) => {
             CheckQtyOutput: checkQtyOutput || updJobOrder.CheckQtyOutput,
             TotalCost: totalCost || updJobOrder.TotalCost,
             Information: information || updJobOrder.Information,
-            Status: status || updJobOrder.Status,
             ChangedBy: changedBy || updJobOrder.ChangedBy
 
 

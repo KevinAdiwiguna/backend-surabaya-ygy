@@ -1,18 +1,29 @@
 // import purchaseOrderHeader from '../../../../models/Transaction/Purchase/PurchaseOrderHeader.js'
 import purchaseOrderHeader from '../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderHeader.js'
 import purchaseOrderDetails from '../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderDetail.js'
+import masterApproval from '../../../models/Master/MasterApproval.js'
 
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
 
 
 export const approvePurchaseOrder = async (req, res) => {
+
+
     try {
+        const getMasterApproval = await masterApproval.findOne({
+            where: {
+                Series: req.params.id2
+            }
+        })
+        if (!getMasterApproval) return res.status(403).json({ msg: 'harap membuat approval dulu di master approval' })
+
+
         await purchaseOrderHeader.update(
             { Status: "APROVED" },
             {
                 where: {
-                    DocNo: req.params.id
+                    DocNo: req.params.id1
                 }
             })
         res.status(200).json({ msg: "APPROVED" })
