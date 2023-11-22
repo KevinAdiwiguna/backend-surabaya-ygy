@@ -40,7 +40,6 @@ export const getAllpurchaseOrderHeader = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
-
 export const getPurchaseRequestByCode = async (req, res) => {
     const getPurchaseOrderH = await purchaseOrderHeader.findOne({
         where: {
@@ -67,9 +66,6 @@ export const getPurchaseOrderByPrinted = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
-
-
-
 export const printInvoice = async (req, res) => {
     const data = await purchaseOrderHeader.findOne({
         where: {
@@ -77,6 +73,7 @@ export const printInvoice = async (req, res) => {
         },
     });
     if (!data) return res.status(404).json({ msg: "data tidak ada" });
+    if (!data.Status !== "APPROVED") return res.status(403).json({ msg: "data harus di approve terlebih dahulu" })
 
     let count;
     try {
@@ -103,11 +100,9 @@ export const printInvoice = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
-
-
 export const updatePurchaseRequest = async (req, res) => {
     try {
-        const { docNo, details, series, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
+        const { details, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
 
         const updPurchaseOrderH = await purchaseOrderHeader.findOne({
             where: {
@@ -122,29 +117,29 @@ export const updatePurchaseRequest = async (req, res) => {
 
                 details.map(async (detail) => {
                     const {
-                        materialCode,
-                        info,
-                        unit,
-                        qty,
-                        price,
-                        discPercent,
-                        discPercent2,
-                        discPercent3,
-                        discValue,
-                        qtyReceived,
+                        MaterialCode,
+                        Info,
+                        Unit,
+                        Qty,
+                        Price,
+                        DiscPercent,
+                        DiscPercent2,
+                        DiscPercent3,
+                        DiscValue,
+                        QtyReceived,
                     } = detail;
 
                     await purchaseOrderDetails.create({
-                        materialCode: materialCode,
-                        info: info,
-                        unit: unit,
-                        qty: qty,
-                        price: price,
-                        discPercent: discPercent,
-                        discPercent2: discPercent2,
-                        discPercent3: discPercent3,
-                        discValue: discValue,
-                        qtyReceived: qtyReceived
+                        materialCode: MaterialCode,
+                        info: Info,
+                        unit: Unit,
+                        qty: Qty,
+                        price: Price,
+                        discPercent: DiscPercent,
+                        discPercent2: DiscPercent2,
+                        discPercent3: DiscPercent3,
+                        discValue: DiscValue,
+                        qtyReceived: QtyReceived
                     });
                 })
             );
@@ -193,7 +188,6 @@ export const updatePurchaseRequest = async (req, res) => {
     }
 
 }
-
 export const createPurchaseRequestH = async (req, res) => {
     const {
         generateDocDate,
@@ -373,7 +367,6 @@ export const createPurchaseRequestH = async (req, res) => {
         res.status(500).json({ msg: 'Failed to create Purchase Order Header', error: error.message });
     }
 };
-
 export const deletePurchaseOrderHeader = async (req, res) => {
     try {
         const delPurchaseOrderH = await purchaseOrderHeader.findOne({
@@ -398,4 +391,3 @@ export const deletePurchaseOrderHeader = async (req, res) => {
         res.status(500).json({ msg: error.message })
     }
 }
-
