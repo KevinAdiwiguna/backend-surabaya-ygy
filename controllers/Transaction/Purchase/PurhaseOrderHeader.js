@@ -128,7 +128,9 @@ export const updatePurchaseRequest = async (req, res) => {
                         DiscPercent3,
                         DiscValue,
                         QtyReceived,
-                        Number
+                        Number,
+                        Gross,
+                        Netto
                     } = details;
 
                     await purchaseOrderDetails.update({
@@ -141,7 +143,9 @@ export const updatePurchaseRequest = async (req, res) => {
                         DiscPercent2: DiscPercent2,
                         DiscPercent3: DiscPercent3,
                         DiscValue: DiscValue,
-                        QtyReceived: QtyReceived
+                        QtyReceived: QtyReceived,
+                        Gross: Gross,
+                        Netto: Netto
                     }, {
                         where: {
                             DocNo: req.params.id,
