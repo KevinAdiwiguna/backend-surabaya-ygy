@@ -26,7 +26,7 @@ export const approvePurchaseOrder = async (req, res) => {
             { Status: "APPROVED" },
             {
                 where: {
-                    DocNo: req.params.id1
+                    DocNo: req.params.id
                 }
             })
         res.status(200).json({ msg: "APPROVED" })
