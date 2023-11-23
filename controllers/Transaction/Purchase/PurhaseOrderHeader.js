@@ -75,7 +75,7 @@ export const printInvoice = async (req, res) => {
         },
     });
     if (!data) return res.status(404).json({ msg: "data tidak ada" });
-    if (!data.Status !== "APPROVED") return res.status(403).json({ msg: "data harus di approve terlebih dahulu" })
+    if (data.Status !== "APPROVED") return res.status(403).json({ msg: "data harus di approve terlebih dahulu" })
 
     let count;
     try {
