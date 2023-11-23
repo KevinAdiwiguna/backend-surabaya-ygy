@@ -34,9 +34,8 @@ const purchaseOrderD = db.define('purchaseorderd', {
     Info: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: ''
+
     },
 
     Unit: {

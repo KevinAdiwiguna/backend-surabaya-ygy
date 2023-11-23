@@ -106,7 +106,6 @@ export const updatePurchaseRequest = async (req, res) => {
     const t = await db.transaction();
     try {
         const { details, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
-
         const updPurchaseOrderH = await purchaseOrderHeader.findOne({
             where: {
                 DocNo: req.params.id
@@ -114,11 +113,10 @@ export const updatePurchaseRequest = async (req, res) => {
         })
         if (!updPurchaseOrderH) return res.status(400).json({ msg: "data tidak ditemukan" })
         if (updPurchaseOrderH.Status == "PRINTED") return res.json(400).json({ msg: "cannot update in status printed" })
-
         if (details && Array.isArray(details)) {
             await Promise.all(
 
-                details.map(async (detail) => {
+                details.map(async (details) => {
                     const {
                         MaterialCode,
                         Info,
@@ -131,26 +129,25 @@ export const updatePurchaseRequest = async (req, res) => {
                         DiscValue,
                         QtyReceived,
                         Number
-                    } = detail;
+                    } = details;
 
-                    const updateResult = await purchaseOrderDetails.update({
-                        materialCode: MaterialCode,
-                        info: Info,
-                        unit: Unit,
-                        qty: Qty,
-                        price: Price,
-                        discPercent: DiscPercent,
-                        discPercent2: DiscPercent2,
-                        discPercent3: DiscPercent3,
-                        discValue: DiscValue,
-                        qtyReceived: QtyReceived
+                    await purchaseOrderDetails.update({
+                        MaterialCode: MaterialCode,
+                        Info: Info,
+                        Unit: Unit,
+                        Qty: Qty,
+                        Price: Price,
+                        DiscPercent: DiscPercent,
+                        DiscPercent2: DiscPercent2,
+                        DiscPercent3: DiscPercent3,
+                        DiscValue: DiscValue,
+                        QtyReceived: QtyReceived
                     }, {
                         where: {
                             DocNo: req.params.id,
                             Number: Number
                         }
                     }, { transaction: t });
-                    console.log(updateResult);
                 })
             );
         }
@@ -191,11 +188,12 @@ export const updatePurchaseRequest = async (req, res) => {
             where: {
                 DocNo: updPurchaseOrderH.DocNo
             }
-        }, { transaction: t })
+        }, { returning: true })
+
         await t.commit();
-        res.status(200).json({ msg: "update berhasiil" })
+        res.status(200).json({ msg: "Update successful" });
     } catch (error) {
-        res.status(500).json({ msg: error.message })
+        res.status(500).json({ msg: error.message });
     }
 }
 export const createPurchaseRequestH = async (req, res) => {

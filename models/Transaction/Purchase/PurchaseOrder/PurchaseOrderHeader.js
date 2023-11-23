@@ -148,6 +148,7 @@ const purchaseOrderH = db.define('purchaseorderh', {
     Information: {
         type: DataTypes.STRING,
         allowNull: false,
+        defaultValue: ""
     },
 
     Status: {
@@ -160,12 +161,12 @@ const purchaseOrderH = db.define('purchaseorderh', {
 
     IsApproved: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
     },
 
     ApprovedBy: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     ApprovedDate: {
