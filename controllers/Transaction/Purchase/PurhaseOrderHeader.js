@@ -5,6 +5,7 @@ import masterApproval from '../../../models/Master/MasterApproval.js'
 
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
+import db from '../../../config/Database.js'
 
 
 export const approvePurchaseOrder = async (req, res) => {
@@ -102,6 +103,7 @@ export const printInvoice = async (req, res) => {
     }
 };
 export const updatePurchaseRequest = async (req, res) => {
+    const t = await db.transaction();
     try {
         const { details, transactionType, docDate, supplierCode, deliveryDate, TOP, discPercent, taxStatus, taxPercent, currency, exchangeRate, JODocNo, trip, SIDocNo, totalGross, totalDisc, taxValue, totalNetto, sendTo, information, status, isApproved, approvedBy, approvedDate, printCounter, printedBy, printedDate, isSalesReturn, createdBy, changedBy } = req.body
 
@@ -130,7 +132,7 @@ export const updatePurchaseRequest = async (req, res) => {
                         QtyReceived,
                     } = detail;
 
-                    await purchaseOrderDetails.create({
+                    await purchaseOrderDetails.update({
                         materialCode: MaterialCode,
                         info: Info,
                         unit: Unit,
@@ -141,7 +143,7 @@ export const updatePurchaseRequest = async (req, res) => {
                         discPercent3: DiscPercent3,
                         discValue: DiscValue,
                         qtyReceived: QtyReceived
-                    });
+                    }, { transaction: t });
                 })
             );
         }
@@ -182,7 +184,7 @@ export const updatePurchaseRequest = async (req, res) => {
             where: {
                 DocNo: updPurchaseOrderH.DocNo
             }
-        })
+        }, { transaction: t })
         res.status(200).json({ msg: "update berhasiil" })
     } catch (error) {
         res.status(500).json({ msg: error.message })
