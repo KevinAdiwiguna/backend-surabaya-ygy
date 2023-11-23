@@ -185,11 +185,11 @@ export const updatePurchaseRequest = async (req, res) => {
                 DocNo: updPurchaseOrderH.DocNo
             }
         }, { transaction: t })
+        await t.commit();
         res.status(200).json({ msg: "update berhasiil" })
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
-
 }
 export const createPurchaseRequestH = async (req, res) => {
     const {
