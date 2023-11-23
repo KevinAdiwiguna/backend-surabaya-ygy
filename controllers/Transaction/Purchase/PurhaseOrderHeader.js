@@ -23,7 +23,7 @@ export const approvePurchaseOrder = async (req, res) => {
         if (!regexPattern.test(getMasterApproval.Users)) return res.status(404).json({ msg: "user anda tidak terdaftar dalam approval" })
 
         await purchaseOrderHeader.update(
-            { Status: "APROVED" },
+            { Status: "APPROVED" },
             {
                 where: {
                     DocNo: req.params.id1
