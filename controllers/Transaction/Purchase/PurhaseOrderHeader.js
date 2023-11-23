@@ -133,7 +133,7 @@ export const updatePurchaseRequest = async (req, res) => {
                         Number
                     } = detail;
 
-                    await purchaseOrderDetails.update({
+                    const updateResult = await purchaseOrderDetails.update({
                         materialCode: MaterialCode,
                         info: Info,
                         unit: Unit,
@@ -150,6 +150,7 @@ export const updatePurchaseRequest = async (req, res) => {
                             Number: Number
                         }
                     }, { transaction: t });
+                    console.log(updateResult);
                 })
             );
         }
