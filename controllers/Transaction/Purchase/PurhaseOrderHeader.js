@@ -15,12 +15,12 @@ export const approvePurchaseOrder = async (req, res) => {
                 Series: req.params.id2
             }
         })
-        const regexPattern = new RegExp(`\\b${getMasterApproval.Users.split(',').join('\\b|\\b')}\\b`);
+        const regexPattern = new RegExp(`<${req.params.id5}>`);
 
         if (!getMasterApproval) return res.status(403).json({ msg: 'harap membuat approval dulu di master approval' })
         if (Math.floor(getMasterApproval.MinValue) > req.params.id3) return res.status(400).json({ msg: "value tidak beleh kurang dari MinValue" })
         if (Math.floor(getMasterApproval.MaxValue) < req.params.id4) return res.status(400).json({ msg: "value tidak boleh lebih dari MaxValue" })
-        if (!regexPattern.test(req.params.id5)) return res.status(404).json({ msg: "user anda tidak terdaftar dalam approval" })
+        if (!regexPattern.test(getMasterApproval.Users)) return res.status(404).json({ msg: "user anda tidak terdaftar dalam approval" })
 
         await purchaseOrderHeader.update(
             { Status: "APROVED" },
