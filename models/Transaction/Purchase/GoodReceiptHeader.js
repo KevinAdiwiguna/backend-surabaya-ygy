@@ -5,24 +5,24 @@ const { DataTypes } = Sequelize;
 
 const goodreceipth = db.define('goodsreceipth', {
 
-    DocNo:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },  
-        primaryKey: true
-    },
-
-    Series:{
+    DocNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         },
-    },  
+        primaryKey: true
+    },
 
-    DocDate:{
+    Series: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        },
+    },
+
+    DocDate: {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
@@ -30,7 +30,7 @@ const goodreceipth = db.define('goodsreceipth', {
         },
     },
 
-    SupplierCode:{
+    SupplierCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -38,7 +38,7 @@ const goodreceipth = db.define('goodsreceipth', {
         },
     },
 
-    PODocNo:{
+    PODocNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -60,7 +60,7 @@ const goodreceipth = db.define('goodsreceipth', {
         allowNull: false,
     },
 
-    VehicleNo:{
+    VehicleNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -74,7 +74,7 @@ const goodreceipth = db.define('goodsreceipth', {
         defaultValue: "",
     },
 
-    Status:{
+    Status: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -89,19 +89,19 @@ const goodreceipth = db.define('goodsreceipth', {
             notEmpty: true
         },
     },
-    
 
-    PrintedBy:{
+
+    PrintedBy: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    PrintedDate:{
+    PrintedDate: {
         type: DataTypes.DATE,
         allowNull: true,
     },
 
-    CreatedBy:{
+    CreatedBy: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -114,13 +114,10 @@ const goodreceipth = db.define('goodsreceipth', {
         },
     },
 
-    
+
 
 }, {
     freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
 });
 
 export default goodreceipth;
