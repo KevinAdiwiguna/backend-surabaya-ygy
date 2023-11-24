@@ -115,6 +115,7 @@ export const getGoodReceiptDetail = async (req, res) => {
     }
 };
 
+
 export const getUpdateGoodsReceipt = async (req, res) => {
     try {
         const getCurrentGoodsReceiptd = await goodsReceiptH.findOne({
@@ -130,20 +131,34 @@ export const getUpdateGoodsReceipt = async (req, res) => {
             },
         });
 
-        // purchase section
         const getPurchaseOrderd = await purchaseOrderd.findAll({
             where: {
                 DocNo: getCurrentGoodsReceiptd.PODocNo
             },
             attributes: ['DocNo', 'Number', 'Qty', 'QtyReceived']
         });
+        [
+            {
+                "DocNo": "PO1-231124-0001",
+                "Number": 1,
+                "Qty": "100.0000",
+                "QtyReceived": "60.0000"
+            },
+            {
+                "DocNo": "PO1-231124-0001",
+                "Number": 2,
+                "Qty": "100.0000",
+                "QtyReceived": "70.0000"
+            }
+        ]
+
+
 
         const modifiedResponse = getPurchaseOrderd.map(item => ({
             ...item.toJSON(),
             QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
         }));
 
-        // Add QtyRemain column to getCurrentGoodsReceipt
         const getCurrentGoodsReceiptWithQtyRemain = getCurrentGoodsReceipt.map(item => ({
             ...item.toJSON(),
             QtyRemain: parseFloat(item.Qty) + modifiedResponse.find(modItem => modItem.Number === item.Number)?.QtyRemain || 0
@@ -325,6 +340,12 @@ export const createPurchaseCostH = async (req, res) => {
             await Promise.all(
                 GoodReceiptd.map(async (detail) => {
                     const { number, materialCode, info, location, unit, qty } = detail;
+                    const getPurchaseOrdedQty = await purchaseOrderd.findOne({
+                        where: {
+                            DocNo: PODocNo,
+                            Number: number
+                        }
+                    })
 
                     await goodsReceiptDetails.create({
                         DocNo: DocNo,
@@ -335,6 +356,14 @@ export const createPurchaseCostH = async (req, res) => {
                         Unit: unit,
                         Qty: qty,
                     });
+                    await purchaseOrderd.update(
+                        { QtyReceived: parseFloat(getPurchaseOrdedQty) + qty },
+                        {
+                            where: {
+                                DocNo: PODocNo,
+                                Number: number
+                            }
+                        })
                 })
             );
         }
