@@ -131,37 +131,37 @@ export const getgoodReceiptByCode = async (req, res) => {
 
 export const updateGoodReceiptH = async (req, res) => {
     try {
-    const {
-        docNo,
-        details,
-        series,
-        docDate,
-        supplierCode,
-        PODocNo,
-        batchNo,
-        supplierDlvDocNo,
-        vehicleNo,
-        information,
-        printCounter,
-        printedBy,
-        printedDate,
-        status,
-        createdBy,
-        changedBy,
-    } = req.body;
+        const {
+            docNo,
+            details,
+            series,
+            docDate,
+            supplierCode,
+            PODocNo,
+            batchNo,
+            supplierDlvDocNo,
+            vehicleNo,
+            information,
+            printCounter,
+            printedBy,
+            printedDate,
+            status,
+            createdBy,
+            changedBy,
+        } = req.body;
 
-    const updGoodReceiptH = await goodsReceiptH.findOne({
-        where: {
-            DocNo: req.params.id,
-        },
-    });
-    if (!updGoodReceiptH)
-        return res.status(400).json({ msg: "data tidak ditemukan" });
+        const updGoodReceiptH = await goodsReceiptH.findOne({
+            where: {
+                DocNo: req.params.id,
+            },
+        });
+        if (!updGoodReceiptH)
+            return res.status(400).json({ msg: "data tidak ditemukan" });
 
         if (details && Array.isArray(details)) {
             await Promise.all(
                 details.map(async (detail) => {
-                    const{
+                    const {
                         number,
                         materialCode,
                         info,
@@ -176,7 +176,7 @@ export const updateGoodReceiptH = async (req, res) => {
                         Info: info,
                         Location: location,
                         Unit: unit,
-                        Qty: qty 
+                        Qty: qty
                     });
                 })
             );
@@ -321,8 +321,7 @@ export const createPurchaseCostH = async (req, res) => {
         res
             .status(500)
             .json({
-                msg: "Failed to create Sales Order Header",
-                error: error.message,
+                msg: error.message
             });
     }
 };

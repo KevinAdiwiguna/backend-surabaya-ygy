@@ -3,6 +3,15 @@ import CashierPaymentG from '../../../models/Transaction/BKK/CashierPaymentG.js'
 import CashierPaymentD from '../../../models/Transaction/BKK/CashierPaymentD.js';
 import { Op, Sequelize } from 'sequelize';
 
+export const getAllCashierPaymentUpdate = async (req, res) => {
+    try {
+        const response = await CashierPaymentH.findAll()
+        return res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
 export const getCashierPaymentUpdate = async (req, res) => {
     const responseh = await CashierPaymentH.findOne({
         where: {
