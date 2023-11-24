@@ -6,6 +6,7 @@ import salesOrderD from "../../../models/Transaction/Sales/SalesOrder/SalesOrder
 import purchaseOrderd from "../../../models/Transaction/Purchase/PurchaseOrder/PurchaseOrderDetail.js";
 import sequelize from "sequelize";
 import { Op } from "sequelize";
+import goodreceiptD from "../../../models/Transaction/Purchase/GoodReceiptDetail.js";
 
 export const getAllgoodReceipt = async (req, res) => {
     try {
@@ -113,6 +114,48 @@ export const getGoodReceiptDetail = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
+
+export const getUpdateGoodsReceipt = async (req, res) => {
+    try {
+        const getCurrentGoodsReceiptd = await goodsReceiptH.findOne({
+            where: {
+                DocNo: req.params.id
+            },
+            attributes: ['DocNo', 'PODocNo']
+        });
+
+        const getCurrentGoodsReceipt = await goodreceiptD.findAll({
+            where: {
+                DocNo: getCurrentGoodsReceiptd.DocNo
+            },
+        });
+
+        // purchase section
+        const getPurchaseOrderd = await purchaseOrderd.findAll({
+            where: {
+                DocNo: getCurrentGoodsReceiptd.PODocNo
+            },
+            attributes: ['DocNo', 'Number', 'Qty', 'QtyReceived']
+        });
+
+        const modifiedResponse = getPurchaseOrderd.map(item => ({
+            ...item.toJSON(),
+            QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
+        }));
+
+        // Add QtyRemain column to getCurrentGoodsReceipt
+        const getCurrentGoodsReceiptWithQtyRemain = getCurrentGoodsReceipt.map(item => ({
+            ...item.toJSON(),
+            QtyRemain: parseFloat(item.Qty) + modifiedResponse.find(modItem => modItem.Number === item.Number)?.QtyRemain || 0
+        }));
+
+        return res.json(getCurrentGoodsReceiptWithQtyRemain);
+    } catch (error) {
+        return res.status(500).json({ msg: error.message });
+    }
+};
+
+
 
 export const getgoodReceiptByCode = async (req, res) => {
     const getGoodReceiptH = await goodsReceiptH.findOne({
