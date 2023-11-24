@@ -4,6 +4,7 @@ import { getAllgoodReceiptd, getGoodReceiptByCode, createGoodReceiptD, updategoo
 const router = express.Router();
 
 router.get('/goodsreceiptd', getAllgoodReceiptd);
+router.get('/goodsreceiptd/:id', getGoodReceiptByCode)
 router.post('/goodsreceiptd', createGoodReceiptD);
 router.delete('/goodsreceiptd/:id', deletegoodReceiptd);
 router.patch('/goodsreceiptd/:id', updategoodReceiptD);

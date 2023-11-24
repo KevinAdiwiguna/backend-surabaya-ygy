@@ -18,39 +18,101 @@ export const getAllgoodReceipt = async (req, res) => {
 
 export const getGoodReceiptDetail = async (req, res) => {
     try {
-        const getPurchaseOrderNo = await purchaseOrderH.findOne({
+        const getPurchaseOrder = await purchaseOrderH.findOne({
             where: {
-                DocNo: req.params.id
+                DocNo: req.params.id,
             },
-            attributes: ['DocNo']
+            attributes: ["JODocNo"],
         });
 
-        const getDetailPurchaseOrderNo = await purchaseOrderd.findAll({
+        const getJobOrder = await jobOrder.findOne({
             where: {
-                DocNo: getPurchaseOrderNo.DocNo
-            }
+                DocNo: getPurchaseOrder.JODocNo,
+            },
+            attributes: ["SODocNo"],
         });
 
-        const modifiedResponse = getDetailPurchaseOrderNo.map(item => {
-            return {
-                DocNo: item.DocNo,
-                Number: item.Number,
-                MaterialCode: item.MaterialCode,
-                Info: item.Info,
-                Unit: item.Unit,
-                Qty: item.Qty,
-                Price: item.Price,
-                QtyReceived: item.QtyReceived,
-                QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
+        const getSalesOrder = await salesOrderD.findAll({
+            where: {
+                DocNo: getJobOrder.SODocNo,
+            },
+            attributes: ["DocNo", "Number", "Qty"],
+        });
+
+        const getPurchaseOrderd = await purchaseOrderd.findAll({
+            where: {
+                DocNo: req.params.id,
+            },
+            attributes: ["DocNo", "Number", "Unit", "MaterialCode"],
+        });
+
+        const mergedPurchaseOrderd = getPurchaseOrderd.map((purchaseOrder) => {
+            const matchingSalesOrder = getSalesOrder.find(
+                (salesOrder) => salesOrder.Number === purchaseOrder.Number
+            );
+            if (matchingSalesOrder) {
+                purchaseOrder.Qty = matchingSalesOrder.Qty;
+            }
+            return purchaseOrder;
+        });
+
+        const materialCodes = mergedPurchaseOrderd.map((item) => item.MaterialCode);
+        const units = mergedPurchaseOrderd.map((item) => item.Unit);
+
+        const getGoodReceiptDetail = await goodsReceiptDetails.findAll({
+            where: {
+                MaterialCode: {
+                    [Op.in]: materialCodes,
+                },
+                Unit: {
+                    [Op.in]: units,
+                },
+            },
+        });
+
+        const uniqueNumbers = [
+            ...new Set(getGoodReceiptDetail.map((item) => item.Number)),
+        ];
+
+        const combinedData = {};
+
+        uniqueNumbers.forEach((number) => {
+            const itemsWithSameNumber = getGoodReceiptDetail.filter(
+                (item) => item.Number === number
+            );
+
+            const totalQty = itemsWithSameNumber.reduce(
+                (acc, item) => acc + parseFloat(item.Qty),
+                0
+            );
+
+            const matchingPurchaseOrder = mergedPurchaseOrderd.find(
+                (purchaseOrder) => purchaseOrder.Number === number
+            );
+            let QtyPOTotal = "0.0000";
+            if (matchingPurchaseOrder) {
+                QtyPOTotal = matchingPurchaseOrder?.Qty;
+            }
+
+            combinedData[number] = {
+                DocNo: itemsWithSameNumber[0].DocNo,
+                Number: number,
+                MaterialCode: itemsWithSameNumber[0].MaterialCode,
+                Info: itemsWithSameNumber[0].Info,
+                Location: itemsWithSameNumber[0].Location,
+                Unit: itemsWithSameNumber[0].Unit,
+                QtyPOTotal: QtyPOTotal,
+                QtyPORemain: QtyPOTotal - totalQty,
             };
         });
 
-        res.status(200).json(modifiedResponse);
+        const response = Object.values(combinedData);
+
+        res.status(200).json({ response });
     } catch (error) {
-        return res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: error.message });
     }
 };
-
 
 export const getgoodReceiptByCode = async (req, res) => {
     const getGoodReceiptH = await goodsReceiptH.findOne({
