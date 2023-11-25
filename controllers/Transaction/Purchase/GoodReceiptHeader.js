@@ -39,7 +39,6 @@ export const getGoodReceiptDetail = async (req, res) => {
                 Unit: item.Unit,
                 QtyPOTotal: item.Qty,
                 Price: item.Price,
-                QtyReceived: item.QtyReceived,
                 QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
             };
         });
