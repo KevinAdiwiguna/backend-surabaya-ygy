@@ -131,13 +131,18 @@ export const updateGoodReceiptH = async (req, res) => {
                         Qty
                     } = detail;
 
-                    await goodsReceiptDetails.create({
+                    await goodsReceiptDetails.update({
                         Number: Number,
                         MaterialCode: MaterialCode,
                         Info: Info,
                         Location: Location,
                         Unit: Unit,
                         Qty: Qty
+                    }, {
+                        where: {
+                            DocNo: req.params.id,
+                            Number: Number
+                        }
                     });
                 })
             );
@@ -153,7 +158,7 @@ export const updateGoodReceiptH = async (req, res) => {
             },
             {
                 where: {
-                    DocNo: updGoodReceiptH.PODocNo,
+                    DocNo: updGoodReceiptH.DocNo,
                 },
             }
         );
