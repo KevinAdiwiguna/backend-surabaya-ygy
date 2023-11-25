@@ -14,7 +14,6 @@ export const getAllgoodReceipt = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
-
 export const getGoodReceiptDetail = async (req, res) => {
     try {
         const getPurchaseOrderNo = await purchaseOrderH.findOne({
@@ -48,7 +47,6 @@ export const getGoodReceiptDetail = async (req, res) => {
         return res.status(500).json({ msg: error.message });
     }
 };
-
 export const getUpdateGoodsReceipt = async (req, res) => {
     try {
         const getHeaderGoodsReceipt = await goodsReceiptH.findOne({
@@ -85,7 +83,6 @@ export const getUpdateGoodsReceipt = async (req, res) => {
         return res.status(500).json({ msg: error.message });
     }
 };
-
 export const getgoodReceiptByCode = async (req, res) => {
     const getGoodReceiptH = await goodsReceiptH.findOne({
         where: {
@@ -100,7 +97,6 @@ export const getgoodReceiptByCode = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
-
 export const updateGoodReceiptH = async (req, res) => {
     try {
         const {
@@ -167,7 +163,6 @@ export const updateGoodReceiptH = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
-
 export const createPurchaseCostH = async (req, res) => {
     const {
         generateDocDate,
@@ -296,7 +291,6 @@ export const createPurchaseCostH = async (req, res) => {
             });
     }
 };
-
 export const deleteGoodReceiptH = async (req, res) => {
     try {
         const delgoodreceipth = await goodsReceiptH.findOne({
@@ -320,3 +314,26 @@ export const deleteGoodReceiptH = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
+export const printGoodsReceipt = async (req, res) => {
+    try {
+        const getDocNo = await purchaseOrderH.findOne({
+            where: {
+                DocNo: req.parmas.id
+            }
+        })
+        if (!getDocNo) return res.status(404).json({ msg: "data tidak ada" })
+
+        await purchaseOrderH.update(
+            { Status: "PRINTED" },
+            {
+                where: {
+                    DocNo: req.params.id
+                }
+            }
+        )
+        res.status(200).json({ msg: "printed" })
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+
+}
