@@ -104,21 +104,12 @@ export const getgoodReceiptByCode = async (req, res) => {
 export const updateGoodReceiptH = async (req, res) => {
     try {
         const {
-            docNo,
             details,
-            series,
-            docDate,
-            supplierCode,
-            PODocNo,
             batchNo,
             supplierDlvDocNo,
             vehicleNo,
             information,
-            printCounter,
-            printedBy,
-            printedDate,
             status,
-            createdBy,
             changedBy,
         } = req.body;
 
@@ -156,20 +147,11 @@ export const updateGoodReceiptH = async (req, res) => {
 
         await goodsReceiptH.update(
             {
-                DocNo: docNo || updGoodReceiptH.DocNo,
-                Series: series || updGoodReceiptH.Series,
-                DocDate: docDate || updGoodReceiptH.DocDate,
-                SupplierCode: supplierCode || updGoodReceiptH.SupplierCode,
-                PODocNo: PODocNo || updGoodReceiptH.PODocNo,
                 BatchNo: batchNo || updGoodReceiptH.BatchNO,
                 SupplierDlvDocNo: supplierDlvDocNo || updGoodReceiptH.SupplierDlvDocNo,
                 VehicleNo: vehicleNo || updGoodReceiptH.VehicleNo,
                 Information: information || updGoodReceiptH.Information,
-                PrintCounter: printCounter || updGoodReceiptH.PrintCounter,
-                PrintedBy: printedBy || updGoodReceiptH.PrintedBy,
-                PrintedDate: printedDate || updGoodReceiptH.PrintedDate,
                 Status: status || updGoodReceiptH.Status,
-                CreatedBy: createdBy || updGoodReceiptH.CreatedBy,
                 ChangedBy: changedBy || updGoodReceiptH.ChangedBy,
             },
             {
