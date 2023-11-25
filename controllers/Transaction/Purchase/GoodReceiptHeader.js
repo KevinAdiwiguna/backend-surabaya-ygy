@@ -37,7 +37,7 @@ export const getGoodReceiptDetail = async (req, res) => {
                 MaterialCode: item.MaterialCode,
                 Info: item.Info,
                 Unit: item.Unit,
-                QtyPOTotal: item.Qty,
+                Qty: item.Qty,
                 Price: item.Price,
                 QtyReceived: item.QtyReceived,
                 QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
@@ -52,7 +52,7 @@ export const getGoodReceiptDetail = async (req, res) => {
 
 export const getUpdateGoodsReceipt = async (req, res) => {
     try {
-        const get
+        // const getExisting
     } catch (error) {
         return res.status(500).json({ msg: error.message });
     }
@@ -161,16 +161,19 @@ export const updateGoodReceiptH = async (req, res) => {
 export const createPurchaseCostH = async (req, res) => {
     const {
         generateDocDate,
-        Series,
-        DocDate,
-        SupplierCode,
+        series,
+        docDate,
+        supplierCode,
         PODocNo,
-        SupplierDlvDocNo,
-        VehicleNo,
-        Information,
-        Status,
-        CreatedBy,
-        ChangedBy,
+        supplierDlvDocNo,
+        vehicleNo,
+        information,
+        status,
+        printCounter,
+        printedBy,
+        printedDate,
+        createdBy,
+        changedBy,
         GoodReceiptd } = req.body;
 
     try {
@@ -224,29 +227,29 @@ export const createPurchaseCostH = async (req, res) => {
         if (GoodReceiptd && Array.isArray(GoodReceiptd)) {
             await Promise.all(
                 GoodReceiptd.map(async (detail) => {
-                    const { number, materialCode, info, location, unit, qty } = detail;
+                    const { Number, MaterialCode, Info, Location, Unit, Qty } = detail;
                     const getPurchaseOrdedQty = await purchaseOrderd.findOne({
                         where: {
                             DocNo: PODocNo,
-                            Number: number
+                            Number: Number
                         }
                     })
 
                     await goodsReceiptDetails.create({
                         DocNo: DocNo,
-                        Number: number,
-                        MaterialCode: materialCode,
-                        Info: info,
-                        Location: location,
-                        Unit: unit,
-                        Qty: qty,
+                        Number: Number,
+                        MaterialCode: MaterialCode,
+                        Info: Info,
+                        Location: Location,
+                        Unit: Unit,
+                        Qty: Qty,
                     });
                     await purchaseOrderd.update(
-                        { QtyReceived: parseFloat(getPurchaseOrdedQty) + qty },
+                        { QtyReceived: parseFloat(getPurchaseOrdedQty) + Qty },
                         {
                             where: {
                                 DocNo: PODocNo,
-                                Number: number
+                                Number: Number
                             }
                         })
                 })
