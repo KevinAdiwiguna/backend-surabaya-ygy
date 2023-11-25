@@ -117,8 +117,7 @@ export const updateGoodReceiptH = async (req, res) => {
                 DocNo: req.params.id,
             },
         });
-        if (!updGoodReceiptH)
-            return res.status(400).json({ msg: "data tidak ditemukan" });
+        if (!updGoodReceiptH) return res.status(400).json({ msg: "data tidak ditemukan" });
 
         if (details && Array.isArray(details)) {
             await Promise.all(
@@ -154,7 +153,7 @@ export const updateGoodReceiptH = async (req, res) => {
             },
             {
                 where: {
-                    DocNo: updGoodReceiptH.DocNo,
+                    DocNo: updGoodReceiptH.PODocNo,
                 },
             }
         );
