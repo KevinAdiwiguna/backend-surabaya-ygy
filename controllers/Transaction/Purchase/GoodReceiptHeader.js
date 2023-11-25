@@ -318,7 +318,7 @@ export const printGoodsReceipt = async (req, res) => {
     try {
         const getDocNo = await purchaseOrderH.findOne({
             where: {
-                DocNo: req.parmas.id
+                DocNo: req.params.id
             }
         })
         if (!getDocNo) return res.status(404).json({ msg: "data tidak ada" })
