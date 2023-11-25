@@ -105,7 +105,6 @@ export const updateGoodReceiptH = async (req, res) => {
     try {
         const {
             details,
-            batchNo,
             supplierDlvDocNo,
             vehicleNo,
             information,
@@ -147,7 +146,6 @@ export const updateGoodReceiptH = async (req, res) => {
 
         await goodsReceiptH.update(
             {
-                BatchNo: batchNo || updGoodReceiptH.BatchNO,
                 SupplierDlvDocNo: supplierDlvDocNo || updGoodReceiptH.SupplierDlvDocNo,
                 VehicleNo: vehicleNo || updGoodReceiptH.VehicleNo,
                 Information: information || updGoodReceiptH.Information,
