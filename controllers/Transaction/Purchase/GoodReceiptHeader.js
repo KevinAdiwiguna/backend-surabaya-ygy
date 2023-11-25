@@ -52,7 +52,36 @@ export const getGoodReceiptDetail = async (req, res) => {
 
 export const getUpdateGoodsReceipt = async (req, res) => {
     try {
-        // const getExisting
+        const getHeaderGoodsReceipt = await goodsReceiptH.findOne({
+            where: {
+                DocNo: req.params.id
+            }, attributes: ["PODocNo"]
+        });
+
+        const getDetailGoodsReceipt = await goodsReceiptDetails.findAll({
+            where: {
+                DocNo: req.params.id
+            }
+        });
+
+        const getTotalQty = await purchaseOrderd.findAll({
+            where: {
+                DocNo: getHeaderGoodsReceipt.PODocNo
+            }, attributes: ['QtyReceived', 'Qty', 'DocNo', 'Number']
+        });
+
+        // Combine and calculate QtyRemain
+        const combinedData = getDetailGoodsReceipt.map(detail => {
+            const correspondingTotalQty = getTotalQty.find(total => total.dataValues.Number === detail.dataValues.Number);
+            const QtyRemain = parseFloat(correspondingTotalQty.dataValues.Qty) - parseFloat(correspondingTotalQty.dataValues.QtyReceived) + parseFloat(detail.dataValues.Qty);
+
+            return {
+                ...detail.dataValues,
+                QtyRemain: QtyRemain.toFixed(4)
+            };
+        });
+
+        return res.json(combinedData);
     } catch (error) {
         return res.status(500).json({ msg: error.message });
     }
