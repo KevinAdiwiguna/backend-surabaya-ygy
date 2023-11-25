@@ -316,14 +316,14 @@ export const deleteGoodReceiptH = async (req, res) => {
 };
 export const printGoodsReceipt = async (req, res) => {
     try {
-        const getDocNo = await purchaseOrderH.findOne({
+        const getDocNo = await goodsReceiptH.findOne({
             where: {
                 DocNo: req.params.id
             }
         })
         if (!getDocNo) return res.status(404).json({ msg: "data tidak ada" })
 
-        await purchaseOrderH.update(
+        await goodsReceiptH.update(
             { Status: "PRINTED" },
             {
                 where: {
