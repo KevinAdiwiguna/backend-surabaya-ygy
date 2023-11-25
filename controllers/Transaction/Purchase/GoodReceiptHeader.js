@@ -37,7 +37,7 @@ export const getGoodReceiptDetail = async (req, res) => {
                 MaterialCode: item.MaterialCode,
                 Info: item.Info,
                 Unit: item.Unit,
-                Qty: item.Qty,
+                QtyPOTotal: item.Qty,
                 Price: item.Price,
                 QtyReceived: item.QtyReceived,
                 QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
@@ -50,56 +50,9 @@ export const getGoodReceiptDetail = async (req, res) => {
     }
 };
 
-
 export const getUpdateGoodsReceipt = async (req, res) => {
     try {
-        const getCurrentGoodsReceiptd = await goodsReceiptH.findOne({
-            where: {
-                DocNo: req.params.id
-            },
-            attributes: ['DocNo', 'PODocNo']
-        });
-
-        const getCurrentGoodsReceipt = await goodreceiptD.findAll({
-            where: {
-                DocNo: getCurrentGoodsReceiptd.DocNo
-            },
-        });
-
-        const getPurchaseOrderd = await purchaseOrderd.findAll({
-            where: {
-                DocNo: getCurrentGoodsReceiptd.PODocNo
-            },
-            attributes: ['DocNo', 'Number', 'Qty', 'QtyReceived']
-        });
-        [
-            {
-                "DocNo": "PO1-231124-0001",
-                "Number": 1,
-                "Qty": "100.0000",
-                "QtyReceived": "60.0000"
-            },
-            {
-                "DocNo": "PO1-231124-0001",
-                "Number": 2,
-                "Qty": "100.0000",
-                "QtyReceived": "70.0000"
-            }
-        ]
-
-
-
-        const modifiedResponse = getPurchaseOrderd.map(item => ({
-            ...item.toJSON(),
-            QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
-        }));
-
-        const getCurrentGoodsReceiptWithQtyRemain = getCurrentGoodsReceipt.map(item => ({
-            ...item.toJSON(),
-            QtyRemain: parseFloat(item.Qty) + modifiedResponse.find(modItem => modItem.Number === item.Number)?.QtyRemain || 0
-        }));
-
-        return res.json(getCurrentGoodsReceiptWithQtyRemain);
+        const get
     } catch (error) {
         return res.status(500).json({ msg: error.message });
     }
@@ -208,19 +161,16 @@ export const updateGoodReceiptH = async (req, res) => {
 export const createPurchaseCostH = async (req, res) => {
     const {
         generateDocDate,
-        series,
-        docDate,
-        supplierCode,
+        Series,
+        DocDate,
+        SupplierCode,
         PODocNo,
-        supplierDlvDocNo,
-        vehicleNo,
-        information,
-        status,
-        printCounter,
-        printedBy,
-        printedDate,
-        createdBy,
-        changedBy,
+        SupplierDlvDocNo,
+        VehicleNo,
+        Information,
+        Status,
+        CreatedBy,
+        ChangedBy,
         GoodReceiptd } = req.body;
 
     try {
