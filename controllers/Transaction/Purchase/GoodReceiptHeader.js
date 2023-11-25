@@ -124,21 +124,21 @@ export const updateGoodReceiptH = async (req, res) => {
             await Promise.all(
                 details.map(async (detail) => {
                     const {
-                        number,
-                        materialCode,
-                        info,
-                        location,
-                        unit,
-                        qty
+                        Number,
+                        MaterialCode,
+                        Info,
+                        Location,
+                        Unit,
+                        Qty
                     } = detail;
 
                     await goodsReceiptDetails.create({
-                        Number: number,
-                        MaterialCode: materialCode,
-                        Info: info,
-                        Location: location,
-                        Unit: unit,
-                        Qty: qty
+                        Number: Number,
+                        MaterialCode: MaterialCode,
+                        Info: Info,
+                        Location: Location,
+                        Unit: Unit,
+                        Qty: Qty
                     });
                 })
             );
