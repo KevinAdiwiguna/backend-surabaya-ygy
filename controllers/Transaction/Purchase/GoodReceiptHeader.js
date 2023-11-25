@@ -75,6 +75,7 @@ export const getUpdateGoodsReceipt = async (req, res) => {
 
             return {
                 ...detail.dataValues,
+                QtyTotal: correspondingTotalQty.dataValues.Qty,
                 QtyRemain: QtyRemain.toFixed(4)
             };
         });
