@@ -37,7 +37,7 @@ export const getGoodReceiptDetail = async (req, res) => {
                 MaterialCode: item.MaterialCode,
                 Info: item.Info,
                 Unit: item.Unit,
-                Qty: item.Qty,
+                QtyPOTotal: item.Qty,
                 Price: item.Price,
                 QtyReceived: item.QtyReceived,
                 QtyRemain: parseFloat(item.Qty) - parseFloat(item.QtyReceived)
@@ -70,7 +70,6 @@ export const getUpdateGoodsReceipt = async (req, res) => {
             }, attributes: ['QtyReceived', 'Qty', 'DocNo', 'Number']
         });
 
-        // Combine and calculate QtyRemain
         const combinedData = getDetailGoodsReceipt.map(detail => {
             const correspondingTotalQty = getTotalQty.find(total => total.dataValues.Number === detail.dataValues.Number);
             const QtyRemain = parseFloat(correspondingTotalQty.dataValues.Qty) - parseFloat(correspondingTotalQty.dataValues.QtyReceived) + parseFloat(detail.dataValues.Qty);
@@ -86,8 +85,6 @@ export const getUpdateGoodsReceipt = async (req, res) => {
         return res.status(500).json({ msg: error.message });
     }
 };
-
-
 
 export const getgoodReceiptByCode = async (req, res) => {
     const getGoodReceiptH = await goodsReceiptH.findOne({
