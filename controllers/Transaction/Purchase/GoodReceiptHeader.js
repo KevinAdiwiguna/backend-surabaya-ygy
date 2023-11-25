@@ -253,11 +253,12 @@ export const createPurchaseCostH = async (req, res) => {
             await Promise.all(
                 GoodReceiptd.map(async (detail) => {
                     const { Number, MaterialCode, Info, Location, Unit, Qty } = detail;
+
                     const getPurchaseOrdedQty = await purchaseOrderd.findOne({
                         where: {
                             DocNo: PODocNo,
                             Number: Number
-                        }
+                        },
                     })
 
                     await goodsReceiptDetails.create({
@@ -270,7 +271,7 @@ export const createPurchaseCostH = async (req, res) => {
                         Qty: Qty,
                     });
                     await purchaseOrderd.update(
-                        { QtyReceived: parseFloat(getPurchaseOrdedQty) + Qty },
+                        { QtyReceived: parseFloat(getPurchaseOrdedQty.QtyReceived) + Qty },
                         {
                             where: {
                                 DocNo: PODocNo,
