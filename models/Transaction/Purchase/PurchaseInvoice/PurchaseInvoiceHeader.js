@@ -205,6 +205,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     CutPPh: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: false
     },
 
     PPhPercent: {
