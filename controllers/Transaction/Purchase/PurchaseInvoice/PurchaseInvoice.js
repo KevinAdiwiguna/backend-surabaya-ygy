@@ -185,6 +185,7 @@ export const createPurchase = async (req, res) => {
 
 
 
+
   try {
     const existingHeader = await PurchaseInvoiceH.findOne({
       attributes: ["DocNo"],
@@ -270,6 +271,8 @@ export const createPurchase = async (req, res) => {
       CreatedBy: createdBy,
       ChangedBy: changedBy,
     })
+
+
 
     if (details && Array.isArray(details)) {
       await Promise.all(
@@ -397,7 +400,7 @@ export const createPurchase = async (req, res) => {
 
     await GoodReceiptH.update(
       {
-        Status: "INVOICED",
+        status: "INVOICED",
       },
       {
         where: {
