@@ -267,8 +267,6 @@ export const createPurchase = async (req, res) => {
       Information: information,
       Status: status,
       PrintCounter: printCounter ? printCounter : 0,
-      PrintedBy: printedBy ? printedBy : "",
-      PrintedDate: printedDate ? printedDate : "",
       CreatedBy: createdBy,
       ChangedBy: changedBy,
     })
