@@ -8,7 +8,13 @@ import goodreceiptD from "../../../models/Transaction/Purchase/GoodReceiptDetail
 
 export const getAllgoodReceipt = async (req, res) => {
     try {
-        const goodreceiptH = await goodsReceiptH.findAll();
+        const goodreceiptH = await goodsReceiptH.findAll({
+            where: {
+                Status: {
+                    [Op.ne]: "DELETED"
+                }
+            }
+        });
         res.status(200).json(goodreceiptH);
     } catch (error) {
         res.status(500).json({ msg: error.message });
