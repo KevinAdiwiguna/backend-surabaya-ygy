@@ -210,9 +210,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     PPhPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: 0
     },
 
     PPhValue: {

@@ -5,7 +5,7 @@ const { DataTypes } = Sequelize;
 
 const purchaseinvoiceD = db.define('purchaseinvoiced', {
 
-    DocNo:{
+    DocNo: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -14,7 +14,7 @@ const purchaseinvoiceD = db.define('purchaseinvoiced', {
         primaryKey: true
     },
 
-    Number:{
+    Number: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -23,7 +23,7 @@ const purchaseinvoiceD = db.define('purchaseinvoiced', {
         primaryKey: true
     },
 
-    MaterialCode : {
+    MaterialCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -53,7 +53,7 @@ const purchaseinvoiceD = db.define('purchaseinvoiced', {
         validate: {
             notEmpty: true
         },
-    },    
+    },
 
     Qty: {
         type: DataTypes.DECIMAL,
@@ -82,25 +82,19 @@ const purchaseinvoiceD = db.define('purchaseinvoiced', {
     DiscPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: 0
     },
 
     DiscPercent2: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: 0
     },
 
     DiscPercent3: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: 0
     },
 
     DiscValue: {
