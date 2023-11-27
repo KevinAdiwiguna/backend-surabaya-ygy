@@ -278,7 +278,7 @@ export const createPurchase = async (req, res) => {
             number, materialCode, info, location, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, cost } = detailItem;
 
           await PurchaseInvoiceD.create({
-            DocNo,
+            DocNo: DocNo,
             Number: number,
             MaterialCode: materialCode,
             Info: info,
@@ -295,102 +295,102 @@ export const createPurchase = async (req, res) => {
             Netto: netto,
             Cost: cost
           });
-          if (taxStatus !== "No") {
-            if (taxStatus == "Include") {
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo,
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: totalNetto - taxValue,
-                DocValueLocal: totalNetto - taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              });
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo + "T",
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: taxValue,
-                DocValueLocal: taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              });
-            } else if (taxStatus == "Exclude") {
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo,
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: totalNetto,
-                DocValueLocal: totalNetto,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              });
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo + "T",
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: taxValue,
-                DocValueLocal: taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              });
-            }
-          } else {
-            await APBook.create({
-              Periode: getMasterPeriode.Periode,
-              SupplierCode: supplierCode,
-              TransType: "",
-              DocNo: DocNo,
-              DocDate: docDate,
-              TOP: top,
-              DueDate: docDate,
-              Currency: currency,
-              ExchangeRate: exchangeRate,
-              Information: taxStatus === "No" ? "" : taxNo,
-              DC: "D",
-              DocValue: totalNetto,
-              DocValueLocal: totalNetto,
-              PaymentValue: 0,
-              PaymentValueLocal: 0,
-              ExchangeRateDiff: 0,
-            });
-          }
+          // if (taxStatus !== "No") {
+          //   if (taxStatus == "Include") {
+          //     await APBook.create({
+          //       Periode: getMasterPeriode.Periode,
+          //       SupplierCode: supplierCode,
+          //       TransType: "",
+          //       DocNo: DocNo,
+          //       DocDate: docDate,
+          //       TOP: top,
+          //       DueDate: docDate,
+          //       Currency: currency,
+          //       ExchangeRate: exchangeRate,
+          //       Information: taxStatus === "No" ? "" : taxNo,
+          //       DC: "D",
+          //       DocValue: totalNetto - taxValue,
+          //       DocValueLocal: totalNetto - taxValue,
+          //       PaymentValue: 0,
+          //       PaymentValueLocal: 0,
+          //       ExchangeRateDiff: 0,
+          //     });
+          //     await APBook.create({
+          //       Periode: getMasterPeriode.Periode,
+          //       SupplierCode: supplierCode,
+          //       TransType: "",
+          //       DocNo: DocNo + "T",
+          //       DocDate: docDate,
+          //       TOP: top,
+          //       DueDate: docDate,
+          //       Currency: currency,
+          //       ExchangeRate: exchangeRate,
+          //       Information: taxStatus === "No" ? "" : taxNo,
+          //       DC: "D",
+          //       DocValue: taxValue,
+          //       DocValueLocal: taxValue,
+          //       PaymentValue: 0,
+          //       PaymentValueLocal: 0,
+          //       ExchangeRateDiff: 0,
+          //     });
+          //   } else if (taxStatus == "Exclude") {
+          //     await APBook.create({
+          //       Periode: getMasterPeriode.Periode,
+          //       SupplierCode: supplierCode,
+          //       TransType: "",
+          //       DocNo: DocNo,
+          //       DocDate: docDate,
+          //       TOP: top,
+          //       DueDate: docDate,
+          //       Currency: currency,
+          //       ExchangeRate: exchangeRate,
+          //       Information: taxStatus === "No" ? "" : taxNo,
+          //       DC: "D",
+          //       DocValue: totalNetto,
+          //       DocValueLocal: totalNetto,
+          //       PaymentValue: 0,
+          //       PaymentValueLocal: 0,
+          //       ExchangeRateDiff: 0,
+          //     });
+          //     await APBook.create({
+          //       Periode: getMasterPeriode.Periode,
+          //       SupplierCode: supplierCode,
+          //       TransType: "",
+          //       DocNo: DocNo + "T",
+          //       DocDate: docDate,
+          //       TOP: top,
+          //       DueDate: docDate,
+          //       Currency: currency,
+          //       ExchangeRate: exchangeRate,
+          //       Information: taxStatus === "No" ? "" : taxNo,
+          //       DC: "D",
+          //       DocValue: taxValue,
+          //       DocValueLocal: taxValue,
+          //       PaymentValue: 0,
+          //       PaymentValueLocal: 0,
+          //       ExchangeRateDiff: 0,
+          //     });
+          //   }
+          // } else {
+          //   await APBook.create({
+          //     Periode: getMasterPeriode.Periode,
+          //     SupplierCode: supplierCode,
+          //     TransType: "",
+          //     DocNo: DocNo,
+          //     DocDate: docDate,
+          //     TOP: top,
+          //     DueDate: docDate,
+          //     Currency: currency,
+          //     ExchangeRate: exchangeRate,
+          //     Information: taxStatus === "No" ? "" : taxNo,
+          //     DC: "D",
+          //     DocValue: totalNetto,
+          //     DocValueLocal: totalNetto,
+          //     PaymentValue: 0,
+          //     PaymentValueLocal: 0,
+          //     ExchangeRateDiff: 0,
+          //   });
+          // }
         })
       );
     }
