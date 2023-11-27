@@ -9,6 +9,7 @@ import APBook from '../../../../models/Report/AccountPayable/APBook.js'
 
 import sequelize from "sequelize";
 import { Op } from "sequelize";
+import db from '../../../../config/Database.js'
 
 
 export const goodReceiptStatus = async (req, res) => {
@@ -180,10 +181,10 @@ export const getAllDataGoodReceipt = async (req, res) => {
 
 export const createPurchase = async (req, res) => {
   const {
-    generateDocDate, series, docDate, poDocNo, joDocNo, trip, transactionType, grDocNo, supplierCode, supplierTaxTo, supplierInvNo, top, currency, exchangeRate, totalCost, costDistribution, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, cutPPh, pphPercent, pphValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details
+    generateDocDate, series, docDate, poDocNo, joDocNo, trip, transactionType, grDocNo, supplierCode, supplierTaxTo, supplierInvNo, top, currency, exchangeRate, totalCost, costDistribution, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, cutPPh, pphPercent, pphValue, information, status, printCounter, createdBy, changedBy, details
   } = req.body
 
-
+  const t = await db.transaction();
 
 
   try {
@@ -219,7 +220,8 @@ export const createPurchase = async (req, res) => {
       }, {
         where: {
           TaxNo: taxNo
-        }
+        },
+        transaction: t,
       });
     }
 
@@ -270,6 +272,8 @@ export const createPurchase = async (req, res) => {
       PrintCounter: printCounter ? printCounter : 0,
       CreatedBy: createdBy,
       ChangedBy: changedBy,
+    }, {
+      transaction: t
     })
 
 
@@ -297,6 +301,8 @@ export const createPurchase = async (req, res) => {
             DiscNominal: discNominal,
             Netto: netto,
             Cost: cost
+          }, {
+            transaction: t
           });
           if (taxStatus !== "No") {
             if (taxStatus == "Include") {
@@ -317,6 +323,8 @@ export const createPurchase = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t
               });
               await APBook.create({
                 Periode: getMasterPeriode.Periode,
@@ -335,6 +343,8 @@ export const createPurchase = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t
               });
             } else if (taxStatus == "Exclude") {
               await APBook.create({
@@ -354,6 +364,8 @@ export const createPurchase = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t
               });
               await APBook.create({
                 Periode: getMasterPeriode.Periode,
@@ -372,27 +384,31 @@ export const createPurchase = async (req, res) => {
                 PaymentValue: 0,
                 PaymentValueLocal: 0,
                 ExchangeRateDiff: 0,
+              }, {
+                transaction: t
               });
             }
           } else {
-            // await APBook.create({
-            //   Periode: getMasterPeriode.Periode,
-            //   SupplierCode: supplierCode,
-            //   TransType: "",
-            //   DocNo: DocNo,
-            //   DocDate: docDate,
-            //   TOP: top,
-            //   DueDate: docDate,
-            //   Currency: currency,
-            //   ExchangeRate: exchangeRate,
-            //   Information: taxStatus === "No" ? "" : taxNo,
-            //   DC: "D",
-            //   DocValue: totalNetto,
-            //   DocValueLocal: totalNetto,
-            //   PaymentValue: 0,
-            //   PaymentValueLocal: 0,
-            //   ExchangeRateDiff: 0,
-            // });
+            await APBook.create({
+              Periode: getMasterPeriode.Periode,
+              SupplierCode: supplierCode,
+              TransType: "",
+              DocNo: DocNo,
+              DocDate: docDate,
+              TOP: top,
+              DueDate: docDate,
+              Currency: currency,
+              ExchangeRate: exchangeRate,
+              Information: taxStatus === "No" ? "" : taxNo,
+              DC: "D",
+              DocValue: totalNetto,
+              DocValueLocal: totalNetto,
+              PaymentValue: 0,
+              PaymentValueLocal: 0,
+              ExchangeRateDiff: 0,
+            }, {
+              transaction: t
+            });
           }
         })
       );
