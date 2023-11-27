@@ -206,13 +206,13 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     CutPPh: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
-        defaultValue: false
+        defaultValue: false,
     },
 
     PPhPercent: {
         type: DataTypes.DECIMAL,
         allowNull: true,
-        defaultValue: 0
+        defaultValue: 0.00
     },
 
     PPhValue: {
@@ -247,12 +247,12 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
 
     PrintedBy: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     PrintedDate: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
 
     CreatedBy: {
