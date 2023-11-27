@@ -272,9 +272,6 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
 
 }, {
     freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
 });
 
 export default purchaseinvoiceh;
