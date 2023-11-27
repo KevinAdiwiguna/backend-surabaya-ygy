@@ -113,6 +113,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     TotalCost: {
         type: DataTypes.DECIMAL,
         allowNull: false,
+        defaultValue: 0
     },
 
     CostDistribution: {
@@ -269,7 +270,6 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
             notEmpty: true
         },
     },
-
 }, {
     freezeTableName: true,
 });
