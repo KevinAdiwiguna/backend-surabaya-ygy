@@ -277,7 +277,7 @@ export const createPurchase = async (req, res) => {
     })
 
 
-
+    return res.json(details)
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detailItem) => {
