@@ -119,9 +119,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     CostDistribution: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: ''
     },
 
     TaxStatus: {
@@ -150,9 +148,7 @@ const purchaseinvoiceh = db.define('purchaseinvoiceh', {
     DiscPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: 0
     },
 
     TotalGross: {
