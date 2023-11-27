@@ -400,7 +400,7 @@ export const createPurchase = async (req, res) => {
 
     await GoodReceiptH.update(
       {
-        status: "INVOICED",
+        Status: "INVOICED",
       },
       {
         where: {
@@ -410,7 +410,6 @@ export const createPurchase = async (req, res) => {
     );
 
     res.status(201).json({ msg: "Create" })
-
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
