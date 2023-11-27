@@ -375,24 +375,24 @@ export const createPurchase = async (req, res) => {
               });
             }
           } else {
-            await APBook.create({
-              Periode: getMasterPeriode.Periode,
-              SupplierCode: supplierCode,
-              TransType: "",
-              DocNo: DocNo,
-              DocDate: docDate,
-              TOP: top,
-              DueDate: docDate,
-              Currency: currency,
-              ExchangeRate: exchangeRate,
-              Information: taxStatus === "No" ? "" : taxNo,
-              DC: "D",
-              DocValue: totalNetto,
-              DocValueLocal: totalNetto,
-              PaymentValue: 0,
-              PaymentValueLocal: 0,
-              ExchangeRateDiff: 0,
-            });
+            // await APBook.create({
+            //   Periode: getMasterPeriode.Periode,
+            //   SupplierCode: supplierCode,
+            //   TransType: "",
+            //   DocNo: DocNo,
+            //   DocDate: docDate,
+            //   TOP: top,
+            //   DueDate: docDate,
+            //   Currency: currency,
+            //   ExchangeRate: exchangeRate,
+            //   Information: taxStatus === "No" ? "" : taxNo,
+            //   DC: "D",
+            //   DocValue: totalNetto,
+            //   DocValueLocal: totalNetto,
+            //   PaymentValue: 0,
+            //   PaymentValueLocal: 0,
+            //   ExchangeRateDiff: 0,
+            // });
           }
         })
       );
