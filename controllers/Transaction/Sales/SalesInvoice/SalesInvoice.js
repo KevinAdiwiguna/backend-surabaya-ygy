@@ -290,118 +290,11 @@ export const createSalesinvoice = async (req, res) => {
           }, {
             transaction: t,
           });
-
-          if (taxStatus !== "No") {
-            if (taxStatus == "Include") {
-              await ARBook.create({
-                Periode: getMasterPeriode.Periode,
-                CustomerCode: customerCode,
-                TransType: "",
-                DocNo: DocNo,
-                DocDate: docDate,
-                TOP: !top ? 0 : top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "C",
-                DocValue: totalNetto - taxValue,
-                DocValueLocal: totalNetto - taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t,
-              });
-
-              await ARBook.create({
-                Periode: getMasterPeriode.Periode,
-                CustomerCode: customerCode,
-                TransType: "",
-                DocNo: DocNo + "T",
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "C",
-                DocValue: taxValue,
-                DocValueLocal: taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t,
-              });
-            } else if (taxStatus == "Exclude") {
-              await ARBook.create({
-                Periode: getMasterPeriode.Periode,
-                CustomerCode: customerCode,
-                TransType: "",
-                DocNo: DocNo,
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "C",
-                DocValue: totalNetto,
-                DocValueLocal: totalNetto,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t,
-              });
-
-              await ARBook.create({
-                Periode: getMasterPeriode.Periode,
-                CustomerCode: customerCode,
-                TransType: "",
-                DocNo: DocNo + "T",
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "C",
-                DocValue: taxValue,
-                DocValueLocal: taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t,
-              });
-            }
-          } else {
-            await ARBook.create({
-              Periode: getMasterPeriode.Periode,
-              CustomerCode: customerCode,
-              TransType: "",
-              DocNo: DocNo,
-              DocDate: docDate,
-              TOP: top,
-              DueDate: docDate,
-              Currency: currency,
-              ExchangeRate: exchangeRate,
-              Information: taxStatus === "No" ? "" : taxNo,
-              DC: "C",
-              DocValue: totalNetto,
-              DocValueLocal: totalNetto,
-              PaymentValue: 0,
-              PaymentValueLocal: 0,
-              ExchangeRateDiff: 0,
-            }, {
-              transaction: t,
-            });
-          }
         })
       );
-    } else {
+
+    }
+    if (taxStatus == "Include") {
       await ARBook.create({
         Periode: getMasterPeriode.Periode,
         CustomerCode: customerCode,
@@ -414,8 +307,28 @@ export const createSalesinvoice = async (req, res) => {
         ExchangeRate: exchangeRate,
         Information: taxStatus === "No" ? "" : taxNo,
         DC: "C",
-        DocValue: totalGross - totalNetto,
-        DocValueLocal: totalGross - totalNetto,
+        DocValue: totalNetto,
+        DocValueLocal: totalNetto,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      }, {
+        transaction: t,
+      });
+      await ARBook.create({
+        Periode: getMasterPeriode.Periode,
+        CustomerCode: customerCode,
+        TransType: "",
+        DocNo: DocNo + "T",
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "C",
+        DocValue: taxValue,
+        DocValueLocal: taxValue,
         PaymentValue: 0,
         PaymentValueLocal: 0,
         ExchangeRateDiff: 0,
@@ -423,6 +336,85 @@ export const createSalesinvoice = async (req, res) => {
         transaction: t,
       });
     }
+
+    if (taxStatus == "No") {
+      await ARBook.create({
+        Periode: getMasterPeriode.Periode,
+        CustomerCode: customerCode,
+        TransType: "",
+        DocNo: DocNo,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: totalNetto,
+        DocValueLocal: totalNetto,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      }, {
+        transaction: t,
+      });
+    }
+
+    if (taxStatus == "Exclude") {
+      await ARBook.create({
+        Periode: getMasterPeriode.Periode,
+        CustomerCode: customerCode,
+        TransType: "",
+        DocNo: DocNo,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "C",
+        DocValue: totalNetto,
+        DocValueLocal: totalNetto,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      }, {
+        transaction: t,
+      });
+      await ARBook.create({
+        Periode: getMasterPeriode.Periode,
+        CustomerCode: customerCode,
+        TransType: "",
+        DocNo: DocNo + "T",
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "C",
+        DocValue: taxValue,
+        DocValueLocal: taxValue,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      }, {
+        transaction: t,
+      });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     await GoodIssueh.update(
       {
