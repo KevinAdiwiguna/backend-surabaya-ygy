@@ -102,7 +102,12 @@ export const getPurchaseInvoiceByCode = async (req, res) => {
       DocNo: req.params.id
     }
   })
-  res.status(200).json(response)
+  const detail = await PurchaseInvoiceD.findAll({
+    where: {
+      DocNo: req.params.id
+    }
+  })
+  res.status(200).json({ header: response, detail: detail })
 }
 export const getPurchaseUpdate = async (req, res) => {
   const response = await GoodReceiptH.findAll({
@@ -422,8 +427,56 @@ export const createPurchase = async (req, res) => {
   }
 };
 export const updatePurchaseInvoice = async (req, res) => {
-  const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution
+  const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution, details
   } = req.body()
+
+
+  const t = await db.transaction()
+
+
+  await PurchaseInvoiceH.update({
+    SupplierInvoiceNo: supplierInvoiceNo,
+    JobOrderNo: jobOrderNo,
+    TermOfPayment: termOfPayment,
+    TaxStatus: taxStatus,
+    TaxPrefix: taxPrefix,
+    TaxNo: taxNo,
+    Information: information,
+    WeCutPPh: weCutPPh,
+    CostDistribution: costDistribution
+  }, {
+    where: {
+      DocNo: req.params.id
+    }
+  }, { transaction: t })
+
+  if (details && Array.isArray(details)) {
+    await Promise.all(
+      details.map(async (details) => {
+        const {
+          Price,
+          DiscPercent,
+          DiscPercent2,
+          DiscPercent3,
+          DiscValue,
+          Cost
+        } = details
+
+        await PurchaseInvoiceD.update({
+          Price: Price,
+          DiscPercent: DiscPercent,
+          DiscPercent2: DiscPercent2,
+          DiscPercent3: DiscPercent3,
+          DiscValue: DiscValue,
+          Cost: Cost
+        }, {
+          where: {
+            DocNo: req.params.id
+          }
+        }, { transaction: t })
+      })
+    )
+  }
 
 
   if (taxStatus === "Include") {
@@ -436,6 +489,60 @@ export const updatePurchaseInvoice = async (req, res) => {
       }
     })
     if (checkTaxNo.DocNo) return res.status(400).json({ msg: "taxno sudah digunakan" })
+    await APBook.destroy({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+    await APBook.destroy({
+      where: {
+        DocNo: req.params.id + "T"
+      }
+    })
+
+
+
+
+
+
+
+
+
+
+  }
+
+  if (taxStatus === "Exclude") {
+    if (!taxPrefix) return res.status(400).json({ msg: "taxPrefix harus ada" })
+    if (!taxNo) return res.status(400).json({ msg: "taxNo harus ada" })
+
+    const checkTaxNo = await GenerateTaxNo.findOne({
+      where: {
+        TaxNo: taxNo
+      }
+    })
+    if (checkTaxNo.DocNo) return res.status(400).json({ msg: "taxno sudah digunakan" })
+    await APBook.destroy({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+    await APBook.destroy({
+      where: {
+        DocNo: req.params.id + "T"
+      }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
