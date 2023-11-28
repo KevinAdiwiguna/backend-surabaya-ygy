@@ -12,6 +12,11 @@ import { Op } from "sequelize";
 import db from '../../../../config/Database.js'
 
 
+export const getAllPurchaseInvoice = async (req, res) => {
+  const response = await PurchaseInvoiceH.findAll()
+  return res.status(200).json(response)
+}
+
 export const goodReceiptStatus = async (req, res) => {
   try {
     const response = await GoodReceiptH.findAll({
@@ -106,7 +111,6 @@ export const getPurchaseDetail = async (req, res) => {
   res.json(combinedData);
 };
 
-
 export const getPurchaseUpdate = async (req, res) => {
   const response = await GoodReceiptH.findAll({
     where: {
@@ -177,7 +181,6 @@ export const getAllDataGoodReceipt = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
 
 export const createPurchase = async (req, res) => {
   const {

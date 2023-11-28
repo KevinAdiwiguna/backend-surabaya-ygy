@@ -1,10 +1,11 @@
 import express from 'express'
-import { getPurchaseDetail, createPurchase } from '../../../../controllers/Transaction/Purchase/PurchaseInvoice/PurchaseInvoice.js'
+import { getPurchaseDetail, createPurchase, getAllPurchaseInvoice } from '../../../../controllers/Transaction/Purchase/PurchaseInvoice/PurchaseInvoice.js'
 
 const router = express.Router();
 
 router.get('/purchaseinvoicedetail/:id', getPurchaseDetail);
 router.post('/purchaseinvoice', createPurchase);
+router.get('/purchaseinvoice', getAllPurchaseInvoice)
 // router.delete('/purchaseinvoice/:id', deletegoodReceiptd);
 // router.patch('/purchaseinvoice/:id', updategoodReceiptD);
 
