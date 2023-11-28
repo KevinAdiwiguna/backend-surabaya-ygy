@@ -34,9 +34,7 @@ const purchaseinvoiceD = db.define('purchaseinvoiced', {
     Info: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: ''
     },
 
     Location: {

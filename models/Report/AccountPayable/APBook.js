@@ -5,131 +5,82 @@ const { DataTypes } = Sequelize;
 
 const APBook = db.define('apbook', {
   Periode: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: true,
-  },
-  SupplierCode : {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: true,
+    allowNull: true,
+    primaryKey: true
+  },
+  SupplierCode: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    primaryKey: true
   },
   TransType: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: "",
-    primaryKey: true,
+    primaryKey: true
   },
   DocNo: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    },
-    primaryKey: true,
+    allowNull: true,
+    primaryKey: true
   },
   DocDate: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true
   },
   TOP: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true
   },
   DueDate: {
     type: DataTypes.DATE,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true
   },
   Currency: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true
   },
   ExchangeRate: {
     type: DataTypes.DECIMAL,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true
   },
   Information: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: "",
+    defaultValue: ''
   },
   DC: {
     type: DataTypes.CHAR,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true
   },
   DocValue: {
     type: DataTypes.DECIMAL,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true
   },
   DocValueLocal: {
     type: DataTypes.DECIMAL,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true
   },
   PaymentValue: {
     type: DataTypes.DECIMAL,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true,
+    defaultValue: 0,
   },
   PaymentValueLocal: {
     type: DataTypes.DECIMAL,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
+    allowNull: true,
+    defaultValue: 0,
   },
   ExchangeRateDiff: {
     type: DataTypes.DECIMAL,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-    primaryKey: false,
-  },
-
+    allowNull: true,
+    defaultValue: 0,
+  }
 }, {
-  freezeTableName: true,
   timestamps: false,
   createdAt: false,
+  tableName: 'apbook',
   updatedAt: false
-
 },);
 
 export default APBook;

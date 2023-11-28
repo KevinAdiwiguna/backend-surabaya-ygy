@@ -439,7 +439,7 @@ export const createSalesinvoice = async (req, res) => {
     return res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
     await t.rollback();
-    res.status(500).json({ msg: error });
+    res.status(500).json({ msg: error.message });
   }
 };
 

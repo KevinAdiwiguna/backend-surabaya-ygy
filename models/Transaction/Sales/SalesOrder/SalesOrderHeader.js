@@ -82,9 +82,7 @@ const salesOrderHeader = db.define('salesorderh', {
     DiscPercent: {
         type: DataTypes.DECIMAL,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        },
+        defaultValue: 0
     },
 
     TaxStatus: {

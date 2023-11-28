@@ -181,11 +181,46 @@ export const getAllDataGoodReceipt = async (req, res) => {
 
 export const createPurchase = async (req, res) => {
   const {
-    generateDocDate, series, docDate, poDocNo, joDocNo, trip, transactionType, grDocNo, supplierCode, supplierTaxTo, supplierInvNo, top, currency, exchangeRate, totalCost, costDistribution, taxStatus, taxPercent, taxPrefix, taxNo, discPercent, totalGross, totalDisc, downPayment, taxValue, taxValueInTaxCur, totalNetto, cutPPh, pphPercent, pphValue, information, status, printCounter, createdBy, changedBy, details
-  } = req.body
+    series,
+    docDate,
+    poDocNo,
+    joDocNo,
+    trip,
+    transactionType,
+    grDocNo,
+    batchNo,
+    supplierCode,
+    supplierTaxTo,
+    supplierInvNo,
+    top,
+    currency,
+    exchangeRate,
+    totalCost,
+    costDistribution,
+    taxStatus,
+    taxPercent,
+    taxPrefix,
+    taxNo,
+    discPercent,
+    totalGross,
+    totalDisc,
+    downPayment,
+    taxValue,
+    taxValueInTaxCur,
+    totalNetto,
+    cutPPh,
+    pphPercent,
+    pphValue,
+    information,
+    status,
+    createdBy,
+    changedBy,
+    generateDocDate,
+    details
+  } = req.body;
+
 
   const t = await db.transaction();
-
 
   try {
     const existingHeader = await PurchaseInvoiceH.findOne({
@@ -198,6 +233,7 @@ export const createPurchase = async (req, res) => {
       order: [[sequelize.literal("CAST(SUBSTRING_INDEX(DocNo, '-', -1) AS UNSIGNED)"), "DESC"]],
       raw: true,
       limit: 1,
+      transaction: t,
     });
 
     let DocNo;
@@ -213,8 +249,14 @@ export const createPurchase = async (req, res) => {
         where: {
           TaxNo: taxNo,
         },
+        transaction: t,
       });
-      if (!response.TaxNo) return res.status(404).json({ msg: "tax no tidak ada" });
+
+      if (!response.TaxNo) {
+        await t.rollback();
+        return res.status(404).json({ msg: "tax no tidak ada" });
+      }
+
       await GenerateTaxNo.update({
         DocNo: DocNo,
       }, {
@@ -229,11 +271,13 @@ export const createPurchase = async (req, res) => {
       where: {
         IsClosed: 0,
       },
+      transaction: t,
     });
-    if (!getMasterPeriode) return res.status(400).json({ msg: "Periode is Closed" });
-    const batchNoCustom = DocNo.split("-")
 
-    const batchNo = batchNoCustom[1] + batchNoCustom[2]
+    if (!getMasterPeriode) {
+      await t.rollback();
+      return res.status(400).json({ msg: "Periode is Closed" });
+    }
 
     await PurchaseInvoiceH.create({
       DocNo,
@@ -269,23 +313,37 @@ export const createPurchase = async (req, res) => {
       PPhValue: pphValue,
       Information: information,
       Status: status,
-      PrintCounter: printCounter ? printCounter : 0,
+      PrintCounter: 0,
+      PrintedBy: '',
       CreatedBy: createdBy,
       ChangedBy: changedBy,
     }, {
-      transaction: t
-    })
+      transaction: t,
+    });
 
-
-    return res.json(details)
     if (details && Array.isArray(details)) {
       await Promise.all(
         details.map(async (detailItem) => {
           const {
-            number, materialCode, info, location, unit, qty, price, gross, discPercent, discPercent2, discPercent3, discValue, discNominal, netto, cost } = detailItem;
+            number,
+            materialCode,
+            info,
+            location,
+            unit,
+            qty,
+            price,
+            gross,
+            discPercent,
+            discPercent2,
+            discPercent3,
+            discValue,
+            discNominal,
+            netto,
+            cost
+          } = detailItem;
 
           await PurchaseInvoiceD.create({
-            DocNo: DocNo,
+            DocNo,
             Number: number,
             MaterialCode: materialCode,
             Info: info,
@@ -300,118 +358,121 @@ export const createPurchase = async (req, res) => {
             DiscValue: discValue,
             DiscNominal: discNominal,
             Netto: netto,
-            Cost: cost
+            Cost: cost,
           }, {
-            transaction: t
+            transaction: t,
           });
-          if (taxStatus !== "No") {
-            if (taxStatus == "Include") {
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo,
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: totalNetto - taxValue,
-                DocValueLocal: totalNetto - taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t
-              });
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo + "T",
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: taxValue,
-                DocValueLocal: taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t
-              });
-            } else if (taxStatus == "Exclude") {
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo,
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: totalNetto,
-                DocValueLocal: totalNetto,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t
-              });
-              await APBook.create({
-                Periode: getMasterPeriode.Periode,
-                SupplierCode: supplierCode,
-                TransType: "",
-                DocNo: DocNo + "T",
-                DocDate: docDate,
-                TOP: top,
-                DueDate: docDate,
-                Currency: currency,
-                ExchangeRate: exchangeRate,
-                Information: taxStatus === "No" ? "" : taxNo,
-                DC: "D",
-                DocValue: taxValue,
-                DocValueLocal: taxValue,
-                PaymentValue: 0,
-                PaymentValueLocal: 0,
-                ExchangeRateDiff: 0,
-              }, {
-                transaction: t
-              });
-            }
-          } else {
-            await APBook.create({
-              Periode: getMasterPeriode.Periode,
-              SupplierCode: supplierCode,
-              TransType: "",
-              DocNo: DocNo,
-              DocDate: docDate,
-              TOP: top,
-              DueDate: docDate,
-              Currency: currency,
-              ExchangeRate: exchangeRate,
-              Information: taxStatus === "No" ? "" : taxNo,
-              DC: "D",
-              DocValue: totalNetto,
-              DocValueLocal: totalNetto,
-              PaymentValue: 0,
-              PaymentValueLocal: 0,
-              ExchangeRateDiff: 0,
-            }, {
-              transaction: t
-            });
-          }
         })
       );
+    }
+
+    if (taxStatus === "Include") {
+      await APBook.create({
+        Periode: getMasterPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: DocNo,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: parseFloat(totalNetto) - parseFloat(taxValue),
+        DocValueLocal: parseFloat(totalNetto) - parseFloat(taxValue),
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      })
+
+      await APBook.create({
+        Periode: getMasterPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: DocNo + "T",
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: taxValue,
+        DocValueLocal: taxValue,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      })
+    }
+
+
+    if (taxStatus === "Exclude") {
+      (async () => {
+        await APBook.bulkCreate([
+          {
+            Periode: getMasterPeriode.Periode,
+            SupplierCode: supplierCode,
+            TransType: "",
+            DocNo: DocNo,
+            DocDate: docDate,
+            TOP: top,
+            DueDate: docDate,
+            Currency: currency,
+            ExchangeRate: exchangeRate,
+            Information: taxStatus === "No" ? "" : taxNo,
+            DC: "D",
+            DocValue: totalNetto,
+            DocValueLocal: totalNetto,
+            PaymentValue: 0,
+            PaymentValueLocal: 0,
+            ExchangeRateDiff: 0,
+          },
+          {
+            Periode: getMasterPeriode.Periode,
+            SupplierCode: supplierCode,
+            TransType: "",
+            DocNo: DocNo + "T",
+            DocDate: docDate,
+            TOP: top,
+            DueDate: docDate,
+            Currency: currency,
+            ExchangeRate: exchangeRate,
+            Information: taxStatus === "No" ? "" : taxNo,
+            DC: "D",
+            DocValue: taxValue,
+            DocValueLocal: taxValue,
+            PaymentValue: 0,
+            PaymentValueLocal: 0,
+            ExchangeRateDiff: 0,
+          }
+        ])
+      })
+
+    }
+
+
+    if (taxStatus === "No") {
+      await APBook.create({
+        Periode: getMasterPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: DocNo,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: totalNetto,
+        DocValueLocal: totalNetto,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      }, {
+        transaction: t,
+      });
     }
 
     await GoodReceiptH.update(
@@ -420,16 +481,18 @@ export const createPurchase = async (req, res) => {
       },
       {
         where: {
-          DocNo: grDocNo,
+          DocNo: poDocNo,
         },
-      }
-    );
+        transaction: t,
+      });
 
-    res.status(201).json({ msg: "Create" })
+    await t.commit();
+    return res.status(200).json({ msg: "berhasil create" });
   } catch (error) {
-    res.status(500).json({ msg: error.message })
+    await t.rollback();
+    res.status(500).json({ msg: error.message });
   }
-}
+};
 
 export const deleteInvoice = async (req, res) => {
   try {
