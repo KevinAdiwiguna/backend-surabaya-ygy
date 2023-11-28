@@ -16,20 +16,6 @@ export const getAllPurchaseInvoice = async (req, res) => {
   const response = await PurchaseInvoiceH.findAll()
   return res.status(200).json(response)
 }
-
-export const goodReceiptStatus = async (req, res) => {
-  try {
-    const response = await GoodReceiptH.findAll({
-      where: {
-        Status: req.params.id,
-      },
-    });
-    res.status(200).json(response);
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
-
 export const getPurchaseDetail = async (req, res) => {
   const Detail = await GoodReceiptD.findAll({
     where: {
@@ -110,7 +96,14 @@ export const getPurchaseDetail = async (req, res) => {
 
   res.json(combinedData);
 };
-
+export const getPurchaseInvoiceByCode = async (req, res) => {
+  const response = await PurchaseInvoiceH.findOne({
+    where: {
+      DocNo: req.params.id
+    }
+  })
+  res.status(200).json(response)
+}
 export const getPurchaseUpdate = async (req, res) => {
   const response = await GoodReceiptH.findAll({
     where: {
@@ -119,69 +112,6 @@ export const getPurchaseUpdate = async (req, res) => {
   })
   res.status(200).json(response)
 }
-
-export const printInvoice = async (req, res) => {
-  const data = await GoodReceiptH.findOne({
-    where: {
-      DocNo: req.params.id,
-    },
-  });
-  if (!data) return res.status(404).json({ msg: "data tidak ada" });
-
-  let count;
-  try {
-    if (data.PrintCounter < 1 || data.PrintCounter == undefined) {
-      count = 1;
-    } else {
-      count = data.PrintCounter + 1;
-    }
-
-    await PurchaseInvoiceH.update(
-      {
-        Status: "PRINTED",
-        PrintCounter: count,
-      },
-      {
-        where: {
-          DocNo: req.params.id,
-        },
-      }
-    );
-
-    res.status(200).json({ msg: "printed" });
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
-
-export const getPurchaseh = async (req, res) => {
-  try {
-    const response = await GoodReceiptH.findAll();
-    return res.status(200).json(response);
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
-
-export const getAllDataGoodReceipt = async (req, res) => {
-  try {
-    const header = await GoodReceiptH.findOne({
-      where: {
-        DocNo: req.params.id,
-      },
-    });
-    const detail = await GoodReceiptD.findAll({
-      where: {
-        DocNo: header.DocNo,
-      },
-    });
-
-    return res.status(200).json({ header: header, detail: detail });
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
-
 export const createPurchase = async (req, res) => {
   const {
     series,
@@ -491,6 +421,31 @@ export const createPurchase = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+export const updatePurchaseInvoice = async (req, res) => {
+  const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution
+  } = req.body()
+
+
+  if (taxStatus === "Include") {
+    if (!taxPrefix) return res.status(400).json({ msg: "taxPrefix harus ada" })
+    if (!taxNo) return res.status(400).json({ msg: "taxNo harus ada" })
+
+    const checkTaxNo = await GenerateTaxNo.findOne({
+      where: {
+        TaxNo: taxNo
+      }
+    })
+    if (checkTaxNo.DocNo) return res.status(400).json({ msg: "taxno sudah digunakan" })
+
+
+
+
+
+  }
+
+
+
+}
 
 export const deleteInvoice = async (req, res) => {
   try {
