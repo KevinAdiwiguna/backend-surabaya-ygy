@@ -426,13 +426,16 @@ export const createPurchase = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+
+
 export const updatePurchaseInvoice = async (req, res) => {
-  const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution, details
+  const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution, totalNetto, periode, supplierCode, docDate, currency, exchangeRate, taxValue,
+    details
   } = req.body()
 
 
   const t = await db.transaction()
-
 
   await PurchaseInvoiceH.update({
     SupplierInvoiceNo: supplierInvoiceNo,
@@ -501,15 +504,45 @@ export const updatePurchaseInvoice = async (req, res) => {
     })
 
 
+    await APBook.create({
+      Periode: periode,
+      SupplierCode: supplierCode,
+      TransType: "",
+      DocNo: req.params.id,
+      DocDate: docDate,
+      TOP: top,
+      DueDate: docDate,
+      Currency: currency,
+      ExchangeRate: exchangeRate,
+      Information: taxStatus === "No" ? "" : taxNo,
+      DC: "D",
+      DocValue: parseFloat(totalNetto) - parseFloat(taxValue),
+      DocValueLocal: parseFloat(totalNetto) - parseFloat(taxValue),
+      PaymentValue: 0,
+      PaymentValueLocal: 0,
+      ExchangeRateDiff: 0,
+    })
 
-
-
-
-
-
-
-
+    await APBook.create({
+      Periode: periode,
+      SupplierCode: supplierCode,
+      TransType: "",
+      DocNo: req.params.id + "T",
+      DocDate: docDate,
+      TOP: top,
+      DueDate: docDate,
+      Currency: currency,
+      ExchangeRate: exchangeRate,
+      Information: taxStatus === "No" ? "" : taxNo,
+      DC: "D",
+      DocValue: taxValue,
+      DocValueLocal: taxValue,
+      PaymentValue: 0,
+      PaymentValueLocal: 0,
+      ExchangeRateDiff: 0,
+    })
   }
+
 
   if (taxStatus === "Exclude") {
     if (!taxPrefix) return res.status(400).json({ msg: "taxPrefix harus ada" })
@@ -532,27 +565,74 @@ export const updatePurchaseInvoice = async (req, res) => {
       }
     })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    await APBook.create({
+      Periode: periode,
+      SupplierCode: supplierCode,
+      TransType: "",
+      DocNo: req.params.id,
+      DocDate: docDate,
+      TOP: top,
+      DueDate: docDate,
+      Currency: currency,
+      ExchangeRate: exchangeRate,
+      Information: taxStatus === "No" ? "" : taxNo,
+      DC: "D",
+      DocValue: totalNetto,
+      DocValueLocal: totalNetto,
+      PaymentValue: 0,
+      PaymentValueLocal: 0,
+      ExchangeRateDiff: 0,
+    })
+    await APBook.create({
+      Periode: periode,
+      SupplierCode: supplierCode,
+      TransType: "",
+      DocNo: req.params.id + "T",
+      DocDate: docDate,
+      TOP: top,
+      DueDate: docDate,
+      Currency: currency,
+      ExchangeRate: exchangeRate,
+      Information: taxStatus === "No" ? "" : taxNo,
+      DC: "D",
+      DocValue: taxValue,
+      DocValueLocal: taxValue,
+      PaymentValue: 0,
+      PaymentValueLocal: 0,
+      ExchangeRateDiff: 0,
+    })
   }
-
-
-
+  if (taxStatus === "No") {
+    await APBook.destroy({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+    await APBook.create({
+      Periode: periode,
+      SupplierCode: supplierCode,
+      TransType: "",
+      DocNo: req.parmas.id,
+      DocDate: docDate,
+      TOP: top,
+      DueDate: docDate,
+      Currency: currency,
+      ExchangeRate: exchangeRate,
+      Information: taxStatus === "No" ? "" : taxNo,
+      DC: "D",
+      DocValue: totalNetto,
+      DocValueLocal: totalNetto,
+      PaymentValue: 0,
+      PaymentValueLocal: 0,
+      ExchangeRateDiff: 0,
+    }, {
+      transaction: t,
+    });
+  }
 }
+
+
+
 
 export const deleteInvoice = async (req, res) => {
   try {
