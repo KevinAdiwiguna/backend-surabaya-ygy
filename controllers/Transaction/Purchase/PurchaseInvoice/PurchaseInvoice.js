@@ -437,8 +437,10 @@ export const createPurchase = async (req, res) => {
 };
 export const updatePurchaseInvoice = async (req, res) => {
   const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, cutPPh,
-    pphValue, pphPercent, costDistribution, totalNetto, supplierCode, docDate, currency, exchangeRate, taxValue,totalDisc,
+    pphValue, pphPercent, costDistribution, totalNetto, supplierCode, docDate, currency, exchangeRate, taxValue, totalDisc,
     taxPercent,
+    discPercent,
+    totalGross,
     details
   } = req.body
 
@@ -474,6 +476,8 @@ export const updatePurchaseInvoice = async (req, res) => {
       TotalNetto: totalNetto || existingH.TotalNetto,
       TotalDisc: totalDisc || existingH.TotalDisc,
       TaxPercent: taxPercent || existingH.TaxPercent,
+      DiscPercent: discPercent || existingH.DiscPercent,
+      TotalGross: totalGross || existingH.TotalGross
     }, {
       where: {
         DocNo: req.params.id
