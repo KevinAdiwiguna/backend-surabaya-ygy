@@ -438,7 +438,7 @@ export const createPurchase = async (req, res) => {
 export const updatePurchaseInvoice = async (req, res) => {
   const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution, totalNetto, supplierCode, docDate, currency, exchangeRate, taxValue,
     details
-  } = req.body()
+  } = req.body
 
 
   const t = await db.transaction()
