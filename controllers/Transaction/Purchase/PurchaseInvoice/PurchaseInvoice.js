@@ -435,9 +435,6 @@ export const createPurchase = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
-
-
 export const updatePurchaseInvoice = async (req, res) => {
   const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution, totalNetto, supplierCode, docDate, currency, exchangeRate, taxValue,
     details
@@ -658,7 +655,21 @@ export const updatePurchaseInvoice = async (req, res) => {
 
 
 }
+export const printPurchaseInvoice = async (req, res) => {
+  try {
+    await PurchaseInvoiceH.update(
+      { Status: 'PRINTED' },
+      {
+        where: {
+          DocNo: req.parmas.id
+        }
+      })
+    res.status(201).json({ msg: "success" })
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
 
+}
 export const deleteInvoice = async (req, res) => {
   try {
     await PurchaseInvoiceH.update(
