@@ -664,6 +664,8 @@ export const updatePurchaseInvoice = async (req, res) => {
         transaction: t,
       });
     }
+
+    res.status(201).json({ msg: "succes " })
   } catch (error) {
     return res.status(500).json({ msg: error.message })
   }
