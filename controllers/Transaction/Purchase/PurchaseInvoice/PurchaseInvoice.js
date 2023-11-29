@@ -451,7 +451,7 @@ export const updatePurchaseInvoice = async (req, res) => {
     })
     if (!getPeriode) return res.status(404).json({ msg: "periode tidak ada" })
 
-    const existingH = await PurchaseInvoiceH.update({
+    const existingH = await PurchaseInvoiceH.findOne({
       where: {
         DocNo: req.params.id
       }
