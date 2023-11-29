@@ -439,213 +439,225 @@ export const createPurchase = async (req, res) => {
 
 
 export const updatePurchaseInvoice = async (req, res) => {
-  const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution, totalNetto, periode, supplierCode, docDate, currency, exchangeRate, taxValue,
+  const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, weCutPPh, costDistribution, totalNetto, supplierCode, docDate, currency, exchangeRate, taxValue,
     details
   } = req.body()
 
 
   const t = await db.transaction()
 
-  await PurchaseInvoiceH.update({
-    SupplierInvoiceNo: supplierInvoiceNo,
-    JobOrderNo: jobOrderNo,
-    TermOfPayment: termOfPayment,
-    TaxStatus: taxStatus,
-    TaxPrefix: taxPrefix,
-    TaxNo: taxNo,
-    Information: information,
-    WeCutPPh: weCutPPh,
-    CostDistribution: costDistribution
-  }, {
-    where: {
-      DocNo: req.params.id
-    }
-  }, { transaction: t })
-
-  if (details && Array.isArray(details)) {
-    await Promise.all(
-      details.map(async (details) => {
-        const {
-          Price,
-          DiscPercent,
-          DiscPercent2,
-          DiscPercent3,
-          DiscValue,
-          Cost,
-          Netto,
-          DiscNominal
-        } = details
-
-        await PurchaseInvoiceD.update({
-          Price: Price,
-          DiscPercent: DiscPercent,
-          DiscPercent2: DiscPercent2,
-          DiscPercent3: DiscPercent3,
-          DiscValue: DiscValue,
-          Cost: Cost,
-          Netto: Netto,
-          DiscNominal: DiscNominal
-        }, {
-          where: {
-            DocNo: req.params.id
-          }
-        }, { transaction: t })
-      })
-    )
-  }
-
-
-  if (taxStatus === "Include") {
-    if (!taxPrefix) return res.status(400).json({ msg: "taxPrefix harus ada" })
-    if (!taxNo) return res.status(400).json({ msg: "taxNo harus ada" })
-
-    const checkTaxNo = await GenerateTaxNo.findOne({
-      where: {
-        TaxNo: taxNo
-      }
-    })
-    if (checkTaxNo.DocNo) return res.status(400).json({ msg: "taxno sudah digunakan" })
-    await APBook.destroy({
+  try {
+    const getPeriode = await APBook.findOne({
       where: {
         DocNo: req.params.id
       }
     })
-    await APBook.destroy({
-      where: {
-        DocNo: req.params.id + "T"
-      }
-    })
+    if (!getPeriode) return res.status(404).json({ msg: "periode tidak ada" })
 
 
-    await APBook.create({
-      Periode: periode,
-      SupplierCode: supplierCode,
-      TransType: "",
-      DocNo: req.params.id,
-      DocDate: docDate,
-      TOP: top,
-      DueDate: docDate,
-      Currency: currency,
-      ExchangeRate: exchangeRate,
-      Information: taxStatus === "No" ? "" : taxNo,
-      DC: "D",
-      DocValue: parseFloat(totalNetto) - parseFloat(taxValue),
-      DocValueLocal: parseFloat(totalNetto) - parseFloat(taxValue),
-      PaymentValue: 0,
-      PaymentValueLocal: 0,
-      ExchangeRateDiff: 0,
-    })
 
-    await APBook.create({
-      Periode: periode,
-      SupplierCode: supplierCode,
-      TransType: "",
-      DocNo: req.params.id + "T",
-      DocDate: docDate,
-      TOP: top,
-      DueDate: docDate,
-      Currency: currency,
-      ExchangeRate: exchangeRate,
-      Information: taxStatus === "No" ? "" : taxNo,
-      DC: "D",
-      DocValue: taxValue,
-      DocValueLocal: taxValue,
-      PaymentValue: 0,
-      PaymentValueLocal: 0,
-      ExchangeRateDiff: 0,
-    })
-  }
-
-
-  if (taxStatus === "Exclude") {
-    if (!taxPrefix) return res.status(400).json({ msg: "taxPrefix harus ada" })
-    if (!taxNo) return res.status(400).json({ msg: "taxNo harus ada" })
-
-    const checkTaxNo = await GenerateTaxNo.findOne({
-      where: {
-        TaxNo: taxNo
-      }
-    })
-    if (checkTaxNo.DocNo) return res.status(400).json({ msg: "taxno sudah digunakan" })
-    await APBook.destroy({
-      where: {
-        DocNo: req.params.id
-      }
-    })
-    await APBook.destroy({
-      where: {
-        DocNo: req.params.id + "T"
-      }
-    })
-
-    await APBook.create({
-      Periode: periode,
-      SupplierCode: supplierCode,
-      TransType: "",
-      DocNo: req.params.id,
-      DocDate: docDate,
-      TOP: top,
-      DueDate: docDate,
-      Currency: currency,
-      ExchangeRate: exchangeRate,
-      Information: taxStatus === "No" ? "" : taxNo,
-      DC: "D",
-      DocValue: totalNetto,
-      DocValueLocal: totalNetto,
-      PaymentValue: 0,
-      PaymentValueLocal: 0,
-      ExchangeRateDiff: 0,
-    })
-    await APBook.create({
-      Periode: periode,
-      SupplierCode: supplierCode,
-      TransType: "",
-      DocNo: req.params.id + "T",
-      DocDate: docDate,
-      TOP: top,
-      DueDate: docDate,
-      Currency: currency,
-      ExchangeRate: exchangeRate,
-      Information: taxStatus === "No" ? "" : taxNo,
-      DC: "D",
-      DocValue: taxValue,
-      DocValueLocal: taxValue,
-      PaymentValue: 0,
-      PaymentValueLocal: 0,
-      ExchangeRateDiff: 0,
-    })
-  }
-  if (taxStatus === "No") {
-    await APBook.destroy({
-      where: {
-        DocNo: req.params.id
-      }
-    })
-    await APBook.create({
-      Periode: periode,
-      SupplierCode: supplierCode,
-      TransType: "",
-      DocNo: req.parmas.id,
-      DocDate: docDate,
-      TOP: top,
-      DueDate: docDate,
-      Currency: currency,
-      ExchangeRate: exchangeRate,
-      Information: taxStatus === "No" ? "" : taxNo,
-      DC: "D",
-      DocValue: totalNetto,
-      DocValueLocal: totalNetto,
-      PaymentValue: 0,
-      PaymentValueLocal: 0,
-      ExchangeRateDiff: 0,
+    await PurchaseInvoiceH.update({
+      SupplierInvoiceNo: supplierInvoiceNo,
+      JobOrderNo: jobOrderNo,
+      TermOfPayment: termOfPayment,
+      TaxStatus: taxStatus,
+      TaxPrefix: taxPrefix,
+      TaxNo: taxNo,
+      Information: information,
+      WeCutPPh: weCutPPh,
+      CostDistribution: costDistribution
     }, {
-      transaction: t,
-    });
+      where: {
+        DocNo: req.params.id
+      }
+    }, { transaction: t })
+
+    if (details && Array.isArray(details)) {
+      await Promise.all(
+        details.map(async (details) => {
+          const {
+            Price,
+            DiscPercent,
+            DiscPercent2,
+            DiscPercent3,
+            DiscValue,
+            Cost,
+            Netto,
+            DiscNominal
+          } = details
+
+          await PurchaseInvoiceD.update({
+            Price: Price,
+            DiscPercent: DiscPercent,
+            DiscPercent2: DiscPercent2,
+            DiscPercent3: DiscPercent3,
+            DiscValue: DiscValue,
+            Cost: Cost,
+            Netto: Netto,
+            DiscNominal: DiscNominal
+          }, {
+            where: {
+              DocNo: req.params.id
+            }
+          }, { transaction: t })
+        })
+      )
+    }
+
+
+    if (taxStatus === "Include") {
+      if (!taxPrefix) return res.status(400).json({ msg: "taxPrefix harus ada" })
+      if (!taxNo) return res.status(400).json({ msg: "taxNo harus ada" })
+
+      const checkTaxNo = await GenerateTaxNo.findOne({
+        where: {
+          TaxNo: taxNo
+        }
+      })
+      if (checkTaxNo.DocNo) return res.status(400).json({ msg: "taxno sudah digunakan" })
+      await APBook.destroy({
+        where: {
+          DocNo: req.params.id
+        }
+      })
+      await APBook.destroy({
+        where: {
+          DocNo: req.params.id + "T"
+        }
+      })
+
+
+      await APBook.create({
+        Periode: getPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: req.params.id,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: parseFloat(totalNetto) - parseFloat(taxValue),
+        DocValueLocal: parseFloat(totalNetto) - parseFloat(taxValue),
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      })
+
+      await APBook.create({
+        Periode: getPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: req.params.id + "T",
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: taxValue,
+        DocValueLocal: taxValue,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      })
+    }
+
+
+    if (taxStatus === "Exclude") {
+      if (!taxPrefix) return res.status(400).json({ msg: "taxPrefix harus ada" })
+      if (!taxNo) return res.status(400).json({ msg: "taxNo harus ada" })
+
+      const checkTaxNo = await GenerateTaxNo.findOne({
+        where: {
+          TaxNo: taxNo
+        }
+      })
+      if (checkTaxNo.DocNo) return res.status(400).json({ msg: "taxno sudah digunakan" })
+      await APBook.destroy({
+        where: {
+          DocNo: req.params.id
+        }
+      })
+      await APBook.destroy({
+        where: {
+          DocNo: req.params.id + "T"
+        }
+      })
+
+      await APBook.create({
+        Periode: getPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: req.params.id,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: totalNetto,
+        DocValueLocal: totalNetto,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      })
+      await APBook.create({
+        Periode: getPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: req.params.id + "T",
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: taxValue,
+        DocValueLocal: taxValue,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      })
+    }
+    if (taxStatus === "No") {
+      await APBook.destroy({
+        where: {
+          DocNo: req.params.id
+        }
+      })
+      await APBook.create({
+        Periode: getPeriode.Periode,
+        SupplierCode: supplierCode,
+        TransType: "",
+        DocNo: req.parmas.id,
+        DocDate: docDate,
+        TOP: top,
+        DueDate: docDate,
+        Currency: currency,
+        ExchangeRate: exchangeRate,
+        Information: taxStatus === "No" ? "" : taxNo,
+        DC: "D",
+        DocValue: totalNetto,
+        DocValueLocal: totalNetto,
+        PaymentValue: 0,
+        PaymentValueLocal: 0,
+        ExchangeRateDiff: 0,
+      }, {
+        transaction: t,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: error.message })
   }
+
+
 }
-
-
-
 
 export const deleteInvoice = async (req, res) => {
   try {
