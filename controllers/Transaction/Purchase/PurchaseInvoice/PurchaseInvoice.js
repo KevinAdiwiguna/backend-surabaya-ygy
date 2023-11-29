@@ -461,7 +461,7 @@ export const updatePurchaseInvoice = async (req, res) => {
     await PurchaseInvoiceH.update({
       SupplierInvNo: supplierInvoiceNo,
       JobOrderNo: jobOrderNo,
-      TermOfPayment: termOfPayment,
+      TOP: termOfPayment,
       TaxStatus: taxStatus || existingH.TaxStatus,
       TaxPrefix: taxPrefix,
       TaxNo: taxNo,
