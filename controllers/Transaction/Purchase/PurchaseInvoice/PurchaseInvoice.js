@@ -459,18 +459,17 @@ export const updatePurchaseInvoice = async (req, res) => {
     })
 
     await PurchaseInvoiceH.update({
-      SupplierInvNo: supplierInvoiceNo,
-      JODocNo: jobOrderNo,
-      TOP: termOfPayment,
+      SupplierInvNo: supplierInvoiceNo || existingH.supplierInvoiceNo,
+      JODocNo: jobOrderNo || existingH.jobOrderNo,
+      TOP: termOfPayment || existingH.termOfPayment,
       TaxStatus: taxStatus || existingH.TaxStatus,
-      TaxPrefix: taxPrefix,
-      TaxNo: taxNo,
-      Information: information,
-      CutPPh: cutPPh,
-      PPhValue: pphValue,
-      PPhPercent: pphPercent,
-
-      CostDistribution: costDistribution,
+      TaxPrefix: taxPrefix || existingH.taxPrefix,
+      TaxNo: taxNo || existingH.taxNo,
+      Information: information || existingH.information,
+      CutPPh: cutPPh || existingH.cutPPh,
+      PPhValue: pphValue || existingH.pphValue,
+      PPhPercent: pphPercent || existingH.pphPercent,
+      CostDistribution: costDistribution || existingH.costDistribution,
 
     }, {
       where: {
