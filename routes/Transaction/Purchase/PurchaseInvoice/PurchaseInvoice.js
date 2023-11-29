@@ -1,5 +1,5 @@
 import express from 'express'
-import { getPurchaseDetail, createPurchase, getAllPurchaseInvoice, printPurchaseInvoice, getPurchaseInvoiceByCode, updatePurchaseInvoice } from '../../../../controllers/Transaction/Purchase/PurchaseInvoice/PurchaseInvoice.js'
+import { getPurchaseDetail, createPurchase, getAllPurchaseInvoice, deleteInvoice, printPurchaseInvoice, getPurchaseInvoiceByCode, updatePurchaseInvoice } from '../../../../controllers/Transaction/Purchase/PurchaseInvoice/PurchaseInvoice.js'
 
 const router = express.Router();
 
@@ -9,6 +9,6 @@ router.post('/purchaseinvoice', createPurchase);
 router.get('/purchaseinvoice', getAllPurchaseInvoice)
 router.patch('/purchaseinvoice/:id', updatePurchaseInvoice);
 router.patch('purchaseinvoiceprint/:id', printPurchaseInvoice)
-// router.delete('/purchaseinvoice/:id', deletegoodReceiptd);
+router.delete('/purchaseinvoice/:id', deleteInvoice);
 
 export default router;

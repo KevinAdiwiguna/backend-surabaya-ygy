@@ -673,7 +673,7 @@ export const printPurchaseInvoice = async (req, res) => {
 export const deleteInvoice = async (req, res) => {
   try {
     await PurchaseInvoiceH.update(
-      { Status: "INVOICED" },
+      { Status: "DELETED" },
       {
         where: {
           DocNo: req.params.id
