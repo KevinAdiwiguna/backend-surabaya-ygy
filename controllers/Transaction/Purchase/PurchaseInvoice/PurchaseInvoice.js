@@ -678,7 +678,7 @@ export const printPurchaseInvoice = async (req, res) => {
       { Status: 'PRINTED' },
       {
         where: {
-          DocNo: req.parmas.id
+          DocNo: req.params.id
         }
       })
     res.status(201).json({ msg: "success" })
