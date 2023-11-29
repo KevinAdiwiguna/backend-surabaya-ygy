@@ -437,7 +437,8 @@ export const createPurchase = async (req, res) => {
 };
 export const updatePurchaseInvoice = async (req, res) => {
   const { supplierInvoiceNo, jobOrderNo, termOfPayment, taxStatus, taxPrefix, taxNo, information, cutPPh,
-    pphValue, pphPercent, costDistribution, totalNetto, supplierCode, docDate, currency, exchangeRate, taxValue,
+    pphValue, pphPercent, costDistribution, totalNetto, supplierCode, docDate, currency, exchangeRate, taxValue,totalDisc,
+    taxPercent
     details
   } = req.body
 
@@ -459,18 +460,20 @@ export const updatePurchaseInvoice = async (req, res) => {
     })
 
     await PurchaseInvoiceH.update({
-      SupplierInvNo: supplierInvoiceNo || existingH.supplierInvoiceNo,
-      JODocNo: jobOrderNo || existingH.jobOrderNo,
-      TOP: termOfPayment || existingH.termOfPayment,
+      SupplierInvNo: supplierInvoiceNo || existingH.SupplierInvNo,
+      JODocNo: jobOrderNo || existingH.JODocNo,
+      TOP: termOfPayment || existingH.TOP,
       TaxStatus: taxStatus || existingH.TaxStatus,
-      TaxPrefix: taxPrefix || existingH.taxPrefix,
-      TaxNo: taxNo || existingH.taxNo,
-      Information: information || existingH.information,
-      CutPPh: cutPPh || existingH.cutPPh,
-      PPhValue: pphValue || existingH.pphValue,
-      PPhPercent: pphPercent || existingH.pphPercent,
-      CostDistribution: costDistribution || existingH.costDistribution,
-
+      TaxPrefix: taxPrefix || existingH.TaxPrefix,
+      TaxNo: taxNo || existingH.TaxNo,
+      Information: information || existingH.Information,
+      CutPPh: cutPPh || existingH.CutPPh,
+      PPhValue: pphValue || existingH.PPhValue,
+      PPhPercent: pphPercent || existingH.PPhPercent,
+      CostDistribution: costDistribution || existingH.CostDistribution,
+      TotalNetto: totalNetto || existingH.TotalNetto,
+      TotalDisc: totalDisc || existingH.TotalDisc,
+      TaxPercent: taxPercent || existingH.TaxPercent,
     }, {
       where: {
         DocNo: req.params.id
