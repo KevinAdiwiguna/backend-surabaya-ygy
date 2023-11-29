@@ -161,6 +161,15 @@ export const createPurchase = async (req, res) => {
   const t = await db.transaction();
 
   try {
+    await GoodReceiptH.update({
+      Status: "INVOICED"
+    }, {
+      where: {
+        DocNo: grDocNo
+      }
+    }, { transaction: t })
+
+
     const existingHeader = await PurchaseInvoiceH.findOne({
       attributes: ["DocNo"],
       where: {
