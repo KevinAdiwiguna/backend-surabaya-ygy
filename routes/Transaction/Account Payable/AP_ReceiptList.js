@@ -13,4 +13,4 @@ router.get('/apreceiptd/:id', getApReceiptDetail)
 router.delete('/apreceipt/:id', deleteApReceipt)
 router.patch('/apreceiptlistprint/:id', printRequestList)
 
-export default router;  
+export default router;   
