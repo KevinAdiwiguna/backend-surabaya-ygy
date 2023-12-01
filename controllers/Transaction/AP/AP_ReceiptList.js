@@ -194,3 +194,18 @@ export const getApReceiptDetail = async (req, res) => {
     res.status(500).json({ msg: error.message })
   }
 }
+
+export const deleteApReceipt = async (req, res) => {
+  try {
+    await APReceiptListh.update({
+      Status: "DELETED"
+    }, {
+      where: {
+        DocNo: req.params.id
+      }
+    })
+    res.status(200).json({ msg: 'data deleted' })
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
+}
