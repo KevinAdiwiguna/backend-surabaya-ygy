@@ -189,12 +189,21 @@ export const getAppBok = async (req, res) => {
 }
 export const getApReceiptDetail = async (req, res) => {
   try {
-    const response = await APReceiptLishd.findAll({
+    const header = await APReceiptListh.findAll({
       where: {
         DocNo: req.params.id
       }
     })
-    return res.status(200).json(response)
+
+    const detail = await APReceiptLishd.findAll({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+    return res.status(200).json({
+      header,
+      detail
+    })
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
