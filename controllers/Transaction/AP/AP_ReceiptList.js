@@ -180,3 +180,16 @@ export const getAllAPReceipt = async (req, res) => {
     res.status(500).json({ msg: error.message })
   }
 }
+
+export const getAppBok = async (req, res) => {
+  try {
+    const response = await APReceiptListh.findAll({
+      where: {
+        DocNo: req.params.id
+      }
+    })
+    return res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
+}
