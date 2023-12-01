@@ -79,7 +79,7 @@ export const getCreatedApRequestList = async (req, res) => {
 export const updateRequestList = async (req, res) => {
 
   try {
-    const { docNo, series, docDate, supplierCode, customerGroup, salesArea1, salesArea2, salesArea3, currency, totalCustomer, totalDocument, totalValue, information, status, printCounter, printedBy, printedDate, createdBy, changedBy, details } = req.body;
+    const { series, information, status, createdBy, changedBy, details } = req.body;
 
     const receiptListh = await APReceiptListh.findOne({
       where: {
@@ -92,21 +92,7 @@ export const updateRequestList = async (req, res) => {
     }
 
     await APReceiptListh.update({
-      DocNo: docNo || receiptListh.DocNo,
       Series: series || receiptListh.Series,
-      DocDate: docDate || receiptListh.DocDate,
-      SupplierCode: supplierCode || receiptListh.SupplierCode,
-      CustomerGroup: customerGroup || receiptListh.CustomerGroup,
-      SalesArea1: salesArea1 || receiptListh.SalesArea1,
-      SalesArea2: salesArea2 || receiptListh.SalesArea2,
-      SalesArea3: salesArea3 || receiptListh.SalesArea3,
-      Currency: currency || receiptListh.Currency,
-      TotalCustomer: totalCustomer || receiptListh.TotalCustomer,
-      TotalDocument: totalDocument || receiptListh.TotalDocument,
-      TotalValue: totalValue || receiptListh.TotalValue,
-      PrintCounter: printCounter || receiptListh.PrintCounter,
-      PrintedBy: printedBy || receiptListh.PrintedBy,
-      PrintedDate: printedDate || receiptListh.PrintedDate,
       Information: information || receiptListh.Information,
       Status: status || receiptListh.Status,
       CreatedBy: createdBy || receiptListh.CreatedBy,
