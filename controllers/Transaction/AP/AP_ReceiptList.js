@@ -175,7 +175,7 @@ export const getAppBok = async (req, res) => {
 }
 export const getApReceiptDetail = async (req, res) => {
   try {
-    const header = await APReceiptListh.findAll({
+    const header = await APReceiptListh.findOne({
       where: {
         DocNo: req.params.id
       }
