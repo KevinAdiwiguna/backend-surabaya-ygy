@@ -4,7 +4,7 @@ import APBook from "../../../models/Report/AccountPayable/APBook.js";
 import sequelize, { Op } from 'sequelize'
 
 export const createRequestList = async (req, res) => {
-  const { series, docDate, generateDocDate, supplierCode, totalDocument, totalValue, information, status, printCounter, printedBy, createdBy, changedBy, printedDate, details } = req.body
+  const { series, docDate, generateDocDate, supplierCode, totalDocument, totalValue, information, status, printCounter, createdBy, changedBy, details } = req.body
   try {
     const existingHeader = await APReceiptListh.findOne({
       attributes: ["DocNo"],
@@ -36,8 +36,6 @@ export const createRequestList = async (req, res) => {
       Information: information,
       Status: status,
       PrintCounter: printCounter,
-      PrintedBy: printedBy,
-      PrintedDate: printedDate,
       CreatedBy: createdBy,
       ChangedBy: changedBy
     })
