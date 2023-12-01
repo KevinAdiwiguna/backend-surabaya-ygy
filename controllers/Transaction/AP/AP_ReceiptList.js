@@ -123,6 +123,20 @@ export const updateRequestList = async (req, res) => {
       );
     }
 
+    await APReceiptLishd.destroy({
+      where: {
+        DocNo: receiptListh.DocNo,
+      },
+    });
+
+    for (let a = 0; a < details.length; a++) {
+      await APReceiptLishd.create({
+        DocNo: receiptListh.DocNo,
+        CustomerCode: details[a].CustomerCode,
+        ARDocNo: details[a].ARDocNo,
+      });
+    }
+
     res.status(200).json({ msg: "Update berhasil" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
