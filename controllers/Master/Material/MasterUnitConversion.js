@@ -65,7 +65,7 @@ export const getUnitConversionByMaterialCode = async (req, res) => {
 }
 
 export const updateUnitConversion = async (req, res) => {
-    const { materialCode, unit, content, createdBy, changedBy } = req.body;
+    const { materialCode, content, createdBy, changedBy } = req.body;
     const codeCheck = await MasterUnitConversion.findOne({
         where: {
             MaterialCode: req.params.id
@@ -74,14 +74,12 @@ export const updateUnitConversion = async (req, res) => {
     if (!codeCheck) return res.json({ msg: "data tidak ditemukan" });
     try {
         await MasterUnitConversion.update({
-            MaterialCode: materialCode,
-            Unit: unit,
             Content: content,
             CreatedBy: createdBy,
             ChangedBy: changedBy
         }, {
             where: {
-                MaterialCode: materialCode
+                MaterialCode: req.params.id
             }
         });
         res.status(200).json({ msg: "update Berhasil" });

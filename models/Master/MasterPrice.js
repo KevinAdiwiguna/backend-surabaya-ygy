@@ -1,16 +1,12 @@
 import { Sequelize } from "sequelize";
 import db from "../../config/Database.js"
 
-import mastercurrency from "./MasterCurrencyModel.js"
-import masterpricelisttype from "./Costumer/MasterPricelistType.js"
-import masterUnitConversion from "./Material/MasterUnitConversion.js"
-
 const { DataTypes } = Sequelize;
 
 const masterprice = db.define('masterprice',{
 
 	Begda: {
-		type: DataTypes.DATE,
+		type: DataTypes.STRING, 
 		allowNull: false,
 		validate: {
 			notEmpty: true
@@ -72,7 +68,7 @@ const masterprice = db.define('masterprice',{
 	},
 
 	MaxQty: {
-		type: DataTypes.DECIMAL,
+		type: DataTypes.STRING,
 		allowNull: false,
 		validate: {
 			notEmpty: true
@@ -89,30 +85,18 @@ const masterprice = db.define('masterprice',{
 
 	PercentDisc: {
 		type: DataTypes.DECIMAL,
-		allowNull: false,
-		validate: {
-			notEmpty: true
-		},
+		allowNull: true,
+		defaultValue: 0
 	},
 
 	ValueDisc: {
 		type: DataTypes.DECIMAL,
-		allowNull: false,
-		validate: {
-			notEmpty: true
-		},
+		allowNull: true,
+		defaultValue: 0
 	},
 
 	CreatedBy: {
 		type: DataTypes.STRING,
-		allowNull: false,
-		validate: {
-			notEmpty: true
-		},
-	},
-
-	CreatedDate: {
-		type: DataTypes.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: true
@@ -127,22 +111,11 @@ const masterprice = db.define('masterprice',{
 		},
 	},
 
-	ChangedDate: {
-		type: DataTypes.DATE,
-		allowNull: false,
-		validate: {
-			notEmpty: true
-		},
-	},
 
 },{
 	freezeTableName: true
 });
 
-mastercurrency.hasOne(masterprice, { foreignKey: 'Currency' })
-masterpricelisttype.hasOne(masterprice, { foreignKey: 'PriceListType' })
-masterUnitConversion.hasOne(masterprice, { foreignKey: 'MaterialCode' })
-masterUnitConversion.hasOne(masterprice, { foreignKey: 'Unit' })
 
 export default masterprice;
 

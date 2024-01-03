@@ -19,7 +19,6 @@ export const createLocation = async (req, res) => {
     })
     if (codeCheck) return res.status(400).json({ msg: "code udah ada" })
 
-    
     try {
         await masterLocationModel.create({
             Code: code,
@@ -51,7 +50,6 @@ export const deleteLocation = async (req, res) => {
         res.status(400).json({ msg: error.message });
     }
 }
-
 
 export const getLocationByCode = async (req, res) => {
     try {

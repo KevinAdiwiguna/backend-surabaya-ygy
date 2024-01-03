@@ -1,5 +1,5 @@
 import User from "../models/UserModel.js";
-
+import bcrypt from 'bcrypt'
 
 export const getUsers = async (req, res) => {
     try {
@@ -85,7 +85,7 @@ export const updatePassword = async (req, res) => {
         }
     });
     if (!getMyData) return res.status(404).json({ msg: "User tidak ditemukan" });
-    if(getMyData.Password !== req.body.oldPassword) return res.status(400).json({ msg: "Password lama salah" })
+    if (getMyData.Password !== req.body.oldPassword) return res.status(400).json({ msg: "Password lama salah" })
 
     if (password !== confPassword) {
         return res.status(400).json({ msg: "Password dan Confirm Password tidak cocok" });
