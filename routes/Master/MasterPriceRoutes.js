@@ -1,4 +1,5 @@
 import express from "express";
+
 import { createPrice, deletePrice, getAllPrice, getPriceByCode, updatePrice, getPriceByMaterial } from "../../controllers/Master/MasterPrice.js";
 
 const router = express.Router();
